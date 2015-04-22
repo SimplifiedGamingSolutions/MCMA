@@ -1,4 +1,4 @@
-package com.sfs.mcma.controller;
+package com.sgs.mcma.controller;
 
 import static org.junit.Assert.*;
 
