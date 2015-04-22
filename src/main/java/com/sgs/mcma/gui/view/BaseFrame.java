@@ -4,6 +4,7 @@ import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.IOException;
 
 import javafx.scene.control.Alert;
 
@@ -22,6 +23,8 @@ public class BaseFrame extends JFrame {
 	public static BaseFrame Instance(){
 		return instance;
 	}
+
+	protected Process serverProcess;
 	public BaseFrame(String title){
 		instance = this;
 		Initialize(title);
@@ -50,7 +53,19 @@ public class BaseFrame extends JFrame {
 			}
 
 			private void startServer() {
-				JOptionPane.showMessageDialog(BaseFrame.Instance(), "server started");
+				try {
+					BaseFrame.Instance().serverProcess = Runtime.getRuntime().exec("java -jar -Xmx1024M -Xms1024M minecraft_server.1.8.4.jar nogui");
+					Process process = BaseFrame.Instance().serverProcess;
+					if(process.isAlive()){
+						JOptionPane.showMessageDialog(BaseFrame.Instance(), "server started");
+					}
+					else{
+						JOptionPane.showMessageDialog(BaseFrame.Instance(), "server failed to start");
+					}
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 			}
 		});
 		
@@ -61,7 +76,14 @@ public class BaseFrame extends JFrame {
 			}
 
 			private void stopServer() {
-				JOptionPane.showMessageDialog(BaseFrame.Instance(), "server started");
+				Process process = BaseFrame.Instance().serverProcess;
+				if(process.isAlive()){
+					process.destroy();
+					JOptionPane.showMessageDialog(BaseFrame.Instance(), "server stopped");
+				}
+				else{
+					JOptionPane.showMessageDialog(BaseFrame.Instance(), "server wasn't started");
+				}
 			}
 		});
 		
