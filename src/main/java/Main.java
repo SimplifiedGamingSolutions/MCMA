@@ -11,7 +11,7 @@ public class Main {
 	private static void InitializeFrames(){
 		EventQueue.invokeLater(new Runnable() {	
 			public void run() {
-				BaseFrame frame = new BaseFrame("Minecraft Mod Admin");
+				BaseFrame frame = new BaseFrame("Minecraft Mod Admin", 1024, 700);
 				frame.setVisible(true);
 			}
 		});

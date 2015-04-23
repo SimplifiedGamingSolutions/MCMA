@@ -1,6 +1,7 @@
 
 
 import java.awt.BorderLayout;
+import java.awt.Component;
 import java.awt.Container;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -11,51 +12,48 @@ import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.io.PrintStream;
+
 import javax.swing.JFrame;
+import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 
-public class TextAreaOutputStreamTest extends OutputStream {
-    private JTextArea textControl;
-    public TextAreaOutputStreamTest( JTextArea control ) {
-        textControl = control;
-    }
-    public void write( int b ) throws IOException {
-        textControl.append( String.valueOf( ( char )b ) );
-    }  
-    public static BufferedWriter output;
-    public static void main(String[] args) throws Exception {
-        JTextArea textArea = new JTextArea (25, 80);
-        textArea.setEditable (true);
+import com.sgs.mcma.gui.view.console.ConsoleTextField;
+import com.sgs.mcma.gui.view.console.StreamableTextArea;
+
+public class TextAreaOutputStreamTest {
+    private StreamableTextArea textControl = new StreamableTextArea(50,25);
+    private BufferedReader input;
+    private BufferedWriter output;
+    private BufferedReader error;
+    private void CreateTestFrame(){
         JFrame frame = new JFrame ("cmd");
         frame.setDefaultCloseOperation (JFrame.EXIT_ON_CLOSE);
-        Container contentPane = frame.getContentPane ();
-        contentPane.setLayout (new BorderLayout ());
-        contentPane.add (
-            new JScrollPane (
-                textArea, 
-                JScrollPane.VERTICAL_SCROLLBAR_ALWAYS, 
-                JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED),
-            BorderLayout.CENTER);
-        JTextField textField = new JTextField();
-        textField.addActionListener(new ActionListener() {
-			
-			public void actionPerformed(ActionEvent e) {
-		        try {
-		        	JTextField text = (JTextField) e.getSource();
-					output.write(text.getText()+'\n');
-					output.flush();
-				} catch (IOException e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
-				}
-			}
-		});
-        contentPane.add(textField,BorderLayout.SOUTH);
+        frame.getContentPane().setLayout(new BorderLayout());
+        frame.getContentPane().add(createConsolePane(), BorderLayout.CENTER);
         frame.pack ();
         frame.setVisible (true);
-        System.setOut(new PrintStream(new TextAreaOutputStreamTest(textArea)));
+    }
+    private JPanel createConsolePane() {
+        JPanel console = new JPanel();
+        console.setLayout (new BorderLayout ());
+        console.add (createConsoleScrollPane(), BorderLayout.CENTER);
+        console.add(createCommandTextField(),BorderLayout.SOUTH);
+        System.setOut(new PrintStream(textControl.getOutputStream()));
+        return console;
+	}
+	private JScrollPane createConsoleScrollPane() {
+		return 
+	            new JScrollPane (
+	                    textControl, 
+	                    JScrollPane.VERTICAL_SCROLLBAR_ALWAYS, 
+	                    JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+	}
+	private JTextField createCommandTextField() {
+        return new ConsoleTextField(output);
+	}
+	private void CreateProcess() throws IOException {
         ProcessBuilder pb = new ProcessBuilder("cmd.exe");
         final Process p = pb.start();
         Runnable serverListener = new Runnable(){
@@ -63,8 +61,8 @@ public class TextAreaOutputStreamTest extends OutputStream {
 		        String line;
 		        String errorMessage;
 		        output = new BufferedWriter(new OutputStreamWriter(p.getOutputStream()));
-		        BufferedReader input = new BufferedReader(new InputStreamReader(p.getInputStream()));
-		        BufferedReader error = new BufferedReader(new InputStreamReader(p.getErrorStream()));
+		        input = new BufferedReader(new InputStreamReader(p.getInputStream()));
+		        error = new BufferedReader(new InputStreamReader(p.getErrorStream()));
 		        try {
 					while ((line = input.readLine()) != null) {
 					  System.out.println(line);
@@ -78,5 +76,10 @@ public class TextAreaOutputStreamTest extends OutputStream {
 			}
         };
         serverListener.run();
+	}
+	public static void main(String[] args) throws Exception {
+		TextAreaOutputStreamTest test = new TextAreaOutputStreamTest();
+    	test.CreateTestFrame();
+    	test.CreateProcess();
     }
 }

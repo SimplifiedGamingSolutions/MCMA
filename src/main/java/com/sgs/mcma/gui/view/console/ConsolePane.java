@@ -1,6 +1,7 @@
 package com.sgs.mcma.gui.view.console;
 
 import java.awt.BorderLayout;
+import java.awt.Component;
 import java.awt.Container;
 import java.awt.EventQueue;
 import java.awt.Panel;
@@ -15,6 +16,7 @@ import java.io.OutputStreamWriter;
 import java.io.PrintStream;
 
 import javax.swing.JFrame;
+import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
@@ -22,36 +24,52 @@ import javax.swing.JTextField;
 import com.sgs.mcma.gui.view.BaseFrame;
 
 public class ConsolePane extends Panel {
-
-    private BufferedWriter output;
-    private JTextArea textControl;
-	public ConsolePane() throws Exception{
-		JTextArea textArea = new JTextArea (25, 80);
-        textArea.setEditable (true);
-        Container contentPane = this;
-        contentPane.setLayout (new BorderLayout ());
-        contentPane.add (
-            new JScrollPane (
-                textArea, 
-                JScrollPane.VERTICAL_SCROLLBAR_ALWAYS, 
-                JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED),
-            BorderLayout.CENTER);
-        JTextField textField = new JTextField();
-        textField.addActionListener(new ActionListener() {
-			
+	private JTextArea textControl = new JTextArea (25, 80);
+	BufferedWriter output;
+	BufferedReader input;
+	BufferedReader error;
+	Process p;
+	public ConsolePane(){
+		createConsolePane();
+	}
+	public void Start(){
+		try {
+			p = CreateProcess();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+    private JPanel createConsolePane() {
+        JPanel console = new JPanel();
+        console.setLayout (new BorderLayout ());
+        console.add (createConsoleScrollPane(), BorderLayout.CENTER);
+        console.add(createCommandTextField(),BorderLayout.SOUTH);
+        //System.setOut(new PrintStream(new TextAreaOutputStreamTest(textControl)));
+        return console;
+	}
+	private Component createConsoleScrollPane() {
+		return new JScrollPane ( textControl, JScrollPane.VERTICAL_SCROLLBAR_ALWAYS, JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+	}
+	private JTextField createCommandTextField() {
+        JTextField textField = new JTextField("hello");
+        /*textField.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-		        try {
-		        	JTextField text = (JTextField) e.getSource();
-					output.write(text.getText()+'\n');
-					output.flush();
-				} catch (IOException e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
+				if(output != null){
+			        try {
+			        	JTextField text = (JTextField) e.getSource();
+						output.write(text.getText()+'\n');
+						output.flush();
+					} catch (IOException e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					}
 				}
 			}
-		});
-        contentPane.add(textField,BorderLayout.SOUTH);
-        System.setOut(new PrintStream(new TextAreaOutputStream(textArea)));
+		});*/
+        return textField;
+	}
+	private Process CreateProcess() throws IOException {
         ProcessBuilder pb = new ProcessBuilder("cmd.exe");
         final Process p = pb.start();
         Runnable serverListener = new Runnable(){
@@ -59,8 +77,8 @@ public class ConsolePane extends Panel {
 		        String line;
 		        String errorMessage;
 		        output = new BufferedWriter(new OutputStreamWriter(p.getOutputStream()));
-		        BufferedReader input = new BufferedReader(new InputStreamReader(p.getInputStream()));
-		        BufferedReader error = new BufferedReader(new InputStreamReader(p.getErrorStream()));
+		        input = new BufferedReader(new InputStreamReader(p.getInputStream()));
+		        error = new BufferedReader(new InputStreamReader(p.getErrorStream()));
 		        try {
 					while ((line = input.readLine()) != null) {
 					  System.out.println(line);
@@ -74,8 +92,11 @@ public class ConsolePane extends Panel {
 			}
         };
         serverListener.run();
+        return p;
 	}
-	class TextAreaOutputStream extends OutputStream {
+
+	public class TextAreaOutputStream extends OutputStream {
+	    private JTextArea textControl;
 	    public TextAreaOutputStream( JTextArea control ) {
 	        textControl = control;
 	    }
@@ -83,22 +104,20 @@ public class ConsolePane extends Panel {
 	        textControl.append( String.valueOf( ( char )b ) );
 	    }  
 	}
-	public static void main(String[] args) {
+
+	public static void main(String[] args) throws Exception {
+		final ConsolePane console = new ConsolePane();
 		EventQueue.invokeLater(new Runnable() {	
 			public void run() {
-				JFrame frame = new JFrame("Minecraft Mod Admin");
+				JFrame frame = new JFrame("cmd");
 				frame.getContentPane().setLayout(new BorderLayout());
-				try {
-					ConsolePane cp = new ConsolePane();
-					frame.getContentPane().add(cp, BorderLayout.CENTER);
-				} catch (Exception e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
+				frame.setSize(1024, 700);
 				frame.setVisible(true);
+				frame.getContentPane().add(console);
 			}
 		});
-	}
+		//console.Start();
+    }
 }
 
 

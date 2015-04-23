@@ -1,6 +1,7 @@
 package com.sgs.mcma.gui.view;
 
 import java.awt.BorderLayout;
+import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -25,27 +26,58 @@ public class BaseFrame extends JFrame {
 	}
 
 	protected Process serverProcess;
-	public BaseFrame(String title){
+	public BaseFrame(String title, int width, int height){
+		super();
 		instance = this;
-		Initialize(title);
+		Initialize(title, width, height);
 	}
 
-	private void Initialize(String title) {
+	private void Initialize(String title, int width, int height) {
 		this.setTitle(title);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setSize(new Dimension(1024,700));
-		populateFrame();
+		setSize(new Dimension(width,height));
+		populateContentPane();
 	}
 
-	private void populateFrame() {
-		JPanel mainPanel = new JPanel();
-		mainPanel.setLayout(new BorderLayout());
-		
+	private void populateContentPane() {
+		getContentPane().setLayout(new BorderLayout());
+		getContentPane().add(createTabs(), BorderLayout.CENTER);
+	}
+	
+	private JTabbedPane createTabs() {
 		JTabbedPane tabs = new JTabbedPane();
-		
+		tabs.addTab("Tab 1", createTab1());
+		tabs.addTab("Tab 2", new JPanel());
+		tabs.addTab("Tab 3", new JPanel());
+		return tabs;
+	}
+
+	private JPanel createTab1() {
 		JPanel tab1 = new JPanel();
 		tab1.setLayout(new BorderLayout());
-		
+		tab1.add(createButtonPanel(), BorderLayout.SOUTH);
+		return tab1;
+	}
+
+	private JPanel createButtonPanel() {
+		JPanel buttonPanel = new JPanel();
+		buttonPanel.setLayout(new BoxLayout(buttonPanel, BoxLayout.PAGE_AXIS));
+		buttonPanel.add(Box.createVerticalGlue());
+		buttonPanel.add(createButtonBox());
+		return buttonPanel;
+	}
+
+	private Box createButtonBox() {
+		Box buttonBox = Box.createHorizontalBox();
+		buttonBox.add(Box.createHorizontalGlue());
+		buttonBox.add(createStartServerButton());
+		buttonBox.add(Box.createHorizontalStrut(5));
+		buttonBox.add(createStopServerButton());
+		buttonBox.add(Box.createHorizontalGlue());
+		return buttonBox;
+	}
+
+	private JButton createStartServerButton(){
 		JButton startButton = new JButton("START");
 		startButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -68,7 +100,9 @@ public class BaseFrame extends JFrame {
 				}
 			}
 		});
-		
+		return startButton;
+	}
+	private JButton createStopServerButton(){
 		JButton stopButton = new JButton("STOP");
 		stopButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -86,28 +120,6 @@ public class BaseFrame extends JFrame {
 				}
 			}
 		});
-		
-		JPanel buttonPanel = new JPanel();
-		buttonPanel.setLayout(new BoxLayout(buttonPanel, BoxLayout.PAGE_AXIS));
-		buttonPanel.add(Box.createVerticalGlue());
-		Box buttonBox = Box.createHorizontalBox();
-		buttonBox.add(Box.createHorizontalGlue());
-		buttonBox.add(startButton);
-		buttonBox.add(Box.createHorizontalStrut(5));
-		buttonBox.add(stopButton);
-		buttonBox.add(Box.createHorizontalGlue());
-		
-		buttonPanel.add(buttonBox);
-		
-		tab1.add(buttonPanel);
-		
-		tabs.addTab("Tab 1", tab1);
-		tabs.addTab("Tab 2", new JPanel());
-		tabs.addTab("Tab 3", new JPanel());
-		
-		mainPanel.add(tabs, BorderLayout.CENTER);
-		
-		this.add(mainPanel);
+		return stopButton;
 	}
-
 }
