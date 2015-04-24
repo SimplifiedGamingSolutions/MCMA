@@ -13,6 +13,7 @@ import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.io.PrintStream;
+import java.lang.ProcessBuilder.Redirect;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -72,7 +73,7 @@ public class ConsolePane extends JPanel{
         ProcessBuilder pb = new ProcessBuilder(command);
         p = pb.start();
         output = new BufferedWriter(new OutputStreamWriter(p.getOutputStream()));
-        new Thread(new Runnable(){
+        Thread inputListener = new Thread(new Runnable(){
 			public void run() {
 		    	consoleTextAttributeSet = new SimpleAttributeSet();
 		    	StyleConstants.setForeground(consoleTextAttributeSet, Color.LIGHT_GRAY);
@@ -84,13 +85,14 @@ public class ConsolePane extends JPanel{
 					while ((line = input.readLine()) != null) {
 						appendTextToConsole(line);
 					}
+					p.waitFor();
 				} 
 		        catch (Exception e) {
 					e.printStackTrace();
 				}
 			}
-        }).start();
-        new Thread(new Runnable(){
+        });
+        Thread errorListener = new Thread(new Runnable(){
 			public void run() {
 		    	errorTextAttributeSet = new SimpleAttributeSet();
 		    	StyleConstants.setForeground(errorTextAttributeSet, Color.RED);
@@ -102,11 +104,14 @@ public class ConsolePane extends JPanel{
 					while ((line = error.readLine()) != null) {
 						appendErrorToConsole(line);
 					}
+					p.waitFor();
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
 			}
-        }).start();
+        });
+        inputListener.start();
+        errorListener.start();
     }
 	
 	private void sendCommand(String text){
