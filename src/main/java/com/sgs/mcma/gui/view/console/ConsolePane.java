@@ -79,12 +79,14 @@ public class ConsolePane extends JPanel{
 		    	StyleConstants.setForeground(consoleTextAttributeSet, Color.LIGHT_GRAY);
 		    	StyleConstants.setBackground(consoleTextAttributeSet, Color.BLACK);
 		    	StyleConstants.setBold(consoleTextAttributeSet, true);
-		        String line="";
+		    	byte[] inBuffer = new byte[1024];
 		        input = new BufferedReader(new InputStreamReader(p.getInputStream()));
 		        try {
-					while ((line = input.readLine()) != null) {
-						appendTextToConsole(line);
-					}
+		        	for (int i = 0; i > -1; i = p.getInputStream().read(inBuffer)) {
+                        // We have a new segment of input, so process it as a String..
+                  	String input = new String(inBuffer, 0, i);
+                        appendTextToConsole(input);
+                  }
 					p.waitFor();
 				} 
 		        catch (Exception e) {
@@ -98,20 +100,22 @@ public class ConsolePane extends JPanel{
 		    	StyleConstants.setForeground(errorTextAttributeSet, Color.RED);
 		    	StyleConstants.setBackground(errorTextAttributeSet, Color.BLACK);
 		    	StyleConstants.setBold(errorTextAttributeSet, true);
-		        String line="";
+		    	byte[] errorBuffer = new byte[1024];
 		        error = new BufferedReader(new InputStreamReader(p.getErrorStream()));
 		        try {
-					while ((line = error.readLine()) != null) {
-						appendErrorToConsole(line);
-					}
+		        	for (int i = 0; i > -1; i = p.getErrorStream().read(errorBuffer)) {
+                        // We have a new segment of input, so process it as a String..
+                  	String error = new String(errorBuffer, 0, i);
+                        appendErrorToConsole('\n'+error);
+                  }
 					p.waitFor();
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
 			}
         });
-        inputListener.start();
         errorListener.start();
+        inputListener.start();
     }
 	
 	private void sendCommand(String text){
@@ -125,7 +129,7 @@ public class ConsolePane extends JPanel{
 	
 	private void appendTextToConsole(String text){
 		try {
-			doc.insertString(doc.getLength(), text+'\n', consoleTextAttributeSet);
+			doc.insertString(doc.getLength(), text, consoleTextAttributeSet);
 		} catch (BadLocationException e) {
 			e.printStackTrace();
 		}
@@ -133,7 +137,7 @@ public class ConsolePane extends JPanel{
 	
 	private void appendErrorToConsole(String text){
 		try {
-			doc.insertString(doc.getLength(), text+'\n', errorTextAttributeSet);
+			doc.insertString(doc.getLength(), text, errorTextAttributeSet);
 		} catch (BadLocationException e) {
 			e.printStackTrace();
 		}
