@@ -19,8 +19,11 @@ import javax.swing.JPanel;
 import javax.swing.JSplitPane;
 import javax.swing.JTabbedPane;
 
+import com.sgs.mcma.gui.view.console.ConsolePane;
+
 public class BaseFrame extends JFrame {
 	private static BaseFrame instance;
+	private static ConsolePane console;
 	public static BaseFrame Instance(){
 		return instance;
 	}
@@ -55,6 +58,8 @@ public class BaseFrame extends JFrame {
 	private JPanel createTab1() {
 		JPanel tab1 = new JPanel();
 		tab1.setLayout(new BorderLayout());
+		console = new ConsolePane();
+		tab1.add(console, BorderLayout.CENTER);
 		tab1.add(createButtonPanel(), BorderLayout.SOUTH);
 		return tab1;
 	}
@@ -85,18 +90,12 @@ public class BaseFrame extends JFrame {
 			}
 
 			private void startServer() {
-				try {
-					BaseFrame.Instance().serverProcess = Runtime.getRuntime().exec("java -jar -Xmx1024M -Xms1024M minecraft_server.1.8.4.jar nogui");
-					Process process = BaseFrame.Instance().serverProcess;
-					if(process.isAlive()){
-						JOptionPane.showMessageDialog(BaseFrame.Instance(), "server started");
-					}
-					else{
-						JOptionPane.showMessageDialog(BaseFrame.Instance(), "server failed to start");
-					}
-				} catch (IOException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
+				Process process = BaseFrame.Instance().console.CreateProcess("cmd.exe");
+				if(process.isAlive()){
+					JOptionPane.showMessageDialog(BaseFrame.Instance(), "server started");
+				}
+				else{
+					JOptionPane.showMessageDialog(BaseFrame.Instance(), "server failed to start");
 				}
 			}
 		});
@@ -110,9 +109,7 @@ public class BaseFrame extends JFrame {
 			}
 
 			private void stopServer() {
-				Process process = BaseFrame.Instance().serverProcess;
-				if(process.isAlive()){
-					process.destroy();
+				if(BaseFrame.Instance().console.stopProcess()){
 					JOptionPane.showMessageDialog(BaseFrame.Instance(), "server stopped");
 				}
 				else{

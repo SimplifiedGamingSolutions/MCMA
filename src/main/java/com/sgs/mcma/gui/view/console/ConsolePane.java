@@ -69,9 +69,14 @@ public class ConsolePane extends JPanel{
 	}
 	
 	
-	private void CreateProcess(String command) throws IOException {
+	public Process CreateProcess(String command) {
         ProcessBuilder pb = new ProcessBuilder(command);
-        p = pb.start();
+        try {
+			p = pb.start();
+		} catch (IOException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
         output = new BufferedWriter(new OutputStreamWriter(p.getOutputStream()));
         Thread inputListener = new Thread(new Runnable(){
 			public void run() {
@@ -116,6 +121,7 @@ public class ConsolePane extends JPanel{
         });
         errorListener.start();
         inputListener.start();
+        return p;
     }
 	
 	private void sendCommand(String text){
@@ -128,10 +134,12 @@ public class ConsolePane extends JPanel{
 	}
 	
 	private void appendTextToConsole(String text){
-		try {
-			doc.insertString(doc.getLength(), text, consoleTextAttributeSet);
-		} catch (BadLocationException e) {
-			e.printStackTrace();
+		if(p.isAlive()){
+			try {
+				doc.insertString(doc.getLength(), text, consoleTextAttributeSet);
+			} catch (BadLocationException e) {
+				e.printStackTrace();
+			}
 		}
 	}
 	
@@ -183,5 +191,22 @@ public class ConsolePane extends JPanel{
 		new TestFrame(test);
     	test.CreateProcess("cmd.exe");
     }
+
+	public boolean stopProcess() {
+		if(p.isAlive()){
+			sendCommand("exit");
+			clearConsole();
+			try {
+				p.waitFor();
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			return true;
+		}
+		else{
+			return false;
+		}
+	}
 }
 
