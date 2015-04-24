@@ -3,8 +3,6 @@ package com.sgs.mcma.gui.view.console;
 import java.awt.BorderLayout;
 import java.awt.Component;
 import java.awt.Container;
-import java.awt.EventQueue;
-import java.awt.Panel;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.BufferedReader;
@@ -21,57 +19,37 @@ import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 
-import com.sgs.mcma.gui.view.BaseFrame;
+import com.sgs.mcma.gui.view.TestFrame;
 
-public class ConsolePane extends Panel {
-	private JTextArea textControl = new JTextArea (25, 80);
-	BufferedWriter output;
-	BufferedReader input;
-	BufferedReader error;
-	Process p;
-	public ConsolePane(){
-		createConsolePane();
+public class ConsolePane extends JPanel{
+	
+    private StreamableTextArea textControl = new StreamableTextArea();
+    private BufferedReader input;
+    public BufferedWriter output;
+    private BufferedReader error;
+    private Process p;
+    
+    public ConsolePane(){
+		populateConsolePane();
+    }
+    
+    private void populateConsolePane() {setLayout (new BorderLayout ());
+        add(createConsoleScrollPane(), BorderLayout.CENTER);
+        add(createCommandTextField(),BorderLayout.SOUTH);
+        System.setOut(new PrintStream(textControl.getOutputStream()));
 	}
-	public void Start(){
-		try {
-			p = CreateProcess();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+    
+	private JScrollPane createConsoleScrollPane() {
+		return new JScrollPane (textControl, JScrollPane.VERTICAL_SCROLLBAR_ALWAYS, JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
 	}
-    private JPanel createConsolePane() {
-        JPanel console = new JPanel();
-        console.setLayout (new BorderLayout ());
-        console.add (createConsoleScrollPane(), BorderLayout.CENTER);
-        console.add(createCommandTextField(),BorderLayout.SOUTH);
-        //System.setOut(new PrintStream(new TextAreaOutputStreamTest(textControl)));
-        return console;
-	}
-	private Component createConsoleScrollPane() {
-		return new JScrollPane ( textControl, JScrollPane.VERTICAL_SCROLLBAR_ALWAYS, JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
-	}
+	
 	private JTextField createCommandTextField() {
-        JTextField textField = new JTextField("hello");
-        /*textField.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				if(output != null){
-			        try {
-			        	JTextField text = (JTextField) e.getSource();
-						output.write(text.getText()+'\n');
-						output.flush();
-					} catch (IOException e1) {
-						// TODO Auto-generated catch block
-						e1.printStackTrace();
-					}
-				}
-			}
-		});*/
-        return textField;
+        return new ConsoleTextField(this);
 	}
-	private Process CreateProcess() throws IOException {
-        ProcessBuilder pb = new ProcessBuilder("cmd.exe");
-        final Process p = pb.start();
+	
+	private void CreateProcess(String command) throws IOException {
+        ProcessBuilder pb = new ProcessBuilder(command);
+        p = pb.start();
         Runnable serverListener = new Runnable(){
 			public void run() {
 		        String line;
@@ -92,33 +70,49 @@ public class ConsolePane extends Panel {
 			}
         };
         serverListener.run();
-        return p;
 	}
+	
+	class ConsoleTextField extends JTextField {
+    	public ConsoleTextField(final ConsolePane console){
+    		super();
+    		this.addActionListener(new ActionListener() {
+    			
+    			public void actionPerformed(ActionEvent e) {
+    		        try {
+    		        	JTextField text = (JTextField) e.getSource();
+    		        	console.output.write(text.getText()+'\n');
+    		        	console.output.flush();
+    		        	text.setText("");
+    				} catch (IOException e1) {
+    					// TODO Auto-generated catch block
+    					e1.printStackTrace();
+    				}
+    			}
+    		});
+    	}
+    }
+	
+	class StreamableTextArea extends JTextArea {
+    	private StreamableTextArea instance = this;
+    	
+    	public StreamableTextArea() {
+    		setEditable(false);
+    	}
 
-	public class TextAreaOutputStream extends OutputStream {
-	    private JTextArea textControl;
-	    public TextAreaOutputStream( JTextArea control ) {
-	        textControl = control;
-	    }
-	    public void write( int b ) throws IOException {
-	        textControl.append( String.valueOf( ( char )b ) );
-	    }  
-	}
-
+    	public OutputStream getOutputStream(){
+    		return new OutputStream(){
+    			@Override
+    			public void write(int b) throws IOException {
+    		        instance.append( String.valueOf( ( char )b ) );
+    			}
+    		};
+    	}
+    }
+	
 	public static void main(String[] args) throws Exception {
-		final ConsolePane console = new ConsolePane();
-		EventQueue.invokeLater(new Runnable() {	
-			public void run() {
-				JFrame frame = new JFrame("cmd");
-				frame.getContentPane().setLayout(new BorderLayout());
-				frame.setSize(1024, 700);
-				frame.setVisible(true);
-				frame.getContentPane().add(console);
-			}
-		});
-		//console.Start();
+		ConsolePane test = new ConsolePane();
+		new TestFrame(test);
+    	test.CreateProcess("cmd.exe");
     }
 }
-
-
 
