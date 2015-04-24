@@ -1,5 +1,6 @@
 package com.sgs.mcma.gui.view.console;
 
+import java.awt.Color;
 import java.awt.BorderLayout;
 import java.awt.Component;
 import java.awt.Container;
@@ -12,100 +13,159 @@ import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.io.PrintStream;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
+import javax.swing.JTextPane;
+import javax.swing.event.CaretEvent;
+import javax.swing.event.CaretListener;
+import javax.swing.text.BadLocationException;
+import javax.swing.text.DefaultCaret;
+import javax.swing.text.Document;
+import javax.swing.text.SimpleAttributeSet;
+import javax.swing.text.StyleConstants;
+import javax.swing.text.StyledDocument;
 
 import com.sgs.mcma.gui.view.TestFrame;
 
 public class ConsolePane extends JPanel{
 	
-    private StreamableTextArea textControl = new StreamableTextArea();
+    private JTextPane consoleTextPane;
+    private StyledDocument doc;
+    private SimpleAttributeSet consoleTextAttributeSet;
+    private SimpleAttributeSet errorTextAttributeSet;
+    
     private BufferedReader input;
-    public BufferedWriter output;
+    private BufferedWriter output;
     private BufferedReader error;
     private Process p;
     
     public ConsolePane(){
+    	populateTextPane();
 		populateConsolePane();
     }
     
-    private void populateConsolePane() {setLayout (new BorderLayout ());
-        add(createConsoleScrollPane(), BorderLayout.CENTER);
-        add(createCommandTextField(),BorderLayout.SOUTH);
-        System.setOut(new PrintStream(textControl.getOutputStream()));
+    private void populateTextPane() {
+    	consoleTextPane = new JTextPane();
+    	DefaultCaret caret = (DefaultCaret)consoleTextPane.getCaret();
+    	caret.setUpdatePolicy(DefaultCaret.ALWAYS_UPDATE);
+    	consoleTextPane.setBackground(Color.BLACK);
+    	consoleTextPane.setEditable(false);
+    	doc = consoleTextPane.getStyledDocument();
 	}
-    
-	private JScrollPane createConsoleScrollPane() {
-		return new JScrollPane (textControl, JScrollPane.VERTICAL_SCROLLBAR_ALWAYS, JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+
+	private void populateConsolePane() {
+		setLayout (new BorderLayout ());
+		JScrollPane pane = new JScrollPane (consoleTextPane, JScrollPane.VERTICAL_SCROLLBAR_ALWAYS, JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+        add(pane, BorderLayout.CENTER);
+        ConsoleCommandTextField field = new ConsoleCommandTextField();
+        add(field,BorderLayout.SOUTH);
 	}
 	
-	private JTextField createCommandTextField() {
-        return new ConsoleTextField(this);
-	}
 	
 	private void CreateProcess(String command) throws IOException {
         ProcessBuilder pb = new ProcessBuilder(command);
         p = pb.start();
-        Runnable serverListener = new Runnable(){
+        output = new BufferedWriter(new OutputStreamWriter(p.getOutputStream()));
+        new Thread(new Runnable(){
 			public void run() {
-		        String line;
-		        String errorMessage;
-		        output = new BufferedWriter(new OutputStreamWriter(p.getOutputStream()));
+		    	consoleTextAttributeSet = new SimpleAttributeSet();
+		    	StyleConstants.setForeground(consoleTextAttributeSet, Color.LIGHT_GRAY);
+		    	StyleConstants.setBackground(consoleTextAttributeSet, Color.BLACK);
+		    	StyleConstants.setBold(consoleTextAttributeSet, true);
+		        String line="";
 		        input = new BufferedReader(new InputStreamReader(p.getInputStream()));
-		        error = new BufferedReader(new InputStreamReader(p.getErrorStream()));
 		        try {
 					while ((line = input.readLine()) != null) {
-					  System.out.println(line);
+						appendTextToConsole(line);
 					}
-					while ((errorMessage = error.readLine()) != null) {
-						  System.out.println(errorMessage);
-						}
-				} catch (IOException e) {
+				} 
+		        catch (Exception e) {
 					e.printStackTrace();
 				}
 			}
-        };
-        serverListener.run();
+        }).start();
+        new Thread(new Runnable(){
+			public void run() {
+		    	errorTextAttributeSet = new SimpleAttributeSet();
+		    	StyleConstants.setForeground(errorTextAttributeSet, Color.RED);
+		    	StyleConstants.setBackground(errorTextAttributeSet, Color.BLACK);
+		    	StyleConstants.setBold(errorTextAttributeSet, true);
+		        String line="";
+		        error = new BufferedReader(new InputStreamReader(p.getErrorStream()));
+		        try {
+					while ((line = error.readLine()) != null) {
+						appendErrorToConsole(line);
+					}
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
+        }).start();
+    }
+	
+	private void sendCommand(String text){
+		try {
+			output.write(text+'\n');
+	    	output.flush();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
 	
-	class ConsoleTextField extends JTextField {
-    	public ConsoleTextField(final ConsolePane console){
+	private void appendTextToConsole(String text){
+		try {
+			doc.insertString(doc.getLength(), text+'\n', consoleTextAttributeSet);
+		} catch (BadLocationException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	private void appendErrorToConsole(String text){
+		try {
+			doc.insertString(doc.getLength(), text+'\n', errorTextAttributeSet);
+		} catch (BadLocationException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	private void clearConsole(){
+		consoleTextPane.setText("");
+	}
+	class ConsoleCommandTextField extends JTextField {
+    	public ConsoleCommandTextField(){
     		super();
     		this.addActionListener(new ActionListener() {
     			
     			public void actionPerformed(ActionEvent e) {
-    		        try {
-    		        	JTextField text = (JTextField) e.getSource();
-    		        	console.output.write(text.getText()+'\n');
-    		        	console.output.flush();
-    		        	text.setText("");
-    				} catch (IOException e1) {
-    					// TODO Auto-generated catch block
-    					e1.printStackTrace();
+    				if(p != null && p.isAlive()){
+    		        	if(getText().equals("clear")){
+    		        		clearConsole();
+    		        	}
+    		        	else if(getText().equals("exit")){
+    		        		clearConsole();
+    						appendErrorToConsole("No running server");
+    		        	}
+    		        	else{
+	    		        	sendCommand(getText());
+    		        	}
+    		        	clearCommand();
+    				}
+    				else{
+    					consoleTextPane.setText("");
+						appendErrorToConsole("No running server");
+    		        	clearCommand();
     				}
     			}
     		});
     	}
-    }
-	
-	class StreamableTextArea extends JTextArea {
-    	private StreamableTextArea instance = this;
-    	
-    	public StreamableTextArea() {
-    		setEditable(false);
-    	}
-
-    	public OutputStream getOutputStream(){
-    		return new OutputStream(){
-    			@Override
-    			public void write(int b) throws IOException {
-    		        instance.append( String.valueOf( ( char )b ) );
-    			}
-    		};
+    	private void clearCommand(){
+    		setText("");
     	}
     }
 	
