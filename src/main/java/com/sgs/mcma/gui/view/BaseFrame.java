@@ -16,6 +16,7 @@ import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JLabel;
 import javax.swing.JSplitPane;
 import javax.swing.JTabbedPane;
 
@@ -49,9 +50,9 @@ public class BaseFrame extends JFrame {
 	
 	private JTabbedPane createTabs() {
 		JTabbedPane tabs = new JTabbedPane();
-		tabs.addTab("Tab 1", createTab1());
-		tabs.addTab("Tab 2", new JPanel());
-		tabs.addTab("Tab 3", new JPanel());
+		tabs.addTab("<html><body leftmargin=15 topmargin=8 marginwidth=50 marginheight=10>Summary</body></html>", createTab1());
+		tabs.addTab("<html><body leftmargin=15 topmargin=8 marginwidth=50 marginheight=10>Configuration</body></html>", new JPanel());
+		tabs.addTab("<html><body leftmargin=15 topmargin=8 marginwidth=50 marginheight=10>Logs</body></html>", new JPanel());
 		return tabs;
 	}
 

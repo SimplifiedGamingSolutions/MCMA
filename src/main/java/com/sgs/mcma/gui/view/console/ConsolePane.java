@@ -32,7 +32,7 @@ import javax.swing.text.SimpleAttributeSet;
 import javax.swing.text.StyleConstants;
 import javax.swing.text.StyledDocument;
 
-import com.sgs.mcma.gui.view.TestFrame;
+//import com.sgs.mcma.gui.view.TestFrame;
 
 public class ConsolePane extends JPanel{
 	
@@ -188,7 +188,7 @@ public class ConsolePane extends JPanel{
 	
 	public static void main(String[] args) throws Exception {
 		ConsolePane test = new ConsolePane();
-		new TestFrame(test);
+		//new TestFrame(test);
     	test.CreateProcess("cmd.exe");
     }
 
