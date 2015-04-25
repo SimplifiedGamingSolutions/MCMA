@@ -70,9 +70,8 @@ public class ConsolePane extends JPanel{
     		        	if(getText().equals("clear")){
     		        		clearConsole();
     		        	}
-    		        	else if(getText().equals("exit")){
-    		        		clearConsole();
-    						appendToJTextPane("No running server", getErrorTextStyle());
+    		        	else if(getText().equals("stop")){
+    		        		stopServer();
     		        	}
     		        	else{
 	    		        	p.sendCommand(getText());
@@ -116,15 +115,14 @@ public class ConsolePane extends JPanel{
 	
 	public void startServer(){
 		if(p==null){
-			p = new ControllableProcess("cmd.exe", this);
+			p = new ControllableProcess("C:\\Users\\dtaylor\\Source\\Repos\\Java\\SimplifiedGamingSolutions\\MCMA\\","minecraft_server.1.8.4.jar", this);
 		}
 		p.start();
 	}
 	public void stopServer(){
-		p.sendCommand("exit");
+		p.sendCommand("stop");
 		p.stop();
-		clearConsole();
-		appendToJTextPane("Server Stopped", getConsoleTextStyle());
+		appendToJTextPane("Server Stopped\n", getErrorTextStyle());
 	}
 }
 

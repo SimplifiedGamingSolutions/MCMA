@@ -29,9 +29,9 @@ public class ControllableProcess {
 	private BufferedWriter output;
 	private ConsolePane console;
 
-	public ControllableProcess(String processPath, ConsolePane console) {
+	public ControllableProcess(String jarPath, String jarName, ConsolePane console) {
 		this.console = console;
-		pb = new ProcessBuilder(processPath);
+		pb = new ProcessBuilder("java", "-jar", jarPath+jarName, "nogui");
 	}
 	
 	public boolean start(){
