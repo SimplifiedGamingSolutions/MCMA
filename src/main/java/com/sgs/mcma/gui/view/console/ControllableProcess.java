@@ -27,14 +27,10 @@ public class ControllableProcess {
 	private JTextPaneInputStreamPrinter errorStreamPrinter;
 	private Thread errorListener;
 	private BufferedWriter output;
-	private StyledDocument doc;
-	private SimpleAttributeSet simpleText;
-	private SimpleAttributeSet errorText;
+	private ConsolePane console;
 
-	public ControllableProcess(String processPath, StyledDocument document, SimpleAttributeSet simpleText, SimpleAttributeSet errorText) {
-		doc = document;
-		this.simpleText = simpleText;
-		this.errorText = errorText;
+	public ControllableProcess(String processPath, ConsolePane console) {
+		this.console = console;
 		pb = new ProcessBuilder(processPath);
 	}
 	
@@ -91,17 +87,9 @@ public class ControllableProcess {
 			e.printStackTrace();
 		}
 	}
-
-	private void appendToJTextPane(String text, SimpleAttributeSet att){
-		if(p.isAlive()){
-			try {
-				doc.insertString(doc.getLength(), text, att);
-			} catch (BadLocationException e) {
-				e.printStackTrace();
-			}
-		}
+	public boolean isAlive(){
+		return p.isAlive();
 	}
-	
 	private class JTextPaneInputStreamPrinter implements Runnable{
 		private boolean running = true;
 		private boolean isErrorStream;
@@ -115,10 +103,10 @@ public class ControllableProcess {
     	
     	public void run(){
     		if(isErrorStream){
-    			runStreamPrinter(errorText);
+    			runStreamPrinter(console.getErrorTextStyle());
     		}
     		else{
-    			runStreamPrinter(simpleText);
+    			runStreamPrinter(console.getConsoleTextStyle());
     		}
     	}
 		public void runStreamPrinter(SimpleAttributeSet textStyle) {
@@ -126,7 +114,7 @@ public class ControllableProcess {
 		        try {
 			    	int length = stream.read(inBuffer);
 		        	if(length > -1) {
-	                    appendToJTextPane(new String(inBuffer, 0, length), textStyle);
+	                    console.appendToJTextPane(new String(inBuffer, 0, length), textStyle);
 		        	}
 				} 
 		        catch (Exception e) {
@@ -142,36 +130,4 @@ public class ControllableProcess {
 			run();
 		}
     }
-	public static void main(String[] args) {
-    	SimpleAttributeSet consoleTextAttributeSet = new SimpleAttributeSet();
-    	StyleConstants.setForeground(consoleTextAttributeSet, Color.LIGHT_GRAY);
-    	StyleConstants.setBackground(consoleTextAttributeSet, Color.BLACK);
-    	SimpleAttributeSet errorTextAttributeSet = new SimpleAttributeSet();
-    	StyleConstants.setForeground(errorTextAttributeSet, Color.RED);
-    	StyleConstants.setBackground(errorTextAttributeSet, Color.BLACK);
-    	StyleConstants.setBold(errorTextAttributeSet, true);
-    	JTextPane testpane = new JTextPane();
-		final ControllableProcess server = new ControllableProcess("cmd.exe", testpane.getStyledDocument(), consoleTextAttributeSet, errorTextAttributeSet);
-    	JPanel panel = new JPanel(new BorderLayout());
-    	JButton startbutton = new JButton("start");
-    	startbutton.addActionListener(new ActionListener() {
-			
-			public void actionPerformed(ActionEvent e) {
-				server.start();
-			}
-		});
-    	JButton stopbutton = new JButton("stop");
-    	stopbutton.addActionListener(new ActionListener() {
-			
-			public void actionPerformed(ActionEvent e) {
-				server.sendCommand("exit");
-				server.stop();
-			}
-		});
-    	panel.add(testpane, BorderLayout.CENTER);
-    	panel.add(startbutton, BorderLayout.NORTH);
-    	panel.add(stopbutton, BorderLayout.SOUTH);
-    	TestFrame frame = new TestFrame(panel);
-		server.start();
-	}
 }

@@ -21,6 +21,7 @@ import javax.swing.JSplitPane;
 import javax.swing.JTabbedPane;
 
 import com.sgs.mcma.gui.view.console.ConsolePane;
+import com.sgs.mcma.gui.view.console.ControllableProcess;
 
 public class BaseFrame extends JFrame {
 	private static BaseFrame instance;
@@ -91,13 +92,7 @@ public class BaseFrame extends JFrame {
 			}
 
 			private void startServer() {
-				Process process = BaseFrame.Instance().console.CreateProcess("cmd.exe");
-				if(process.isAlive()){
-					JOptionPane.showMessageDialog(BaseFrame.Instance(), "server started");
-				}
-				else{
-					JOptionPane.showMessageDialog(BaseFrame.Instance(), "server failed to start");
-				}
+				console.startServer();
 			}
 		});
 		return startButton;
@@ -110,12 +105,7 @@ public class BaseFrame extends JFrame {
 			}
 
 			private void stopServer() {
-				if(BaseFrame.Instance().console.stopProcess()){
-					JOptionPane.showMessageDialog(BaseFrame.Instance(), "server stopped");
-				}
-				else{
-					JOptionPane.showMessageDialog(BaseFrame.Instance(), "server wasn't started");
-				}
+				console.stopServer();
 			}
 		});
 		return stopButton;

@@ -27,7 +27,7 @@ public class ConsolePane extends JPanel{
     private SimpleAttributeSet consoleTextAttributeSet;
     private SimpleAttributeSet errorTextAttributeSet;
     private BufferedWriter output;
-    private Process p;
+    private ControllableProcess p;
     private Thread inputListener;
     private Thread errorListener;
     
@@ -43,6 +43,10 @@ public class ConsolePane extends JPanel{
     	consoleTextPane.setBackground(Color.BLACK);
     	consoleTextPane.setEditable(false);
     	doc = consoleTextPane.getStyledDocument();
+    	consoleTextAttributeSet = new SimpleAttributeSet();
+    	StyleConstants.setForeground(consoleTextAttributeSet, Color.LIGHT_GRAY);
+    	errorTextAttributeSet = new SimpleAttributeSet();
+    	StyleConstants.setForeground(errorTextAttributeSet, Color.RED);
 	}
 
 	private void populateConsolePane() {
@@ -51,84 +55,6 @@ public class ConsolePane extends JPanel{
         add(pane, BorderLayout.CENTER);
         ConsoleCommandTextField field = new ConsoleCommandTextField();
         add(field,BorderLayout.SOUTH);
-	}
-	
-	
-	public Process CreateProcess(String command) {
-        ProcessBuilder pb = new ProcessBuilder(command);
-        try {
-			p = pb.start();
-		} catch (IOException e1) {
-			e1.printStackTrace();
-		}
-        output = new BufferedWriter(new OutputStreamWriter(p.getOutputStream()));
-        inputListener = new Thread(new Runnable(){
-			public void run() {
-		        try {
-			    	consoleTextAttributeSet = new SimpleAttributeSet();
-			    	StyleConstants.setForeground(consoleTextAttributeSet, Color.LIGHT_GRAY);
-			    	StyleConstants.setBackground(consoleTextAttributeSet, Color.BLACK);
-			    	StyleConstants.setBold(consoleTextAttributeSet, true);
-			    	byte[] inBuffer = new byte[1024];
-		        	for (int i = 0; i > -1; i = p.getInputStream().read(inBuffer)) {
-		        		String input = new String(inBuffer, 0, i);
-                        appendTextToConsole(input);
-		        	}
-					p.waitFor();
-				} 
-		        catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-        });
-        errorListener = new Thread(new Runnable(){
-			public void run() {
-		        try {
-			    	errorTextAttributeSet = new SimpleAttributeSet();
-			    	StyleConstants.setForeground(errorTextAttributeSet, Color.RED);
-			    	StyleConstants.setBackground(errorTextAttributeSet, Color.BLACK);
-			    	StyleConstants.setBold(errorTextAttributeSet, true);
-			    	byte[] errorBuffer = new byte[1024];
-		        	for (int i = 0; i > -1; i = p.getErrorStream().read(errorBuffer)) {
-		        		String error = new String(errorBuffer, 0, i);
-                        appendErrorToConsole('\n'+error);
-		        	}
-					p.waitFor();
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-        });
-        errorListener.start();
-        inputListener.start();
-        return p;
-    }
-	
-	private void sendCommand(String text){
-		try {
-			output.write(text+'\n');
-	    	output.flush();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-	}
-	
-	private void appendTextToConsole(String text){
-		if(p.isAlive()){
-			try {
-				doc.insertString(doc.getLength(), text, consoleTextAttributeSet);
-			} catch (BadLocationException e) {
-				e.printStackTrace();
-			}
-		}
-	}
-	
-	private void appendErrorToConsole(String text){
-		try {
-			doc.insertString(doc.getLength(), text, errorTextAttributeSet);
-		} catch (BadLocationException e) {
-			e.printStackTrace();
-		}
 	}
 	
 	private void clearConsole(){
@@ -146,16 +72,16 @@ public class ConsolePane extends JPanel{
     		        	}
     		        	else if(getText().equals("exit")){
     		        		clearConsole();
-    						appendErrorToConsole("No running server");
+    						appendToJTextPane("No running server", getErrorTextStyle());
     		        	}
     		        	else{
-	    		        	sendCommand(getText());
+	    		        	p.sendCommand(getText());
     		        	}
     		        	clearCommand();
     				}
     				else{
     					consoleTextPane.setText("");
-						appendErrorToConsole("No running server");
+						appendToJTextPane("No running server", getErrorTextStyle());
     		        	clearCommand();
     				}
     			}
@@ -165,27 +91,40 @@ public class ConsolePane extends JPanel{
     		setText("");
     	}
     }
+	public JTextPane getTextPane(){
+		return consoleTextPane;
+	}
+	public SimpleAttributeSet getErrorTextStyle(){
+		return errorTextAttributeSet;
+	}
+	public SimpleAttributeSet getConsoleTextStyle(){
+		return consoleTextAttributeSet;
+	}
+	public void appendToJTextPane(String text, SimpleAttributeSet att){
+		try {
+			doc.insertString(doc.getLength(), text, att);
+		} catch (BadLocationException e) {
+			e.printStackTrace();
+		}
+	}
 	
 	public static void main(String[] args) throws Exception {
 		ConsolePane test = new ConsolePane();
 		new TestFrame(test);
-    	test.CreateProcess("cmd.exe");
+    	test.startServer();
     }
-
-	public boolean stopProcess() {
-		if(p.isAlive()){
-			sendCommand("exit");
-			clearConsole();
-			try {
-				p.waitFor();
-			} catch (InterruptedException e) {
-				e.printStackTrace();
-			}
-			return true;
+	
+	public void startServer(){
+		if(p==null){
+			p = new ControllableProcess("cmd.exe", this);
 		}
-		else{
-			return false;
-		}
+		p.start();
+	}
+	public void stopServer(){
+		p.sendCommand("exit");
+		p.stop();
+		clearConsole();
+		appendToJTextPane("Server Stopped", getConsoleTextStyle());
 	}
 }
 
