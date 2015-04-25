@@ -1,38 +1,24 @@
 package com.sgs.mcma.gui.view.console;
 
-import java.awt.Color;
 import java.awt.BorderLayout;
-import java.awt.Component;
-import java.awt.Container;
+import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.OutputStream;
 import java.io.OutputStreamWriter;
-import java.io.PrintStream;
-import java.lang.ProcessBuilder.Redirect;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 
-import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
-import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.JTextPane;
-import javax.swing.event.CaretEvent;
-import javax.swing.event.CaretListener;
 import javax.swing.text.BadLocationException;
 import javax.swing.text.DefaultCaret;
-import javax.swing.text.Document;
 import javax.swing.text.SimpleAttributeSet;
 import javax.swing.text.StyleConstants;
 import javax.swing.text.StyledDocument;
 
-//import com.sgs.mcma.gui.view.TestFrame;
+import com.sgs.mcma.gui.view.TestFrame;
 
 public class ConsolePane extends JPanel{
 	
@@ -40,11 +26,10 @@ public class ConsolePane extends JPanel{
     private StyledDocument doc;
     private SimpleAttributeSet consoleTextAttributeSet;
     private SimpleAttributeSet errorTextAttributeSet;
-    
-    private BufferedReader input;
     private BufferedWriter output;
-    private BufferedReader error;
     private Process p;
+    private Thread inputListener;
+    private Thread errorListener;
     
     public ConsolePane(){
     	populateTextPane();
@@ -71,27 +56,25 @@ public class ConsolePane extends JPanel{
 	
 	public Process CreateProcess(String command) {
         ProcessBuilder pb = new ProcessBuilder(command);
+        pb.
         try {
 			p = pb.start();
 		} catch (IOException e1) {
-			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		}
         output = new BufferedWriter(new OutputStreamWriter(p.getOutputStream()));
-        Thread inputListener = new Thread(new Runnable(){
+        inputListener = new Thread(new Runnable(){
 			public void run() {
-		    	consoleTextAttributeSet = new SimpleAttributeSet();
-		    	StyleConstants.setForeground(consoleTextAttributeSet, Color.LIGHT_GRAY);
-		    	StyleConstants.setBackground(consoleTextAttributeSet, Color.BLACK);
-		    	StyleConstants.setBold(consoleTextAttributeSet, true);
-		    	byte[] inBuffer = new byte[1024];
-		        input = new BufferedReader(new InputStreamReader(p.getInputStream()));
 		        try {
+			    	consoleTextAttributeSet = new SimpleAttributeSet();
+			    	StyleConstants.setForeground(consoleTextAttributeSet, Color.LIGHT_GRAY);
+			    	StyleConstants.setBackground(consoleTextAttributeSet, Color.BLACK);
+			    	StyleConstants.setBold(consoleTextAttributeSet, true);
+			    	byte[] inBuffer = new byte[1024];
 		        	for (int i = 0; i > -1; i = p.getInputStream().read(inBuffer)) {
-                        // We have a new segment of input, so process it as a String..
-                  	String input = new String(inBuffer, 0, i);
+		        		String input = new String(inBuffer, 0, i);
                         appendTextToConsole(input);
-                  }
+		        	}
 					p.waitFor();
 				} 
 		        catch (Exception e) {
@@ -99,20 +82,18 @@ public class ConsolePane extends JPanel{
 				}
 			}
         });
-        Thread errorListener = new Thread(new Runnable(){
+        errorListener = new Thread(new Runnable(){
 			public void run() {
-		    	errorTextAttributeSet = new SimpleAttributeSet();
-		    	StyleConstants.setForeground(errorTextAttributeSet, Color.RED);
-		    	StyleConstants.setBackground(errorTextAttributeSet, Color.BLACK);
-		    	StyleConstants.setBold(errorTextAttributeSet, true);
-		    	byte[] errorBuffer = new byte[1024];
-		        error = new BufferedReader(new InputStreamReader(p.getErrorStream()));
 		        try {
+			    	errorTextAttributeSet = new SimpleAttributeSet();
+			    	StyleConstants.setForeground(errorTextAttributeSet, Color.RED);
+			    	StyleConstants.setBackground(errorTextAttributeSet, Color.BLACK);
+			    	StyleConstants.setBold(errorTextAttributeSet, true);
+			    	byte[] errorBuffer = new byte[1024];
 		        	for (int i = 0; i > -1; i = p.getErrorStream().read(errorBuffer)) {
-                        // We have a new segment of input, so process it as a String..
-                  	String error = new String(errorBuffer, 0, i);
+		        		String error = new String(errorBuffer, 0, i);
                         appendErrorToConsole('\n'+error);
-                  }
+		        	}
 					p.waitFor();
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -188,7 +169,7 @@ public class ConsolePane extends JPanel{
 	
 	public static void main(String[] args) throws Exception {
 		ConsolePane test = new ConsolePane();
-		//new TestFrame(test);
+		new TestFrame(test);
     	test.CreateProcess("cmd.exe");
     }
 
@@ -199,7 +180,6 @@ public class ConsolePane extends JPanel{
 			try {
 				p.waitFor();
 			} catch (InterruptedException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 			return true;
