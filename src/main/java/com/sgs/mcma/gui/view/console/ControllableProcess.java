@@ -1,13 +1,23 @@
 package com.sgs.mcma.gui.view.console;
 
+import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.io.BufferedWriter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStreamWriter;
 
+import javax.swing.JButton;
+import javax.swing.JPanel;
+import javax.swing.JTextPane;
 import javax.swing.text.BadLocationException;
 import javax.swing.text.SimpleAttributeSet;
+import javax.swing.text.StyleConstants;
 import javax.swing.text.StyledDocument;
+
+import com.sgs.mcma.gui.view.TestFrame;
 
 public class ControllableProcess {
 	private ProcessBuilder pb;
@@ -48,6 +58,8 @@ public class ControllableProcess {
         inputListener = new Thread(inputStreamPrinter);
         errorStreamPrinter = new JTextPaneInputStreamPrinter(p.getErrorStream(),true);
         errorListener = new Thread(errorStreamPrinter);
+        inputListener.start();
+        errorListener.start();
 	}
 
 	public boolean stop(){
@@ -130,4 +142,36 @@ public class ControllableProcess {
 			run();
 		}
     }
+	public static void main(String[] args) {
+    	SimpleAttributeSet consoleTextAttributeSet = new SimpleAttributeSet();
+    	StyleConstants.setForeground(consoleTextAttributeSet, Color.LIGHT_GRAY);
+    	StyleConstants.setBackground(consoleTextAttributeSet, Color.BLACK);
+    	SimpleAttributeSet errorTextAttributeSet = new SimpleAttributeSet();
+    	StyleConstants.setForeground(errorTextAttributeSet, Color.RED);
+    	StyleConstants.setBackground(errorTextAttributeSet, Color.BLACK);
+    	StyleConstants.setBold(errorTextAttributeSet, true);
+    	JTextPane testpane = new JTextPane();
+		final ControllableProcess server = new ControllableProcess("cmd.exe", testpane.getStyledDocument(), consoleTextAttributeSet, errorTextAttributeSet);
+    	JPanel panel = new JPanel(new BorderLayout());
+    	JButton startbutton = new JButton("start");
+    	startbutton.addActionListener(new ActionListener() {
+			
+			public void actionPerformed(ActionEvent e) {
+				server.start();
+			}
+		});
+    	JButton stopbutton = new JButton("stop");
+    	stopbutton.addActionListener(new ActionListener() {
+			
+			public void actionPerformed(ActionEvent e) {
+				server.sendCommand("exit");
+				server.stop();
+			}
+		});
+    	panel.add(testpane, BorderLayout.CENTER);
+    	panel.add(startbutton, BorderLayout.NORTH);
+    	panel.add(stopbutton, BorderLayout.SOUTH);
+    	TestFrame frame = new TestFrame(panel);
+		server.start();
+	}
 }

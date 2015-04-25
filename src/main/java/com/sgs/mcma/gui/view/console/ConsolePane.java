@@ -56,7 +56,6 @@ public class ConsolePane extends JPanel{
 	
 	public Process CreateProcess(String command) {
         ProcessBuilder pb = new ProcessBuilder(command);
-        pb.
         try {
 			p = pb.start();
 		} catch (IOException e1) {
