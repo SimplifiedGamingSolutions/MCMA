@@ -8,6 +8,7 @@ import java.io.BufferedWriter;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
 
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextField;
@@ -27,6 +28,7 @@ public class ConsolePane extends JPanel{
     private SimpleAttributeSet consoleTextAttributeSet;
     private SimpleAttributeSet errorTextAttributeSet;
     private ControllableProcess p;
+    private ConsolePane instance = this;
     
     public ConsolePane(){
     	populateTextPane();
@@ -63,11 +65,11 @@ public class ConsolePane extends JPanel{
     		this.addActionListener(new ActionListener() {
     			
     			public void actionPerformed(ActionEvent e) {
-    				if(p != null && p.isAlive()){
-    		        	if(getText().equals("clear")){
-    		        		clearConsole();
-    		        	}
-    		        	else if(getText().equals("stop")){
+		        	if(getText().equals("clear")){
+		        		clearConsole();
+		        	}
+		        	else if(p != null && p.isAlive()){
+    		        	if(getText().equals("stop")){
     		        		stopServer();
     		        	}
     		        	else{
@@ -76,7 +78,7 @@ public class ConsolePane extends JPanel{
     		        	clearCommand();
     				}
     				else{
-    					consoleTextPane.setText("");
+    					clearConsole();
 						appendToJTextPane("No running server", getErrorTextStyle());
     		        	clearCommand();
     				}
@@ -119,6 +121,7 @@ public class ConsolePane extends JPanel{
 	public void stopServer(){
 		p.sendCommand("stop");
 		p.stop();
+		p=null;
 		appendToJTextPane("Server Stopped\n", getErrorTextStyle());
 	}
 }
