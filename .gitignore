@@ -1,2 +1,11 @@
 /target/
 /bin/
+Server/banned-ips.json
+Server/banned-players.json
+Server/ops.json
+Server/server.properties
+Server/usercache.json
+Server/whitelist.json
+Server/world/region/r.-1.0.mca
+Server/world/region/r.0.0.mca
+Server/world/session.lock
