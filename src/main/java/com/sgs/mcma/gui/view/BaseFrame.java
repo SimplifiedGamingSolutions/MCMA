@@ -17,8 +17,11 @@ import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JLabel;
+import javax.swing.JScrollPane;
 import javax.swing.JSplitPane;
 import javax.swing.JTabbedPane;
+import javax.swing.JTree;
+import javax.swing.tree.DefaultMutableTreeNode;
 
 import com.sgs.mcma.gui.view.console.ConsolePane;
 import com.sgs.mcma.gui.view.console.ControllableProcess;
@@ -48,15 +51,21 @@ public class BaseFrame extends JFrame {
 		getContentPane().setLayout(new BorderLayout());
 		getContentPane().add(createTabs(), BorderLayout.CENTER);
 	}
-	
+
+//
+//			TabbedPane Contents
+//
 	private JTabbedPane createTabs() {
 		JTabbedPane tabs = new JTabbedPane();
 		tabs.addTab("<html><body leftmargin=15 topmargin=8 marginwidth=50 marginheight=10>Summary</body></html>", createTab1());
+		tabs.addTab("<html><body leftmargin=15 topmargin=8 marginwidth=50 marginheight=10>Config</body></html>", createTab2());
 		tabs.addTab("<html><body leftmargin=15 topmargin=8 marginwidth=50 marginheight=10>Configuration</body></html>", new JPanel());
 		tabs.addTab("<html><body leftmargin=15 topmargin=8 marginwidth=50 marginheight=10>Logs</body></html>", new JPanel());
 		return tabs;
 	}
-
+//
+//			TAB1 Contents
+//
 	private JPanel createTab1() {
 		JPanel tab1 = new JPanel();
 		tab1.setLayout(new BorderLayout());
@@ -109,5 +118,35 @@ public class BaseFrame extends JFrame {
 			}
 		});
 		return stopButton;
+	}
+//
+//	TAB2 Contents
+//
+	private JTabbedPane createTab2() {
+		JTabbedPane config = new JTabbedPane();
+		config.setTabPlacement(JTabbedPane.LEFT);
+		JPanel tab1 = new JPanel();
+		tab1.setLayout(new BorderLayout());
+		JSplitPane splitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT);
+
+	    DefaultMutableTreeNode top = new DefaultMutableTreeNode("Server 1");
+	    createNodes(top);
+	    JTree tree = new JTree(top);
+	    JScrollPane treeView = new JScrollPane(tree);
+		splitPane.setLeftComponent(treeView);
+		splitPane.setRightComponent(new JPanel());
+		splitPane.setDividerLocation(.5);
+		
+		tab1.add(splitPane, BorderLayout.CENTER);
+
+		config.addTab("Server Config", tab1);
+		config.addTab("Mod Config", new JPanel());
+		return config;
+	}
+
+	private void createNodes(DefaultMutableTreeNode top) {
+	    DefaultMutableTreeNode one = new DefaultMutableTreeNode("Folder 1");
+	    one.add(new DefaultMutableTreeNode("file"));
+	    top.add(one);
 	}
 }
