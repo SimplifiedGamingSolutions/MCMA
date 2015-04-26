@@ -25,6 +25,10 @@ import javax.swing.JTabbedPane;
 import javax.swing.JTree;
 import javax.swing.tree.DefaultMutableTreeNode;
 
+import org.fife.ui.rsyntaxtextarea.RSyntaxTextArea;
+import org.fife.ui.rsyntaxtextarea.SyntaxConstants;
+import org.fife.ui.rtextarea.RTextScrollPane;
+
 import com.sgs.mcma.gui.view.console.ConsolePane;
 import com.sgs.mcma.gui.view.console.ControllableProcess;
 
@@ -133,7 +137,7 @@ public class BaseFrame extends JFrame {
 	    DirectoryTreeView dt = new DirectoryTreeView(new File("Server"));
 	    JScrollPane treeView = new JScrollPane(dt);
 		splitPane.setLeftComponent(treeView);
-		splitPane.setRightComponent(new JPanel());
+		splitPane.setRightComponent(CreateSyntaxTextArea());
 		splitPane.setSize(1024, 700); //size needed in order to set divider location
 		splitPane.setDividerLocation(.5);
 		
@@ -143,6 +147,18 @@ public class BaseFrame extends JFrame {
 		config.addTab("Mod Config", new JPanel());
 		return config;
 	}
+	private Component CreateSyntaxTextArea() {
+	      JPanel cp = new JPanel(new BorderLayout());
+	      RSyntaxTextArea textArea = new RSyntaxTextArea(20, 60);
+	      textArea.setSyntaxEditingStyle(SyntaxConstants.SYNTAX_STYLE_XML);
+	      textArea.setCodeFoldingEnabled(true);
+	      textArea.setAntiAliasingEnabled(true);
+	      RTextScrollPane sp = new RTextScrollPane(textArea);
+	      sp.setFoldIndicatorEnabled(true);
+	      cp.add(sp);
+	      return cp;
+}
+
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {	
 			public void run() {
