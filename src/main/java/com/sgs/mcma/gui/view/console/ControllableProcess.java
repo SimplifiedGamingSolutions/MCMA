@@ -5,6 +5,7 @@ import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.BufferedWriter;
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStreamWriter;
@@ -32,6 +33,7 @@ public class ControllableProcess {
 	public ControllableProcess(String jarPath, String jarName, ConsolePane console) {
 		this.console = console;
 		pb = new ProcessBuilder("java", "-jar", jarPath+jarName, "nogui");
+		pb.directory(new File(jarPath));
 	}
 	
 	public boolean start(){
