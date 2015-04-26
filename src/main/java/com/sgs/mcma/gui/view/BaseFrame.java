@@ -5,6 +5,7 @@ import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.File;
 import java.io.IOException;
 
 import javafx.scene.control.Alert;
@@ -128,13 +129,11 @@ public class BaseFrame extends JFrame {
 		JPanel tab1 = new JPanel();
 		tab1.setLayout(new BorderLayout());
 		JSplitPane splitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT);
-
-	    DefaultMutableTreeNode top = new DefaultMutableTreeNode("Server 1");
-	    createNodes(top);
-	    JTree tree = new JTree(top);
-	    JScrollPane treeView = new JScrollPane(tree);
+	    DirectoryTreeView dt = new DirectoryTreeView(new File("Server"));
+	    JScrollPane treeView = new JScrollPane(dt);
 		splitPane.setLeftComponent(treeView);
 		splitPane.setRightComponent(new JPanel());
+		splitPane.setSize(1024, 700); //size needed in order to set divider location
 		splitPane.setDividerLocation(.5);
 		
 		tab1.add(splitPane, BorderLayout.CENTER);
@@ -142,11 +141,5 @@ public class BaseFrame extends JFrame {
 		config.addTab("Server Config", tab1);
 		config.addTab("Mod Config", new JPanel());
 		return config;
-	}
-
-	private void createNodes(DefaultMutableTreeNode top) {
-	    DefaultMutableTreeNode one = new DefaultMutableTreeNode("Folder 1");
-	    one.add(new DefaultMutableTreeNode("file"));
-	    top.add(one);
 	}
 }

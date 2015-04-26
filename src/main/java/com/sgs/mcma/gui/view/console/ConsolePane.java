@@ -26,10 +26,7 @@ public class ConsolePane extends JPanel{
     private StyledDocument doc;
     private SimpleAttributeSet consoleTextAttributeSet;
     private SimpleAttributeSet errorTextAttributeSet;
-    private BufferedWriter output;
     private ControllableProcess p;
-    private Thread inputListener;
-    private Thread errorListener;
     
     public ConsolePane(){
     	populateTextPane();
@@ -115,7 +112,7 @@ public class ConsolePane extends JPanel{
 	
 	public void startServer(){
 		if(p==null){
-			p = new ControllableProcess("C:\\Users\\dtaylor\\Source\\Repos\\Java\\SimplifiedGamingSolutions\\MCMA\\","minecraft_server.1.8.4.jar", this);
+			p = new ControllableProcess("C:\\Users\\dtaylor\\Source\\Repos\\Java\\SimplifiedGamingSolutions\\MCMA\\Server\\","minecraft_server.1.8.4.jar", this);
 		}
 		p.start();
 	}
