@@ -3,6 +3,7 @@ package com.sgs.mcma.gui.view;
 import java.awt.BorderLayout;
 import java.awt.Component;
 import java.awt.Dimension;
+import java.awt.EventQueue;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
@@ -141,5 +142,13 @@ public class BaseFrame extends JFrame {
 		config.addTab("Server Config", tab1);
 		config.addTab("Mod Config", new JPanel());
 		return config;
+	}
+	public static void main(String[] args) {
+		EventQueue.invokeLater(new Runnable() {	
+			public void run() {
+				BaseFrame frame = new BaseFrame("Minecraft Mod Admin", 1024, 700);
+				frame.setVisible(true);
+			}
+		});
 	}
 }
