@@ -1,36 +1,37 @@
 package com.sgs.mcma.gui.view;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.EventQueue;
+import java.awt.Font;
+import java.awt.FontFormatException;
+import java.awt.Graphics;
+import java.awt.GraphicsEnvironment;
+import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
-
-import javafx.scene.control.Alert;
 
 import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
-import javax.swing.JDialog;
 import javax.swing.JFrame;
-import javax.swing.JOptionPane;
-import javax.swing.JPanel;
 import javax.swing.JLabel;
+import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JSplitPane;
 import javax.swing.JTabbedPane;
-import javax.swing.JTree;
-import javax.swing.tree.DefaultMutableTreeNode;
 
 import org.fife.ui.rsyntaxtextarea.RSyntaxTextArea;
 import org.fife.ui.rsyntaxtextarea.SyntaxConstants;
 import org.fife.ui.rtextarea.RTextScrollPane;
 
 import com.sgs.mcma.gui.view.console.ConsolePane;
-import com.sgs.mcma.gui.view.console.ControllableProcess;
 
 public class BaseFrame extends JFrame {
 	private static BaseFrame instance;
@@ -62,11 +63,11 @@ public class BaseFrame extends JFrame {
 //			TabbedPane Contents
 //
 	private JTabbedPane createTabs() {
-		JTabbedPane tabs = new JTabbedPane();
-		tabs.addTab("<html><body leftmargin=15 topmargin=8 marginwidth=50 marginheight=10>Summary</body></html>", createTab1());
-		tabs.addTab("<html><body leftmargin=15 topmargin=8 marginwidth=50 marginheight=10>Config</body></html>", createTab2());
-		tabs.addTab("<html><body leftmargin=15 topmargin=8 marginwidth=50 marginheight=10>Configuration</body></html>", new JPanel());
-		tabs.addTab("<html><body leftmargin=15 topmargin=8 marginwidth=50 marginheight=10>Logs</body></html>", new JPanel());
+		MinecraftTabbedPane tabs = new MinecraftTabbedPane();
+		tabs.addTab("Summary", createTab1());
+		tabs.addTab("Configuration", createTab2());
+		tabs.addTab("Logs", new JPanel());
+		
 		return tabs;
 	}
 //
@@ -167,4 +168,6 @@ public class BaseFrame extends JFrame {
 			}
 		});
 	}
+	
+
 }
