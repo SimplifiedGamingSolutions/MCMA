@@ -5,6 +5,7 @@ import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.BufferedWriter;
+import java.io.File;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
 
@@ -114,7 +115,9 @@ public class ConsolePane extends JPanel{
 	
 	public void startServer(){
 		if(p==null){
-			p = new ControllableProcess("C:\\Users\\dtaylor\\Source\\Repos\\Java\\SimplifiedGamingSolutions\\MCMA\\Server\\","minecraft_server.1.8.4.jar", this);
+			File file = new File("Server");
+			//JOptionPane.showMessageDialog(this, file.getAbsolutePath());
+			p = new ControllableProcess(file.getAbsolutePath()+"\\","minecraft_server.1.8.4.jar", this);
 		}
 		p.start();
 	}
