@@ -19,6 +19,7 @@ import java.io.IOException;
 
 import javax.swing.Box;
 import javax.swing.BoxLayout;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -49,6 +50,8 @@ public class BaseFrame extends JFrame {
 
 	private void Initialize(String title, int width, int height) {
 		this.setTitle(title);
+		ImageIcon img = new ImageIcon("Resources\\SGSLogo.png");
+		this.setIconImage(img.getImage());
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setSize(new Dimension(width,height));
 		populateContentPane();
