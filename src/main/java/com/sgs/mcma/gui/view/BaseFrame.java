@@ -12,11 +12,13 @@ import java.awt.GraphicsEnvironment;
 import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 
+import javax.imageio.ImageIO;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
@@ -104,7 +106,12 @@ public class BaseFrame extends JFrame {
 	}
 
 	private JButton createStartServerButton(){
-		JButton startButton = new JButton("START");
+		ImageIcon startBtn = new ImageIcon("Resources\\StartBtn.png");
+		JButton startButton = new JButton(startBtn);
+		//startButton.setBorderPainted(false);
+		startButton.setContentAreaFilled(false);
+		startButton.setFocusPainted(false);
+		startButton.setOpaque(false);
 		startButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				startServer();
@@ -117,7 +124,12 @@ public class BaseFrame extends JFrame {
 		return startButton;
 	}
 	private JButton createStopServerButton(){
-		JButton stopButton = new JButton("STOP");
+		ImageIcon stopBtn = new ImageIcon("Resources\\StopBtn.png");
+		JButton stopButton = new JButton(stopBtn);
+		//stopButton.setBorderPainted(false);
+		stopButton.setContentAreaFilled(false);
+		stopButton.setFocusPainted(false);
+		stopButton.setOpaque(false);
 		stopButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				stopServer();
