@@ -118,7 +118,7 @@ public class ConsolePane extends JPanel{
 		if(p==null){
 			File file = new File("Server");
 			//JOptionPane.showMessageDialog(this, file.getAbsolutePath());
-			p = new ControllableProcess(file.getAbsolutePath()+"\\","minecraft_server.1.8.4.jar", this);
+			p = new ControllableProcess(file.getAbsolutePath()+"\\","forge-1.8-11.14.1.1334-universal.jar", this);
 		}
 		p.start();
 	}

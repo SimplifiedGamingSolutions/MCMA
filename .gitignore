@@ -21,3 +21,5 @@ Server/world/data/villages_end.dat
 Server/world/data/villages_nether.dat
 Server/world/level.dat
 Server/world/level.dat_old
+Server/config/
+Server/world/

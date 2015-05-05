@@ -1,1 +1,1 @@
-java -jar minecraft_server.1.8.4.jar nogui
+java -jar forge-1.8-11.14.1.1334-universal.jar nogui
