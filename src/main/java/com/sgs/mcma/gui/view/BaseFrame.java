@@ -9,9 +9,12 @@ import java.awt.Font;
 import java.awt.FontFormatException;
 import java.awt.Graphics;
 import java.awt.GraphicsEnvironment;
+import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.FileInputStream;
@@ -21,14 +24,20 @@ import java.io.IOException;
 import javax.imageio.ImageIO;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
+import javax.swing.DefaultListModel;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JList;
+import javax.swing.JMenuItem;
 import javax.swing.JPanel;
+import javax.swing.JPopupMenu;
 import javax.swing.JScrollPane;
 import javax.swing.JSplitPane;
 import javax.swing.JTabbedPane;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
 
 import org.fife.ui.rsyntaxtextarea.RSyntaxTextArea;
 import org.fife.ui.rsyntaxtextarea.SyntaxConstants;
@@ -48,6 +57,7 @@ public class BaseFrame extends JFrame {
 		super();
 		instance = this;
 		Initialize(title, width, height);
+		this.pack();
 	}
 
 	private void Initialize(String title, int width, int height) {
@@ -82,8 +92,34 @@ public class BaseFrame extends JFrame {
 		JPanel tab1 = new JPanel();
 		tab1.setLayout(new BorderLayout());
 		console = new ConsolePane();
-		tab1.add(console, BorderLayout.CENTER);
-		tab1.add(createButtonPanel(), BorderLayout.SOUTH);
+		JPanel jp = new JPanel(new BorderLayout());
+		jp.setPreferredSize(new Dimension(200,0));
+		jp.add(new JLabel("Players Online"), BorderLayout.NORTH);
+		jp.setAlignmentX(CENTER_ALIGNMENT);
+		DefaultListModel<String> playerListModel = new DefaultListModel<String>();
+		JList<String> playerList = new JList<String>();
+		playerList.setModel(playerListModel);
+		playerList.setFont(new Font("Arial",Font.BOLD,14));
+		final JPopupMenu popup = new JPopupMenu();
+		popup.add(new JMenuItem("click me"));
+		playerList.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				// TODO Auto-generated method stub
+				super.mouseClicked(e);
+				if(e.getButton() == MouseEvent.BUTTON3){
+					popup.setLocation(e.getLocationOnScreen());
+					popup.setVisible(true);
+				}
+			}
+		});
+		playerListModel.addElement("longlostbro");
+		jp.add(new JScrollPane(playerList), BorderLayout.CENTER);
+		tab1.add(jp, BorderLayout.WEST);
+		JPanel panel = new JPanel(new BorderLayout());
+		panel.add(console, BorderLayout.CENTER);
+		panel.add(createButtonPanel(), BorderLayout.SOUTH);
+		tab1.add(panel, BorderLayout.CENTER);
 		return tab1;
 	}
 
@@ -154,7 +190,7 @@ public class BaseFrame extends JFrame {
 	    JScrollPane treeView = new JScrollPane(dt);
 		splitPane.setLeftComponent(treeView);
 		splitPane.setRightComponent(CreateSyntaxTextArea());
-		splitPane.setSize(1024, 700); //size needed in order to set divider location
+		splitPane.setPreferredSize(new Dimension(1024, 700)); //size needed in order to set divider location
 		splitPane.setDividerLocation(.5);
 		
 		tab1.add(splitPane, BorderLayout.CENTER);
