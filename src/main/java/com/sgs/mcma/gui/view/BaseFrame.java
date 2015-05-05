@@ -9,6 +9,7 @@ import java.awt.Font;
 import java.awt.FontFormatException;
 import java.awt.Graphics;
 import java.awt.GraphicsEnvironment;
+import java.awt.Insets;
 import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
@@ -146,6 +147,7 @@ public class BaseFrame extends JFrame {
 		JButton startButton = new JButton(startBtn);
 		//startButton.setBorderPainted(false);
 		startButton.setContentAreaFilled(false);
+		startButton.setMargin(new Insets(-2, -2, -2, -2));
 		startButton.setFocusPainted(false);
 		startButton.setOpaque(false);
 		startButton.addActionListener(new ActionListener() {
@@ -164,6 +166,7 @@ public class BaseFrame extends JFrame {
 		JButton stopButton = new JButton(stopBtn);
 		//stopButton.setBorderPainted(false);
 		stopButton.setContentAreaFilled(false);
+		stopButton.setMargin(new Insets(-2, -2, -2, -2));
 		stopButton.setFocusPainted(false);
 		stopButton.setOpaque(false);
 		stopButton.addActionListener(new ActionListener() {
