@@ -129,6 +129,15 @@ public class BaseFrame extends JFrame {
 		JPanel tab1 = new JPanel();
 		tab1.setLayout(new BorderLayout());
 		console = new ConsolePane();
+		tab1.add(createPlayerListPanel(), BorderLayout.WEST);
+		JPanel panel = new JPanel(new BorderLayout());
+		panel.add(console, BorderLayout.CENTER);
+		panel.add(createButtonPanel(), BorderLayout.SOUTH);
+		tab1.add(panel, BorderLayout.CENTER);
+		return tab1;
+	}
+
+	private Component createPlayerListPanel() {
 		JPanel jp = new JPanel(new BorderLayout());
 		jp.setPreferredSize(new Dimension(200,0));
 		jp.add(new JLabel("Players Online"), BorderLayout.NORTH);
@@ -137,8 +146,7 @@ public class BaseFrame extends JFrame {
 		JList<String> playerList = new JList<String>();
 		playerList.setModel(playerListModel);
 		playerList.setFont(new Font("Arial",Font.BOLD,14));
-		final JPopupMenu popup = new JPopupMenu();
-		popup.add(new JMenuItem("click me"));
+		final JPopupMenu popup = createPlayerMenu();
 		final ServerListPing17 test = new ServerListPing17();
 		test.setAddress(new InetSocketAddress("localhost", 25565));
 		playerList.addMouseListener(new MouseAdapter() {
@@ -172,12 +180,13 @@ public class BaseFrame extends JFrame {
 			}
 		});
 		jp.add(getPlayersButton, BorderLayout.SOUTH);
-		tab1.add(jp, BorderLayout.WEST);
-		JPanel panel = new JPanel(new BorderLayout());
-		panel.add(console, BorderLayout.CENTER);
-		panel.add(createButtonPanel(), BorderLayout.SOUTH);
-		tab1.add(panel, BorderLayout.CENTER);
-		return tab1;
+		return jp;
+	}
+
+	private JPopupMenu createPlayerMenu() {
+		JPopupMenu menu = new JPopupMenu();
+		menu.add(new JMenuItem("kill"));
+		return menu;
 	}
 
 	private JPanel createButtonPanel() {
