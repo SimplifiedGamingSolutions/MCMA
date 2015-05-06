@@ -1,24 +1,12 @@
 package com.sgs.mcma.gui.view.console;
 
-import java.awt.BorderLayout;
-import java.awt.Color;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStreamWriter;
 
-import javax.swing.JButton;
-import javax.swing.JPanel;
-import javax.swing.JTextPane;
-import javax.swing.text.BadLocationException;
 import javax.swing.text.SimpleAttributeSet;
-import javax.swing.text.StyleConstants;
-import javax.swing.text.StyledDocument;
-
-import com.sgs.mcma.gui.view.TestFrame;
 
 public class ControllableProcess {
 	private ProcessBuilder pb;
@@ -126,10 +114,6 @@ public class ControllableProcess {
 		}
 		public void pause(){
 			running = false;
-		}
-		public void resume(){
-			running = true;
-			run();
 		}
     }
 }

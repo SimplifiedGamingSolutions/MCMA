@@ -1,28 +1,17 @@
 package com.sgs.mcma.gui.view;
 
 import java.awt.BorderLayout;
-import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.EventQueue;
 import java.awt.Font;
-import java.awt.FontFormatException;
-import java.awt.Graphics;
-import java.awt.GraphicsEnvironment;
 import java.awt.Insets;
-import java.awt.Point;
-import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.awt.image.BufferedImage;
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
 
-import javax.imageio.ImageIO;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.DefaultListModel;
@@ -37,8 +26,7 @@ import javax.swing.JPopupMenu;
 import javax.swing.JScrollPane;
 import javax.swing.JSplitPane;
 import javax.swing.JTabbedPane;
-import javax.swing.event.ListSelectionEvent;
-import javax.swing.event.ListSelectionListener;
+import javax.swing.SwingConstants;
 
 import org.fife.ui.rsyntaxtextarea.RSyntaxTextArea;
 import org.fife.ui.rsyntaxtextarea.SyntaxConstants;
@@ -47,6 +35,10 @@ import org.fife.ui.rtextarea.RTextScrollPane;
 import com.sgs.mcma.gui.view.console.ConsolePane;
 
 public class BaseFrame extends JFrame {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 6514088607312911782L;
 	private static BaseFrame instance;
 	private static ConsolePane console;
 	public static BaseFrame Instance(){
@@ -185,7 +177,7 @@ public class BaseFrame extends JFrame {
 //
 	private JTabbedPane createTab2() {
 		JTabbedPane config = new JTabbedPane();
-		config.setTabPlacement(JTabbedPane.LEFT);
+		config.setTabPlacement(SwingConstants.LEFT);
 		JPanel tab1 = new JPanel();
 		tab1.setLayout(new BorderLayout());
 		JSplitPane splitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT);

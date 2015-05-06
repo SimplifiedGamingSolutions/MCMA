@@ -2,19 +2,15 @@ package com.sgs.mcma.gui.view.console;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
-import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.BufferedWriter;
 import java.io.File;
-import java.io.IOException;
-import java.io.OutputStreamWriter;
 
-import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 import javax.swing.JTextPane;
+import javax.swing.ScrollPaneConstants;
 import javax.swing.text.BadLocationException;
 import javax.swing.text.DefaultCaret;
 import javax.swing.text.SimpleAttributeSet;
@@ -25,13 +21,16 @@ import com.sgs.mcma.gui.view.TestFrame;
 
 public class ConsolePane extends JPanel{
 	
-    private JTextPane consoleTextPane;
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 4437042456429430463L;
+	private JTextPane consoleTextPane;
     private StyledDocument doc;
     private SimpleAttributeSet consoleTextAttributeSet;
     private SimpleAttributeSet errorTextAttributeSet;
     private ControllableProcess p;
-    private ConsolePane instance = this;
-    
+
     public ConsolePane(){
     	populateTextPane();
 		populateConsolePane();
@@ -52,7 +51,7 @@ public class ConsolePane extends JPanel{
 
 	private void populateConsolePane() {
 		setLayout (new BorderLayout ());
-		JScrollPane pane = new JScrollPane (consoleTextPane, JScrollPane.VERTICAL_SCROLLBAR_ALWAYS, JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+		JScrollPane pane = new JScrollPane (consoleTextPane, ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS, ScrollPaneConstants.HORIZONTAL_SCROLLBAR_AS_NEEDED);
         add(pane, BorderLayout.CENTER);
         ConsoleCommandTextField field = new ConsoleCommandTextField();
         add(field,BorderLayout.SOUTH);
@@ -62,7 +61,11 @@ public class ConsolePane extends JPanel{
 		consoleTextPane.setText("");
 	}
 	class ConsoleCommandTextField extends JTextField {
-    	public ConsoleCommandTextField(){
+    	/**
+		 * 
+		 */
+		private static final long serialVersionUID = 1578273190259755762L;
+		public ConsoleCommandTextField(){
     		super();
     		this.addActionListener(new ActionListener() {
     			

@@ -2,14 +2,11 @@ package com.sgs.mcma.gui.view;
 
 import java.awt.Container;
 import java.awt.Font;
-import java.awt.FontFormatException;
 import java.awt.GraphicsEnvironment;
 import java.awt.LayoutManager;
 import java.awt.Rectangle;
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
 
 import javax.swing.JComponent;
 import javax.swing.JTabbedPane;
@@ -17,6 +14,11 @@ import javax.swing.plaf.ComponentUI;
 import javax.swing.plaf.metal.MetalTabbedPaneUI;
 
 public class MinecraftTabbedPane extends JTabbedPane {
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 2973664900670229781L;
 
 	public MinecraftTabbedPane() {
 		Font font = null;

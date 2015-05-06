@@ -19,7 +19,12 @@ import javax.swing.tree.DefaultMutableTreeNode;
 
 public class DirectoryTreeView extends JPanel {
 
-  public DirectoryTreeView(File dir) {
+  /**
+	 * 
+	 */
+	private static final long serialVersionUID = 5039336408247285696L;
+
+public DirectoryTreeView(File dir) {
     setLayout(new BorderLayout());
 
     // Make a tree list with all the nodes, and make it a JTree
@@ -56,7 +61,7 @@ public class DirectoryTreeView extends JPanel {
     Vector<String> files = new Vector<String>();
     // Make two passes, one for Dirs and one for Files. This is #1.
     for (int i = 0; i < ol.size(); i++) {
-      String thisObject = (String) ol.elementAt(i);
+      String thisObject = ol.elementAt(i);
       String newPath;
       if (curPath.equals("."))
         newPath = thisObject;
@@ -73,11 +78,13 @@ public class DirectoryTreeView extends JPanel {
     return curDir;
   }
 
-  public Dimension getMinimumSize() {
+  @Override
+public Dimension getMinimumSize() {
     return new Dimension(200, 400);
   }
 
-  public Dimension getPreferredSize() {
+  @Override
+public Dimension getPreferredSize() {
     return new Dimension(200, 400);
   }
 
