@@ -1,0 +1,4 @@
+May 06, 2015 4:29:51 PM com.sgs.mcma.shared.communication.Server run
+INFO: Initializing HTTP Server on port:39640
+May 06, 2015 4:29:51 PM com.sgs.mcma.shared.communication.Server run
+INFO: Starting HTTP Server

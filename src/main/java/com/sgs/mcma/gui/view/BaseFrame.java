@@ -239,11 +239,11 @@ public class BaseFrame extends JFrame
 				console.stopServer();
 		}
 	}
-	
+
+	public DefaultListModel<String> playerListModel = new DefaultListModel<String>();
 	private class PlayerListPanel extends JPanel{
 		ServerPinger server = new ServerPinger("localhost", 25565);
 		JList<String> playerList = new JList<String>();
-		DefaultListModel<String> playerListModel = new DefaultListModel<String>();
 		final JPopupMenu popup = new PlayerCommandMenu();
 		
 		public PlayerListPanel() {
