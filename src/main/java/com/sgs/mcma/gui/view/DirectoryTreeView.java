@@ -17,12 +17,8 @@ import javax.swing.event.TreeSelectionEvent;
 import javax.swing.event.TreeSelectionListener;
 import javax.swing.tree.DefaultMutableTreeNode;
 
+@SuppressWarnings("serial")
 public class DirectoryTreeView extends JPanel {
-
-  /**
-	 * 
-	 */
-	private static final long serialVersionUID = 5039336408247285696L;
 
 public DirectoryTreeView(File dir) {
     setLayout(new BorderLayout());

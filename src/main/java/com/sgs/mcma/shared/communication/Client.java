@@ -1,6 +1,5 @@
 package com.sgs.mcma.shared.communication;
 
-import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.ObjectInput;

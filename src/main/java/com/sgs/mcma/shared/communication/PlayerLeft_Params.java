@@ -3,6 +3,10 @@ package com.sgs.mcma.shared.communication;
 import java.io.Serializable;
 
 public class PlayerLeft_Params implements Serializable{
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -2015144526765569124L;
 	private String name;
 	
 	public PlayerLeft_Params(String name) {

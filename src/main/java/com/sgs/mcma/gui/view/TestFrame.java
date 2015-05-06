@@ -5,11 +5,8 @@ import java.awt.Component;
 
 import javax.swing.JFrame;
 
+@SuppressWarnings("serial")
 public class TestFrame extends JFrame {
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 4756577077114089341L;
 
 	public TestFrame(Component component){
         JFrame frame = new JFrame ("cmd");

@@ -1,8 +1,5 @@
 package com.sgs.mcma.shared.communication;
 
-import java.io.File;
-import java.util.List;
-
 import com.sgs.mcma.gui.view.BaseFrame;
 
 public class ServerFacade {

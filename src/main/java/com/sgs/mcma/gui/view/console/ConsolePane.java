@@ -19,12 +19,9 @@ import javax.swing.text.StyledDocument;
 
 import com.sgs.mcma.gui.view.TestFrame;
 
+@SuppressWarnings("serial")
 public class ConsolePane extends JPanel{
 	
-    /**
-	 * 
-	 */
-	private static final long serialVersionUID = 4437042456429430463L;
 	private JTextPane consoleTextPane;
     private StyledDocument doc;
     private SimpleAttributeSet consoleTextAttributeSet;
@@ -61,12 +58,8 @@ public class ConsolePane extends JPanel{
 		consoleTextPane.setText("");
 	}
 	class ConsoleCommandTextField extends JTextField {
-    	/**
-		 * 
-		 */
-		private static final long serialVersionUID = 1578273190259755762L;
+		
 		public ConsoleCommandTextField(){
-    		super();
     		this.addActionListener(new ActionListener() {
     			
     			public void actionPerformed(ActionEvent e) {

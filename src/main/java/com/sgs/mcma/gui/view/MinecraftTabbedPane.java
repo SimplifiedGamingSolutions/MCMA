@@ -13,12 +13,8 @@ import javax.swing.JTabbedPane;
 import javax.swing.plaf.ComponentUI;
 import javax.swing.plaf.metal.MetalTabbedPaneUI;
 
+@SuppressWarnings("serial")
 public class MinecraftTabbedPane extends JTabbedPane {
-
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 2973664900670229781L;
 
 	public MinecraftTabbedPane() {
 		Font font = null;
@@ -37,21 +33,22 @@ public class MinecraftTabbedPane extends JTabbedPane {
 
 	public MinecraftTabbedPane(int tabPlacement) {
 		super(tabPlacement);
-		// TODO Auto-generated constructor stub
 	}
 
 	public MinecraftTabbedPane(int tabPlacement, int tabLayoutPolicy) {
 		super(tabPlacement, tabLayoutPolicy);
-		// TODO Auto-generated constructor stub
 	}
 
 	public static class StretchTabbedPaneUI extends MetalTabbedPaneUI {
+		
 		public StretchTabbedPaneUI() {
 		}
+		
 		@Override
 		protected int calculateTabHeight(int tabPlacement, int tabIndex, int fontHeight) {
 			return fontHeight + 10;
 		}
+		
 	    public static ComponentUI createUI(JComponent c) {
 	        return new StretchTabbedPaneUI();
 	    }

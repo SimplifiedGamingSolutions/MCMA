@@ -12,10 +12,7 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
-import java.awt.event.WindowListener;
 import java.io.File;
-import java.io.IOException;
-import java.net.InetSocketAddress;
 
 import javax.swing.Box;
 import javax.swing.BoxLayout;
@@ -25,7 +22,6 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JList;
-import javax.swing.JMenu;
 import javax.swing.JMenuItem;
 import javax.swing.JPanel;
 import javax.swing.JPopupMenu;
@@ -39,28 +35,21 @@ import org.fife.ui.rsyntaxtextarea.SyntaxConstants;
 import org.fife.ui.rtextarea.RTextScrollPane;
 
 import com.sgs.mcma.gui.view.console.ConsolePane;
-import com.sgs.mcma.shared.communication.ServerPinger;
-import com.sgs.mcma.shared.communication.ServerPinger.Player;
-import com.sgs.mcma.shared.communication.ServerPinger.Players;
-import com.sgs.mcma.shared.communication.ServerPinger.StatusResponse;
 
+@SuppressWarnings("serial")
 public class BaseFrame extends JFrame 
 {
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 6514088607312911782L;
+	
 	private static BaseFrame instance;
 	private static ConsolePane console;
+	
 	public static BaseFrame Instance()
 	{
 		return instance;
 	}
 
-	protected Process serverProcess;
 	public BaseFrame(String title, int width, int height)
 	{
-		super();
 		instance = this;
 		Initialize(title, width, height);
 		this.pack();
@@ -135,7 +124,6 @@ public class BaseFrame extends JFrame
 	{
 		ImageIcon startBtn = new ImageIcon("Resources\\StartBtn.png");
 		JButton startButton = new JButton(startBtn);
-		//startButton.setBorderPainted(false);
 		startButton.setContentAreaFilled(false);
 		startButton.setMargin(new Insets(-2, -2, -2, -2));
 		startButton.setFocusPainted(false);
@@ -158,7 +146,6 @@ public class BaseFrame extends JFrame
 	{
 		ImageIcon stopBtn = new ImageIcon("Resources\\StopBtn.png");
 		JButton stopButton = new JButton(stopBtn);
-		//stopButton.setBorderPainted(false);
 		stopButton.setContentAreaFilled(false);
 		stopButton.setMargin(new Insets(-2, -2, -2, -2));
 		stopButton.setFocusPainted(false);
@@ -211,7 +198,7 @@ public class BaseFrame extends JFrame
 	      sp.setFoldIndicatorEnabled(true);
 	      cp.add(sp);
 	      return cp;
-}
+	}
 
 	public static void main(String[] args) 
 	{
@@ -223,8 +210,9 @@ public class BaseFrame extends JFrame
 			}
 		});
 	}
-	
+	//
 	//Window Listener for BaseFrame
+	//
 	public class BaseFrameWindowListener extends WindowAdapter 
 	{			
 		public void windowClosing(WindowEvent e) 
@@ -241,8 +229,8 @@ public class BaseFrame extends JFrame
 	}
 
 	public DefaultListModel<String> playerListModel = new DefaultListModel<String>();
+	
 	private class PlayerListPanel extends JPanel{
-		ServerPinger server = new ServerPinger("localhost", 25565);
 		JList<String> playerList = new JList<String>();
 		final JPopupMenu popup = new PlayerCommandMenu();
 		
@@ -258,10 +246,6 @@ public class BaseFrame extends JFrame
 			playerList.setFont(new Font("Arial",Font.BOLD,14));
 			playerList.addMouseListener(new PlayerListMouseListener());
 			add(new JScrollPane(playerList), BorderLayout.CENTER);
-			
-			JButton getPlayersButton = new JButton("Get Players");
-			getPlayersButton.addActionListener(new GetPlayersActionListener());
-			add(getPlayersButton, BorderLayout.SOUTH);
 		}
 
 		private class PlayerListMouseListener extends MouseAdapter
@@ -269,7 +253,6 @@ public class BaseFrame extends JFrame
 			@Override
 			public void mouseClicked(MouseEvent e) 
 			{
-				// TODO Auto-generated method stub
 				super.mouseClicked(e);
 				if(e.getButton() == MouseEvent.BUTTON3)
 				{
@@ -287,18 +270,6 @@ public class BaseFrame extends JFrame
 				else{
 					popup.setVisible(false);
 					playerList.clearSelection();
-				}
-			}
-		}
-		
-		private class GetPlayersActionListener implements ActionListener{
-			public void actionPerformed(ActionEvent e) 
-			{
-				playerListModel.clear();
-				if(server.getPlayers() != null){
-					for(Player player : server.getPlayers()){
-						playerListModel.addElement(player.getName());
-					}
 				}
 			}
 		}

@@ -11,7 +11,6 @@ import java.net.HttpURLConnection;
 import java.rmi.ServerException;
 import java.util.logging.Logger;
 
-import com.sgs.mcma.shared.communication.PlayerJoined_Params;
 import com.sgs.mcma.shared.communication.PlayerLeft_Params;
 import com.sgs.mcma.shared.communication.Server;
 import com.sgs.mcma.shared.communication.ServerFacade;
