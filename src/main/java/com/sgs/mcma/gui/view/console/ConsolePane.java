@@ -131,5 +131,14 @@ public class ConsolePane extends JPanel{
 		p=null;
 		appendToJTextPane("Server Stopped\n", getErrorTextStyle());
 	}
+	public void sendCommand(String command){
+		p.sendCommand(command);
+	}
+	public boolean isRunning(){
+		if(p != null)
+			return p.isAlive();
+		else
+			return false;
+	}
 }
 

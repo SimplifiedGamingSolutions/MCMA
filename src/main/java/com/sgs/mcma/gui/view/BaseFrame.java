@@ -10,6 +10,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 import java.io.File;
@@ -24,6 +25,7 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JList;
+import javax.swing.JMenu;
 import javax.swing.JMenuItem;
 import javax.swing.JPanel;
 import javax.swing.JPopupMenu;
@@ -37,76 +39,46 @@ import org.fife.ui.rsyntaxtextarea.SyntaxConstants;
 import org.fife.ui.rtextarea.RTextScrollPane;
 
 import com.sgs.mcma.gui.view.console.ConsolePane;
-import com.sgs.mcma.shared.communication.ServerListPing17;
-import com.sgs.mcma.shared.communication.ServerListPing17.Player;
-import com.sgs.mcma.shared.communication.ServerListPing17.Players;
-import com.sgs.mcma.shared.communication.ServerListPing17.StatusResponse;
+import com.sgs.mcma.shared.communication.ServerPinger;
+import com.sgs.mcma.shared.communication.ServerPinger.Player;
+import com.sgs.mcma.shared.communication.ServerPinger.Players;
+import com.sgs.mcma.shared.communication.ServerPinger.StatusResponse;
 
-public class BaseFrame extends JFrame {
+public class BaseFrame extends JFrame 
+{
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 6514088607312911782L;
 	private static BaseFrame instance;
 	private static ConsolePane console;
-	public static BaseFrame Instance(){
+	public static BaseFrame Instance()
+	{
 		return instance;
 	}
 
 	protected Process serverProcess;
-	public BaseFrame(String title, int width, int height){
+	public BaseFrame(String title, int width, int height)
+	{
 		super();
 		instance = this;
 		Initialize(title, width, height);
 		this.pack();
 	}
 
-	private void Initialize(String title, int width, int height) {
+	private void Initialize(String title, int width, int height) 
+	{
 		this.setTitle(title);
 		ImageIcon img = new ImageIcon("Resources\\SGSLogo.png");
 		this.setIconImage(img.getImage());
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		addWindowListener(new WindowListener() {
-			
-			public void windowOpened(WindowEvent e) {
-				// TODO Auto-generated method stub
-				
-			}
-			
-			public void windowIconified(WindowEvent e) {
-				// TODO Auto-generated method stub
-				
-			}
-			
-			public void windowDeiconified(WindowEvent e) {
-				// TODO Auto-generated method stub
-				
-			}
-			
-			public void windowDeactivated(WindowEvent e) {
-				// TODO Auto-generated method stub
-				
-			}
-			
-			public void windowClosing(WindowEvent e) {
-				console.stopServer();
-			}
-			
-			public void windowClosed(WindowEvent e) {
-				console.stopServer();
-				
-			}
-			
-			public void windowActivated(WindowEvent e) {
-				// TODO Auto-generated method stub
-				
-			}
-		});
+		addWindowListener(new BaseFrameWindowListener());
 		setSize(new Dimension(width,height));
 		populateContentPane();
 	}
 
-	private void populateContentPane() {
+	private void populateContentPane() 
+	{
 		getContentPane().setLayout(new BorderLayout());
 		getContentPane().add(createTabs(), BorderLayout.CENTER);
 	}
@@ -114,7 +86,8 @@ public class BaseFrame extends JFrame {
 //
 //			TabbedPane Contents
 //
-	private JTabbedPane createTabs() {
+	private JTabbedPane createTabs() 
+	{
 		MinecraftTabbedPane tabs = new MinecraftTabbedPane();
 		tabs.addTab("Summary", createTab1());
 		tabs.addTab("Configuration", createTab2());
@@ -125,11 +98,12 @@ public class BaseFrame extends JFrame {
 //
 //			TAB1 Contents
 //
-	private JPanel createTab1() {
+	private JPanel createTab1() 
+	{
 		JPanel tab1 = new JPanel();
 		tab1.setLayout(new BorderLayout());
 		console = new ConsolePane();
-		tab1.add(createPlayerListPanel(), BorderLayout.WEST);
+		tab1.add(new PlayerListPanel(), BorderLayout.WEST);
 		JPanel panel = new JPanel(new BorderLayout());
 		panel.add(console, BorderLayout.CENTER);
 		panel.add(createButtonPanel(), BorderLayout.SOUTH);
@@ -137,59 +111,8 @@ public class BaseFrame extends JFrame {
 		return tab1;
 	}
 
-	private Component createPlayerListPanel() {
-		JPanel jp = new JPanel(new BorderLayout());
-		jp.setPreferredSize(new Dimension(200,0));
-		jp.add(new JLabel("Players Online"), BorderLayout.NORTH);
-		jp.setAlignmentX(CENTER_ALIGNMENT);
-		final DefaultListModel<String> playerListModel = new DefaultListModel<String>();
-		JList<String> playerList = new JList<String>();
-		playerList.setModel(playerListModel);
-		playerList.setFont(new Font("Arial",Font.BOLD,14));
-		final JPopupMenu popup = createPlayerMenu();
-		final ServerListPing17 test = new ServerListPing17();
-		test.setAddress(new InetSocketAddress("localhost", 25565));
-		playerList.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseClicked(MouseEvent e) {
-				// TODO Auto-generated method stub
-				super.mouseClicked(e);
-				if(e.getButton() == MouseEvent.BUTTON3){
-					popup.setLocation(e.getLocationOnScreen());
-					popup.setVisible(true);
-				}
-			}
-		});
-		jp.add(new JScrollPane(playerList), BorderLayout.CENTER);
-		JButton getPlayersButton = new JButton("Get Players");
-		getPlayersButton.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				StatusResponse response;
-				try {
-					response = test.fetchData();
-					Players players = response.getPlayers();
-					playerListModel.clear();
-					for(Player player : players.getSample()){
-						playerListModel.addElement(player.getName());
-					}
-
-				} catch (IOException e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
-				}
-			}
-		});
-		jp.add(getPlayersButton, BorderLayout.SOUTH);
-		return jp;
-	}
-
-	private JPopupMenu createPlayerMenu() {
-		JPopupMenu menu = new JPopupMenu();
-		menu.add(new JMenuItem("kill"));
-		return menu;
-	}
-
-	private JPanel createButtonPanel() {
+	private JPanel createButtonPanel() 
+	{
 		JPanel buttonPanel = new JPanel();
 		buttonPanel.setLayout(new BoxLayout(buttonPanel, BoxLayout.PAGE_AXIS));
 		buttonPanel.add(Box.createVerticalGlue());
@@ -197,7 +120,8 @@ public class BaseFrame extends JFrame {
 		return buttonPanel;
 	}
 
-	private Box createButtonBox() {
+	private Box createButtonBox() 
+	{
 		Box buttonBox = Box.createHorizontalBox();
 		buttonBox.add(Box.createHorizontalGlue());
 		buttonBox.add(createStartServerButton());
@@ -207,7 +131,8 @@ public class BaseFrame extends JFrame {
 		return buttonBox;
 	}
 
-	private JButton createStartServerButton(){
+	private JButton createStartServerButton()
+	{
 		ImageIcon startBtn = new ImageIcon("Resources\\StartBtn.png");
 		JButton startButton = new JButton(startBtn);
 		//startButton.setBorderPainted(false);
@@ -215,18 +140,22 @@ public class BaseFrame extends JFrame {
 		startButton.setMargin(new Insets(-2, -2, -2, -2));
 		startButton.setFocusPainted(false);
 		startButton.setOpaque(false);
-		startButton.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
+		startButton.addActionListener(new ActionListener() 
+		{
+			public void actionPerformed(ActionEvent e) 
+			{
 				startServer();
 			}
 
-			private void startServer() {
+			private void startServer() 
+			{
 				console.startServer();
 			}
 		});
 		return startButton;
 	}
-	private JButton createStopServerButton(){
+	private JButton createStopServerButton()
+	{
 		ImageIcon stopBtn = new ImageIcon("Resources\\StopBtn.png");
 		JButton stopButton = new JButton(stopBtn);
 		//stopButton.setBorderPainted(false);
@@ -234,12 +163,15 @@ public class BaseFrame extends JFrame {
 		stopButton.setMargin(new Insets(-2, -2, -2, -2));
 		stopButton.setFocusPainted(false);
 		stopButton.setOpaque(false);
-		stopButton.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
+		stopButton.addActionListener(new ActionListener() 
+		{
+			public void actionPerformed(ActionEvent e) 
+			{
 				stopServer();
 			}
 
-			private void stopServer() {
+			private void stopServer() 
+			{
 				console.stopServer();
 			}
 		});
@@ -248,7 +180,8 @@ public class BaseFrame extends JFrame {
 //
 //	TAB2 Contents
 //
-	private JTabbedPane createTab2() {
+	private JTabbedPane createTab2() 
+	{
 		JTabbedPane config = new JTabbedPane();
 		config.setTabPlacement(SwingConstants.LEFT);
 		JPanel tab1 = new JPanel();
@@ -267,7 +200,8 @@ public class BaseFrame extends JFrame {
 		config.addTab("Mod Config", new JPanel());
 		return config;
 	}
-	private Component CreateSyntaxTextArea() {
+	private Component CreateSyntaxTextArea() 
+	{
 	      JPanel cp = new JPanel(new BorderLayout());
 	      RSyntaxTextArea textArea = new RSyntaxTextArea(20, 60);
 	      textArea.setSyntaxEditingStyle(SyntaxConstants.SYNTAX_STYLE_XML);
@@ -279,8 +213,10 @@ public class BaseFrame extends JFrame {
 	      return cp;
 }
 
-	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {	
+	public static void main(String[] args) 
+	{
+		EventQueue.invokeLater(new Runnable() 
+		{	
 			public void run() {
 				BaseFrame frame = new BaseFrame("Minecraft Mod Admin", 1024, 700);
 				frame.setVisible(true);
@@ -288,5 +224,108 @@ public class BaseFrame extends JFrame {
 		});
 	}
 	
+	//Window Listener for BaseFrame
+	public class BaseFrameWindowListener extends WindowAdapter 
+	{			
+		public void windowClosing(WindowEvent e) 
+		{
+			if(console.isRunning())
+				console.stopServer();
+		}
+		
+		public void windowClosed(WindowEvent e) 
+		{
+			if(console.isRunning())
+				console.stopServer();
+		}
+	}
+	
+	private class PlayerListPanel extends JPanel{
+		ServerPinger server = new ServerPinger("localhost", 25565);
+		JList<String> playerList = new JList<String>();
+		DefaultListModel<String> playerListModel = new DefaultListModel<String>();
+		final JPopupMenu popup = new PlayerCommandMenu();
+		
+		public PlayerListPanel() {
+			setLayout(new BorderLayout());
+			setPreferredSize(new Dimension(200,0));
+			
+			JLabel label = new JLabel("Players Online");
+			label.setAlignmentX(CENTER_ALIGNMENT);
+			add(label, BorderLayout.NORTH);
+			
+			playerList.setModel(playerListModel);
+			playerList.setFont(new Font("Arial",Font.BOLD,14));
+			playerList.addMouseListener(new PlayerListMouseListener());
+			add(new JScrollPane(playerList), BorderLayout.CENTER);
+			
+			JButton getPlayersButton = new JButton("Get Players");
+			getPlayersButton.addActionListener(new GetPlayersActionListener());
+			add(getPlayersButton, BorderLayout.SOUTH);
+		}
 
+		private class PlayerListMouseListener extends MouseAdapter
+		{
+			@Override
+			public void mouseClicked(MouseEvent e) 
+			{
+				// TODO Auto-generated method stub
+				super.mouseClicked(e);
+				if(e.getButton() == MouseEvent.BUTTON3)
+				{
+					int playerIndex = playerList.locationToIndex(e.getPoint());
+					if(playerIndex != -1 && playerList.getCellBounds(playerIndex, playerIndex).contains(e.getPoint())){
+						playerList.setSelectedIndex(playerIndex);
+						popup.setLocation(e.getLocationOnScreen());
+						popup.setVisible(true);
+					}
+					else{
+						popup.setVisible(false);
+						playerList.clearSelection();
+					}
+				}
+				else{
+					popup.setVisible(false);
+					playerList.clearSelection();
+				}
+			}
+		}
+		
+		private class GetPlayersActionListener implements ActionListener{
+			public void actionPerformed(ActionEvent e) 
+			{
+				playerListModel.clear();
+				if(server.getPlayers() != null){
+					for(Player player : server.getPlayers()){
+						playerListModel.addElement(player.getName());
+					}
+				}
+			}
+		}
+		
+		private class PlayerCommandMenu extends JPopupMenu{
+			PlayerCommandMenu menu = this;
+			public PlayerCommandMenu()
+			{
+				addCommand("kill", "kill player");
+			}
+			public void addCommand(String title, String command){
+				JMenuItem temp = new JMenuItem(title);
+				temp.addActionListener(new commandActionListener(command));
+				this.add(temp);
+			}
+			
+			private class commandActionListener implements ActionListener{
+				private String command;
+				public commandActionListener(String command) {
+					this.command = command;
+				}
+				public void actionPerformed(ActionEvent e) {
+					String player = playerListModel.getElementAt(playerList.locationToIndex(menu.getLocation()));
+					console.sendCommand(command.replace("player", player));
+					menu.setVisible(false);
+				}
+			}
+		}
+	}
 }
