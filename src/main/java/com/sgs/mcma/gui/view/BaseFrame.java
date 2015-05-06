@@ -10,7 +10,11 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.awt.event.WindowEvent;
+import java.awt.event.WindowListener;
 import java.io.File;
+import java.io.IOException;
+import java.net.InetSocketAddress;
 
 import javax.swing.Box;
 import javax.swing.BoxLayout;
@@ -33,6 +37,10 @@ import org.fife.ui.rsyntaxtextarea.SyntaxConstants;
 import org.fife.ui.rtextarea.RTextScrollPane;
 
 import com.sgs.mcma.gui.view.console.ConsolePane;
+import com.sgs.mcma.shared.communication.ServerListPing17;
+import com.sgs.mcma.shared.communication.ServerListPing17.Player;
+import com.sgs.mcma.shared.communication.ServerListPing17.Players;
+import com.sgs.mcma.shared.communication.ServerListPing17.StatusResponse;
 
 public class BaseFrame extends JFrame {
 	/**
@@ -58,6 +66,42 @@ public class BaseFrame extends JFrame {
 		ImageIcon img = new ImageIcon("Resources\\SGSLogo.png");
 		this.setIconImage(img.getImage());
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		addWindowListener(new WindowListener() {
+			
+			public void windowOpened(WindowEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+			public void windowIconified(WindowEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+			public void windowDeiconified(WindowEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+			public void windowDeactivated(WindowEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+			public void windowClosing(WindowEvent e) {
+				console.stopServer();
+			}
+			
+			public void windowClosed(WindowEvent e) {
+				console.stopServer();
+				
+			}
+			
+			public void windowActivated(WindowEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+		});
 		setSize(new Dimension(width,height));
 		populateContentPane();
 	}
@@ -89,12 +133,14 @@ public class BaseFrame extends JFrame {
 		jp.setPreferredSize(new Dimension(200,0));
 		jp.add(new JLabel("Players Online"), BorderLayout.NORTH);
 		jp.setAlignmentX(CENTER_ALIGNMENT);
-		DefaultListModel<String> playerListModel = new DefaultListModel<String>();
+		final DefaultListModel<String> playerListModel = new DefaultListModel<String>();
 		JList<String> playerList = new JList<String>();
 		playerList.setModel(playerListModel);
 		playerList.setFont(new Font("Arial",Font.BOLD,14));
 		final JPopupMenu popup = new JPopupMenu();
 		popup.add(new JMenuItem("click me"));
+		final ServerListPing17 test = new ServerListPing17();
+		test.setAddress(new InetSocketAddress("localhost", 25565));
 		playerList.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
@@ -106,8 +152,26 @@ public class BaseFrame extends JFrame {
 				}
 			}
 		});
-		playerListModel.addElement("longlostbro");
 		jp.add(new JScrollPane(playerList), BorderLayout.CENTER);
+		JButton getPlayersButton = new JButton("Get Players");
+		getPlayersButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				StatusResponse response;
+				try {
+					response = test.fetchData();
+					Players players = response.getPlayers();
+					playerListModel.clear();
+					for(Player player : players.getSample()){
+						playerListModel.addElement(player.getName());
+					}
+
+				} catch (IOException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+			}
+		});
+		jp.add(getPlayersButton, BorderLayout.SOUTH);
 		tab1.add(jp, BorderLayout.WEST);
 		JPanel panel = new JPanel(new BorderLayout());
 		panel.add(console, BorderLayout.CENTER);

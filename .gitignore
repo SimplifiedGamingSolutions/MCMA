@@ -23,3 +23,6 @@ Server/world/level.dat
 Server/world/level.dat_old
 Server/config/
 Server/world/
+Server/logs/2015-05-05-1.log.gz
+Server/logs/2015-05-05-2.log.gz
+Server/usernamecache.json
