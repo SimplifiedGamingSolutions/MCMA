@@ -35,6 +35,7 @@ import org.fife.ui.rsyntaxtextarea.SyntaxConstants;
 import org.fife.ui.rtextarea.RTextScrollPane;
 
 import com.sgs.mcma.gui.view.console.ConsolePane;
+import com.sgs.mcma.webservice.Server;
 
 @SuppressWarnings("serial")
 public class BaseFrame extends JFrame 
@@ -200,15 +201,19 @@ public class BaseFrame extends JFrame
 	      return cp;
 	}
 
-	public static void main(String[] args) 
-	{
-		EventQueue.invokeLater(new Runnable() 
-		{	
+	public static void main(String[] args) {
+		EventQueue.invokeLater(new Runnable() {	
 			public void run() {
 				BaseFrame frame = new BaseFrame("Minecraft Mod Admin", 1024, 700);
 				frame.setVisible(true);
 			}
 		});
+		Thread server = new Thread(new Runnable(){
+			public void run() {
+				new Server("localhost", 39640).run();
+			}
+		});
+		server.start();
 	}
 	//
 	//Window Listener for BaseFrame

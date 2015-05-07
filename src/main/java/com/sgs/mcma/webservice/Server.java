@@ -1,4 +1,4 @@
-package com.sgs.mcma.shared.communication;
+package com.sgs.mcma.webservice;
 
 import java.io.IOException;
 import java.net.InetSocketAddress;
@@ -9,8 +9,8 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.logging.SimpleFormatter;
 
-import com.sgs.mcma.shared.communication.handler.PlayerJoinedHandler;
-import com.sgs.mcma.shared.communication.handler.PlayerLeftHandler;
+import com.sgs.mcma.webservice.handler.PlayerJoinedHandler;
+import com.sgs.mcma.webservice.handler.PlayerLeftHandler;
 import com.sun.net.httpserver.HttpHandler;
 import com.sun.net.httpserver.HttpServer;
 

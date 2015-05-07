@@ -1,5 +1,7 @@
-package com.sgs.mcma.shared.communication;
+package com.sgs.mcma.webservice;
 
+import com.sgs.mcma.client.PlayerJoined_Params;
+import com.sgs.mcma.client.PlayerLeft_Params;
 import com.sgs.mcma.gui.view.BaseFrame;
 
 public class ServerFacade {

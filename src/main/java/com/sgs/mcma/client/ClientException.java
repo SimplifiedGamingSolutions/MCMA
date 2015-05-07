@@ -1,4 +1,4 @@
-package com.sgs.mcma.shared.communication;
+package com.sgs.mcma.client;
 
 @SuppressWarnings("serial")
 public class ClientException extends Exception {

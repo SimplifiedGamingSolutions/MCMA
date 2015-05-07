@@ -1,4 +1,4 @@
-package com.sgs.mcma.shared.communication.handler;
+package com.sgs.mcma.webservice.handler;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -11,9 +11,9 @@ import java.net.HttpURLConnection;
 import java.rmi.ServerException;
 import java.util.logging.Logger;
 
-import com.sgs.mcma.shared.communication.PlayerJoined_Params;
-import com.sgs.mcma.shared.communication.Server;
-import com.sgs.mcma.shared.communication.ServerFacade;
+import com.sgs.mcma.client.PlayerJoined_Params;
+import com.sgs.mcma.webservice.Server;
+import com.sgs.mcma.webservice.ServerFacade;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
 
