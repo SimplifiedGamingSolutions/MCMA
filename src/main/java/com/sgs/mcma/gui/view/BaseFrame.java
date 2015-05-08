@@ -284,6 +284,8 @@ public class BaseFrame extends JFrame
 			public PlayerCommandMenu()
 			{
 				addCommand("kill", "kill player");
+				addCommand("ban", "ban player");
+				addCommand("ban-ip", "ban-ip player");
 			}
 			public void addCommand(String title, String command){
 				JMenuItem temp = new JMenuItem(title);
