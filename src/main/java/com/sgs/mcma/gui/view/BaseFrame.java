@@ -161,6 +161,7 @@ public class BaseFrame extends JFrame
 			private void stopServer() 
 			{
 				console.stopServer();
+				playerList.removeAll();
 			}
 		});
 		return stopButton;
@@ -235,8 +236,8 @@ public class BaseFrame extends JFrame
 
 	public DefaultListModel<String> playerListModel = new DefaultListModel<String>();
 	
+	public JList<String> playerList = new JList<String>();
 	private class PlayerListPanel extends JPanel{
-		JList<String> playerList = new JList<String>();
 		final JPopupMenu popup = new PlayerCommandMenu();
 		
 		public PlayerListPanel() {
