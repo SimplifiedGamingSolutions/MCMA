@@ -300,7 +300,7 @@ public class BaseFrame extends JFrame
 					this.command = command;
 				}
 				public void actionPerformed(ActionEvent e) {
-					String player = playerListModel.getElementAt(playerList.locationToIndex(menu.getLocation()));
+					String player = playerList.getSelectedValue();
 					console.sendCommand(command.replace("player", player));
 					menu.setVisible(false);
 				}
