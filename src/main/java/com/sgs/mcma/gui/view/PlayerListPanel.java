@@ -7,7 +7,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-
 import javax.swing.DefaultListModel;
 import javax.swing.JLabel;
 import javax.swing.JList;
@@ -68,15 +67,11 @@ public class PlayerListPanel extends JPanel{
 	private class PlayerCommandMenu extends JPopupMenu{
 		PlayerCommandMenu menu = this;
 		
-		
-		
-		
 		public PlayerCommandMenu()
 		{
 			addCommand("kill", "kill player");
 			addCommand("ban", "ban player");
 			addCommand("ban-ip", "ban-ip player");
-			addCommand("achievement", "");
 		}
 		public void addCommand(String title, String command){
 			JMenuItem temp = new JMenuItem(title);

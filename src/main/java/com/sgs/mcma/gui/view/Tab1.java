@@ -23,7 +23,6 @@ public class Tab1 extends JPanel {
 	public Tab1(ConsolePane c){
 		console = c;
 		instance = this;
-		//createTab1();
 		
 	}
 	public static Tab1 Instance(){
