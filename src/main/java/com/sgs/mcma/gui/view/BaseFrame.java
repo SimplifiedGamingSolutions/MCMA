@@ -22,6 +22,7 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JList;
+import javax.swing.JMenu;
 import javax.swing.JMenuItem;
 import javax.swing.JPanel;
 import javax.swing.JPopupMenu;
@@ -43,6 +44,7 @@ public class BaseFrame extends JFrame
 	
 	private static BaseFrame instance;
 	private static ConsolePane console;
+	public static DefaultListModel<String> playerListModel = new DefaultListModel<String>();
 	
 	public static BaseFrame Instance()
 	{
@@ -54,6 +56,7 @@ public class BaseFrame extends JFrame
 		instance = this;
 		Initialize(title, width, height);
 		this.pack();
+		
 	}
 
 	private void Initialize(String title, int width, int height) 
@@ -93,7 +96,7 @@ public class BaseFrame extends JFrame
 		JPanel tab1 = new JPanel();
 		tab1.setLayout(new BorderLayout());
 		console = new ConsolePane();
-		tab1.add(new PlayerListPanel(), BorderLayout.WEST);
+		tab1.add(new PlayerListPanel(console,playerListModel), BorderLayout.WEST);
 		JPanel panel = new JPanel(new BorderLayout());
 		panel.add(console, BorderLayout.CENTER);
 		panel.add(createButtonPanel(), BorderLayout.SOUTH);
@@ -234,77 +237,7 @@ public class BaseFrame extends JFrame
 		}
 	}
 
-	public DefaultListModel<String> playerListModel = new DefaultListModel<String>();
 	
-	private class PlayerListPanel extends JPanel{
-		private JList<String> playerList = new JList<String>();
-		final JPopupMenu popup = new PlayerCommandMenu();
-		
-		public PlayerListPanel() {
-			setLayout(new BorderLayout());
-			setPreferredSize(new Dimension(200,0));
-			
-			JLabel label = new JLabel("Players Online");
-			label.setAlignmentX(CENTER_ALIGNMENT);
-			add(label, BorderLayout.NORTH);
-			
-			playerList.setModel(playerListModel);
-			playerList.setFont(new Font("Arial",Font.BOLD,14));
-			playerList.addMouseListener(new PlayerListMouseListener());
-			add(new JScrollPane(playerList), BorderLayout.CENTER);
-		}
+	
 
-		private class PlayerListMouseListener extends MouseAdapter
-		{
-			@Override
-			public void mouseClicked(MouseEvent e) 
-			{
-				super.mouseClicked(e);
-				if(e.getButton() == MouseEvent.BUTTON3)
-				{
-					int playerIndex = playerList.locationToIndex(e.getPoint());
-					if(playerIndex != -1 && playerList.getCellBounds(playerIndex, playerIndex).contains(e.getPoint())){
-						playerList.setSelectedIndex(playerIndex);
-						popup.setLocation(e.getLocationOnScreen());
-						popup.setVisible(true);
-					}
-					else{
-						popup.setVisible(false);
-						playerList.clearSelection();
-					}
-				}
-				else{
-					popup.setVisible(false);
-					playerList.clearSelection();
-				}
-			}
-		}
-		
-		private class PlayerCommandMenu extends JPopupMenu{
-			PlayerCommandMenu menu = this;
-			public PlayerCommandMenu()
-			{
-				addCommand("kill", "kill player");
-				addCommand("ban", "ban player");
-				addCommand("ban-ip", "ban-ip player");
-			}
-			public void addCommand(String title, String command){
-				JMenuItem temp = new JMenuItem(title);
-				temp.addActionListener(new commandActionListener(command));
-				this.add(temp);
-			}
-			
-			private class commandActionListener implements ActionListener{
-				private String command;
-				public commandActionListener(String command) {
-					this.command = command;
-				}
-				public void actionPerformed(ActionEvent e) {
-					String player = playerList.getSelectedValue();
-					console.sendCommand(command.replace("player", player));
-					menu.setVisible(false);
-				}
-			}
-		}
-	}
 }
