@@ -14,6 +14,7 @@ import javax.swing.JPanel;
 
 import com.sgs.mcma.gui.view.console.ConsolePane;
 
+@SuppressWarnings("serial")
 public class Tab1 extends JPanel {
 	
 	ConsolePane console;

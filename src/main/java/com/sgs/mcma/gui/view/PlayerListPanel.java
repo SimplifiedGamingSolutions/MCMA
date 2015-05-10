@@ -7,6 +7,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+
 import javax.swing.DefaultListModel;
 import javax.swing.JLabel;
 import javax.swing.JList;
@@ -17,6 +18,7 @@ import javax.swing.JScrollPane;
 
 import com.sgs.mcma.gui.view.console.ConsolePane;
 
+@SuppressWarnings("serial")
 public class PlayerListPanel extends JPanel{
 	private JList<String> playerList = new JList<String>();
 	final JPopupMenu popup = new PlayerCommandMenu();

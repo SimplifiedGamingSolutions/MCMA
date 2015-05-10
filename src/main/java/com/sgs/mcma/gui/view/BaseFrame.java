@@ -5,10 +5,12 @@ import java.awt.Dimension;
 import java.awt.EventQueue;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
+
 import com.sgs.mcma.gui.view.console.ConsolePane;
 import com.sgs.mcma.webservice.Server;
 

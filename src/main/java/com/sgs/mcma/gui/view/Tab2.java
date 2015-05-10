@@ -15,6 +15,7 @@ import org.fife.ui.rsyntaxtextarea.RSyntaxTextArea;
 import org.fife.ui.rsyntaxtextarea.SyntaxConstants;
 import org.fife.ui.rtextarea.RTextScrollPane;
 
+@SuppressWarnings("serial")
 public class Tab2 extends JTabbedPane {
 
 	public Tab2(){
