@@ -14,7 +14,6 @@ import com.sgs.mcma.webservice.handler.PlayerLeftHandler;
 import com.sun.net.httpserver.HttpHandler;
 import com.sun.net.httpserver.HttpServer;
 
-@SuppressWarnings("restriction")
 public class Server {
 
 	private static int SERVER_PORT_NUMBER;

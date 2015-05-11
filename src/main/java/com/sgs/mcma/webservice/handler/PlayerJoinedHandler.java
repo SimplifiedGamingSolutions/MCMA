@@ -17,7 +17,6 @@ import com.sgs.mcma.webservice.ServerFacade;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
 
-@SuppressWarnings("restriction")
 public class PlayerJoinedHandler implements HttpHandler {
 
 	private Logger logger = Logger.getLogger("MCMA");
