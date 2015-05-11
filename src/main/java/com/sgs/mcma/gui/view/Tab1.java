@@ -97,7 +97,8 @@ public class Tab1 extends JPanel {
 		{
 			public void actionPerformed(ActionEvent e) 
 			{
-				stopServer();
+				if(console.isRunning())
+					stopServer();
 			}
 
 			private void stopServer() 
