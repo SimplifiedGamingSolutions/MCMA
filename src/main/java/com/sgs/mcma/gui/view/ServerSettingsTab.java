@@ -10,6 +10,8 @@ import javax.swing.JScrollPane;
 import javax.swing.JSplitPane;
 import javax.swing.JTabbedPane;
 import javax.swing.SwingConstants;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
 
 import org.fife.ui.rsyntaxtextarea.RSyntaxTextArea;
 import org.fife.ui.rsyntaxtextarea.SyntaxConstants;
@@ -47,6 +49,24 @@ public class ServerSettingsTab extends JTabbedPane {
 	      textArea.setSyntaxEditingStyle(SyntaxConstants.SYNTAX_STYLE_XML);
 	      textArea.setCodeFoldingEnabled(true);
 	      textArea.setAntiAliasingEnabled(true);
+	      textArea.getDocument().addDocumentListener(new DocumentListener(){
+
+			public void insertUpdate(DocumentEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+
+			public void removeUpdate(DocumentEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+
+			public void changedUpdate(DocumentEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+	    	  
+	      });
 	      RTextScrollPane sp = new RTextScrollPane(textArea);
 	      sp.setFoldIndicatorEnabled(true);
 	      cp.add(sp);
