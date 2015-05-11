@@ -25,12 +25,17 @@ import org.fife.ui.rsyntaxtextarea.RSyntaxTextArea;
 
 @SuppressWarnings("serial")
 public class DirectoryTreeView extends JPanel {
-
+	public static DirectoryTreeView instance;
+	private JTree tree;
+	public File getFileForSelectedNode(){
+		return new File(getNodeLocalPath((DefaultMutableTreeNode) tree.getSelectionPath().getLastPathComponent()));
+	}
 public DirectoryTreeView(File dir) {
+	instance = this;
     setLayout(new BorderLayout());
 
     // Make a tree list with all the nodes, and make it a JTree
-    JTree tree = new JTree(addNodes(null, dir));
+    tree = new JTree(addNodes(null, dir));
 
     // Add a listener
     tree.addTreeSelectionListener(new TreeSelectionListener() {
@@ -42,22 +47,20 @@ public DirectoryTreeView(File dir) {
 			try {
 				text = new String(Files.readAllBytes(Paths.get(getNodeLocalPath(node))), Charset.defaultCharset());
 			} catch (IOException e1) {
-				// TODO Auto-generated catch block
 				e1.printStackTrace();
 			}
         	textArea.setText(text);
         }
-        //System.out.println("You selected " + getNodeLocalPath(node));
       }
     });
-
+    
     // Lastly, put the JTree into a JScrollPane.
     JScrollPane scrollpane = new JScrollPane();
     scrollpane.getViewport().add(tree);
     add(BorderLayout.CENTER, scrollpane);
   }
 
-  private String getNodeLocalPath(DefaultMutableTreeNode node) {
+  public String getNodeLocalPath(DefaultMutableTreeNode node) {
 	  String jTreeVarSelectedPath = "";
       Object[] paths = node.getPath();
       for (int i=0; i<paths.length; i++) {

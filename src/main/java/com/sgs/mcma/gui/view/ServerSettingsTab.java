@@ -3,15 +3,18 @@ package com.sgs.mcma.gui.view;
 import java.awt.BorderLayout;
 import java.awt.Component;
 import java.awt.Dimension;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileWriter;
 
+import javax.swing.JButton;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JSplitPane;
 import javax.swing.JTabbedPane;
 import javax.swing.SwingConstants;
-import javax.swing.event.DocumentEvent;
-import javax.swing.event.DocumentListener;
 
 import org.fife.ui.rsyntaxtextarea.RSyntaxTextArea;
 import org.fife.ui.rsyntaxtextarea.SyntaxConstants;
@@ -49,27 +52,26 @@ public class ServerSettingsTab extends JTabbedPane {
 	      textArea.setSyntaxEditingStyle(SyntaxConstants.SYNTAX_STYLE_XML);
 	      textArea.setCodeFoldingEnabled(true);
 	      textArea.setAntiAliasingEnabled(true);
-	      textArea.getDocument().addDocumentListener(new DocumentListener(){
-
-			public void insertUpdate(DocumentEvent e) {
-				// TODO Auto-generated method stub
-				
-			}
-
-			public void removeUpdate(DocumentEvent e) {
-				// TODO Auto-generated method stub
-				
-			}
-
-			public void changedUpdate(DocumentEvent e) {
-				// TODO Auto-generated method stub
-				
-			}
-	    	  
-	      });
 	      RTextScrollPane sp = new RTextScrollPane(textArea);
 	      sp.setFoldIndicatorEnabled(true);
-	      cp.add(sp);
+	      cp.add(sp, BorderLayout.CENTER);
+	      JButton saveButton = new JButton("Save");
+	      saveButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				try{
+					String text = textArea.getText();
+					File selectedFile = DirectoryTreeView.instance.getFileForSelectedNode();
+					FileWriter fw = new FileWriter(selectedFile);
+					BufferedWriter bw = new BufferedWriter(fw);
+					bw.write(text);
+					bw.close();
+				}
+				catch(Exception ex){
+					ex.printStackTrace();
+				}
+			}
+		});
+	      cp.add(saveButton, BorderLayout.SOUTH);
 	      return cp;
 	}
 	
