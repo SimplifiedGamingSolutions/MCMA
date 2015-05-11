@@ -44,9 +44,9 @@ public class PlayerListPanel extends JPanel{
 	private class PlayerListMouseListener extends MouseAdapter
 	{
 		@Override
-		public void mouseClicked(MouseEvent e) 
+		public void mouseReleased(MouseEvent e) 
 		{
-			super.mouseClicked(e);
+			super.mouseReleased(e);
 			if(e.getButton() == MouseEvent.BUTTON3)
 			{
 				int playerIndex = playerList.locationToIndex(e.getPoint());
@@ -59,7 +59,16 @@ public class PlayerListPanel extends JPanel{
 					popup.setVisible(false);
 					playerList.clearSelection();
 				}
-			}else{
+			}else if(e.getButton() == MouseEvent.BUTTON1){
+				int playerIndex = playerList.locationToIndex(e.getPoint());
+				if(playerIndex != -1 && playerList.getCellBounds(playerIndex, playerIndex).contains(e.getPoint())){
+					playerList.setSelectedIndex(playerIndex);
+				}else{
+					playerList.clearSelection();
+				}
+				popup.setVisible(false);
+			}
+			else{
 				popup.setVisible(false);
 				playerList.clearSelection();
 			}
