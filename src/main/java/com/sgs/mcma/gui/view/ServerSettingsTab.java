@@ -16,11 +16,8 @@ import org.fife.ui.rsyntaxtextarea.SyntaxConstants;
 import org.fife.ui.rtextarea.RTextScrollPane;
 
 @SuppressWarnings("serial")
-public class Tab2 extends JTabbedPane {
-
-	public Tab2(){
-		
-	}
+public class ServerSettingsTab extends JTabbedPane {
+	private static RSyntaxTextArea textArea;
 	
 	public JTabbedPane createTab2() 
 	{
@@ -46,7 +43,7 @@ public class Tab2 extends JTabbedPane {
 	private Component CreateSyntaxTextArea() 
 	{
 	      JPanel cp = new JPanel(new BorderLayout());
-	      RSyntaxTextArea textArea = new RSyntaxTextArea(20, 60);
+	      textArea = new RSyntaxTextArea(20, 60);
 	      textArea.setSyntaxEditingStyle(SyntaxConstants.SYNTAX_STYLE_XML);
 	      textArea.setCodeFoldingEnabled(true);
 	      textArea.setAntiAliasingEnabled(true);
@@ -54,5 +51,9 @@ public class Tab2 extends JTabbedPane {
 	      sp.setFoldIndicatorEnabled(true);
 	      cp.add(sp);
 	      return cp;
+	}
+	
+	public static RSyntaxTextArea getTextArea(){
+		return textArea;
 	}
 }

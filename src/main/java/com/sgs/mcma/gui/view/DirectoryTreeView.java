@@ -5,6 +5,10 @@ import java.awt.Color;
 import java.awt.Container;
 import java.awt.Dimension;
 import java.io.File;
+import java.io.IOException;
+import java.nio.charset.Charset;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.Collections;
 import java.util.Vector;
 
@@ -16,6 +20,8 @@ import javax.swing.JTree;
 import javax.swing.event.TreeSelectionEvent;
 import javax.swing.event.TreeSelectionListener;
 import javax.swing.tree.DefaultMutableTreeNode;
+
+import org.fife.ui.rsyntaxtextarea.RSyntaxTextArea;
 
 @SuppressWarnings("serial")
 public class DirectoryTreeView extends JPanel {
@@ -29,9 +35,19 @@ public DirectoryTreeView(File dir) {
     // Add a listener
     tree.addTreeSelectionListener(new TreeSelectionListener() {
       public void valueChanged(TreeSelectionEvent e) {
-        DefaultMutableTreeNode node = (DefaultMutableTreeNode) e
-            .getPath().getLastPathComponent();
-        System.out.println("You selected " + node);
+        DefaultMutableTreeNode node = (DefaultMutableTreeNode) e.getPath().getLastPathComponent();
+        RSyntaxTextArea textArea = ServerSettingsTab.getTextArea();
+        if(textArea != null && !new File(getNodeLocalPath(node)).isDirectory()){
+        	String text = "";
+			try {
+				text = new String(Files.readAllBytes(Paths.get(getNodeLocalPath(node))), Charset.defaultCharset());
+			} catch (IOException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+        	textArea.setText(text);
+        }
+        //System.out.println("You selected " + getNodeLocalPath(node));
       }
     });
 
@@ -41,10 +57,22 @@ public DirectoryTreeView(File dir) {
     add(BorderLayout.CENTER, scrollpane);
   }
 
-  /** Add nodes from under "dir" into curTop. Highly recursive. */
+  private String getNodeLocalPath(DefaultMutableTreeNode node) {
+	  String jTreeVarSelectedPath = "";
+      Object[] paths = node.getPath();
+      for (int i=0; i<paths.length; i++) {
+          jTreeVarSelectedPath += paths[i];
+          if (i+1 <paths.length ) {
+              jTreeVarSelectedPath += File.separator;
+          }
+      }
+      return jTreeVarSelectedPath;
+}
+
+/** Add nodes from under "dir" into curTop. Highly recursive. */
   DefaultMutableTreeNode addNodes(DefaultMutableTreeNode curTop, File dir) {
     String curPath = dir.getPath();
-    DefaultMutableTreeNode curDir = new DefaultMutableTreeNode(curPath);
+    DefaultMutableTreeNode curDir = new DefaultMutableTreeNode(dir.getName());
     if (curTop != null) { // should only be null at root
       curTop.add(curDir);
     }
