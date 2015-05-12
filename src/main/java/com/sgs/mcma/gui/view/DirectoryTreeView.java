@@ -5,6 +5,8 @@ import java.awt.Color;
 import java.awt.Component;
 import java.awt.Container;
 import java.awt.Dimension;
+import java.awt.Graphics2D;
+import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.FilenameFilter;
 import java.io.IOException;
@@ -13,11 +15,10 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.List;
 import java.util.Vector;
 
 import javax.swing.BoxLayout;
-import javax.swing.Icon;
+import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
@@ -33,7 +34,6 @@ import org.fife.ui.rsyntaxtextarea.RSyntaxTextArea;
 @SuppressWarnings("serial")
 public class DirectoryTreeView extends JPanel {
 	public static DirectoryTreeView instance;
-	private static ArrayList<String> exclusions = new ArrayList<String>();
 	private JTree tree;
 	public DirectoryTreeView(File dir, ArrayList<String> exclusions) {
 		instance = this;
@@ -139,7 +139,25 @@ public Dimension getPreferredSize() {
     frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
   }
   private static class MyTreeCellRenderer extends DefaultTreeCellRenderer {
+	  private static ImageIcon closed = scale(new ImageIcon("Resources\\Chest-Closed.png"), 1/2, DirectoryTreeView.instance.tree);
+	  private static ImageIcon open = scale(new ImageIcon("Resources\\Chest-Open.png"), 1/2, DirectoryTreeView.instance.tree);
+	  public MyTreeCellRenderer() {
+	  }
+	  static ImageIcon scale(ImageIcon icon, double scaleFactor, JTree tree) {
+		    double width = icon.getIconWidth();
+		    double height = icon.getIconHeight();
+		    int iconwidth = UIManager.getIcon("FileView.fileIcon").getIconWidth();
+		    int iconheight = UIManager.getIcon("FileView.fileIcon").getIconHeight();
+		    BufferedImage image =
+		        new BufferedImage(iconwidth, iconheight, BufferedImage.TYPE_INT_ARGB);
 
+		    Graphics2D g = image.createGraphics();
+		    g.scale(iconwidth/width, iconheight/height);
+		    icon.paintIcon(tree, g, 0, 0);
+		    g.dispose();
+
+		    return new ImageIcon(image);
+		}
       @Override
       public Component getTreeCellRendererComponent(JTree tree, Object value, boolean sel, boolean expanded, boolean leaf, int row, boolean hasFocus) {
           super.getTreeCellRendererComponent(tree, value, sel, expanded, leaf, row, hasFocus);
@@ -148,7 +166,10 @@ public Dimension getPreferredSize() {
           if (value instanceof DefaultMutableTreeNode) {
               DefaultMutableTreeNode node = (DefaultMutableTreeNode) value;
               if (new File(instance.getNodeLocalPath(node)).isDirectory()) {
-                  setIcon(UIManager.getIcon("FileView.directoryIcon"));
+            	  setClosedIcon(closed);
+            	  setOpenIcon(open);
+            	  //setIcon(new ImageIcon("Resources\\Chest-Open.png"));
+                  //setIcon(UIManager.getIcon("FileView.directoryIcon"));
               } else {
                   setIcon(UIManager.getIcon("FileView.fileIcon"));
               }
