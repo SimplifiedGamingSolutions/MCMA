@@ -35,7 +35,7 @@ import org.fife.ui.rsyntaxtextarea.RSyntaxTextArea;
 @SuppressWarnings("serial")
 public class DirectoryTreeView extends JPanel {
 	public static DirectoryTreeView instance;
-	public static ArrayList<String> exclusions = new ArrayList<String>(Arrays.asList("crash-reports,logs,world,libraries,.*\\.jar,.*\\.log.,.*\\..gz,.*\\.dat.*,.*\\.lock,.*\\.mca".split(",")));
+	public static ArrayList<String> exclusions = new ArrayList<String>(Arrays.asList("crash-reports,logs,world,libraries,eula.txt,.*\\.json,.*\\.jar,.*\\.log.,.*\\..gz,.*\\.dat.*,.*\\.lock,.*\\.mca".split(",")));
 	private JTree tree;
 	public DirectoryTreeView(File dir) {
 		instance = this;
