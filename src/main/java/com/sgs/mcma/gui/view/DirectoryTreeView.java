@@ -14,6 +14,7 @@ import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.Vector;
 
@@ -34,8 +35,9 @@ import org.fife.ui.rsyntaxtextarea.RSyntaxTextArea;
 @SuppressWarnings("serial")
 public class DirectoryTreeView extends JPanel {
 	public static DirectoryTreeView instance;
+	public static ArrayList<String> exclusions = new ArrayList<String>(Arrays.asList("crash-reports,logs,world,libraries,.*\\.jar,.*\\.log.,.*\\..gz,.*\\.dat.*,.*\\.lock,.*\\.mca".split(",")));
 	private JTree tree;
-	public DirectoryTreeView(File dir, ArrayList<String> exclusions) {
+	public DirectoryTreeView(File dir) {
 		instance = this;
 	    setLayout(new BorderLayout());
 	
@@ -74,8 +76,11 @@ public class DirectoryTreeView extends JPanel {
 	    String[] tmp = dir.list(new FilenameFilter(){
 	
 			public boolean accept(File dir, String name) {
-				boolean check = !name.contains(".jar");
-				return check;
+				for(String ex : exclusions){
+					if(name.matches(ex))
+						return false;
+				}
+				return true;
 			}
 	    	
 	    });
@@ -123,15 +128,12 @@ public Dimension getPreferredSize() {
     frame.setBackground(Color.lightGray);
     Container cp = frame.getContentPane();
 
-	ArrayList<String> exclusions = new ArrayList<String>();
-	exclusions.add(".jar");
-	exclusions.add(".log");
     if (av.length == 0) {
-      cp.add(new DirectoryTreeView(new File("Server"), exclusions));
+      cp.add(new DirectoryTreeView(new File("Server")));
     } else {
       cp.setLayout(new BoxLayout(cp, BoxLayout.X_AXIS));
       for (int i = 0; i < av.length; i++)
-        cp.add(new DirectoryTreeView(new File(av[i]), exclusions));
+        cp.add(new DirectoryTreeView(new File(av[i])));
     }
 
     frame.pack();
@@ -165,9 +167,13 @@ public Dimension getPreferredSize() {
           // decide what icons you want by examining the node
           if (value instanceof DefaultMutableTreeNode) {
               DefaultMutableTreeNode node = (DefaultMutableTreeNode) value;
-              if (new File(instance.getNodeLocalPath(node)).isDirectory()) {
+              String path = instance.getNodeLocalPath(node);
+              boolean isDirectory = new File(path).isDirectory();
+              if (isDirectory) {
             	  setClosedIcon(closed);
             	  setOpenIcon(open);
+            	  //setIcon(closed);
+            	  setLeafIcon(closed);
             	  //setIcon(new ImageIcon("Resources\\Chest-Open.png"));
                   //setIcon(UIManager.getIcon("FileView.directoryIcon"));
               } else {
