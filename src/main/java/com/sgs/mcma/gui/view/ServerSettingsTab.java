@@ -8,6 +8,7 @@ import java.awt.event.ActionListener;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
+import java.util.ArrayList;
 
 import javax.swing.JButton;
 import javax.swing.JPanel;
@@ -31,7 +32,10 @@ public class ServerSettingsTab extends JTabbedPane {
 		JPanel tab1 = new JPanel();
 		tab1.setLayout(new BorderLayout());
 		JSplitPane splitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT);
-	    DirectoryTreeView dt = new DirectoryTreeView(new File("Server"));
+		ArrayList<String> exclusions = new ArrayList<String>();
+		exclusions.add(".jar");
+		exclusions.add(".log");
+	    DirectoryTreeView dt = new DirectoryTreeView(new File("Server"), exclusions);
 	    JScrollPane treeView = new JScrollPane(dt);
 		splitPane.setLeftComponent(treeView);
 		splitPane.setRightComponent(CreateSyntaxTextArea());
