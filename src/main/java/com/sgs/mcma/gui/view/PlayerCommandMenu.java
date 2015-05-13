@@ -9,11 +9,12 @@ import javax.swing.JList;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JPopupMenu;
+import javax.swing.JWindow;
 import javax.swing.UIManager;
 
 import com.sgs.mcma.gui.view.console.ConsolePane;
 
-public class PlayerCommandMenu extends JPopupMenu {
+public class PlayerCommandMenu extends JPopupMenu{
 	PlayerCommandMenu menu = this;
 	
 	public PlayerCommandMenu()

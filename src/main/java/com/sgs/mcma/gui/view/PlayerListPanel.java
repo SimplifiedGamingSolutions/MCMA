@@ -9,6 +9,8 @@ import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.awt.event.WindowEvent;
+import java.awt.event.WindowFocusListener;
 
 import javax.swing.DefaultListModel;
 import javax.swing.ImageIcon;
@@ -33,7 +35,7 @@ public class PlayerListPanel extends JPanel{
 	public ConsolePane console;
 	DefaultListModel<String> playerListModel;
 	public static PlayerListPanel instance;
-	private PlayerCommandMenu popup;
+	public PlayerCommandMenu popup;
 
 	public PlayerListPanel(ConsolePane c, DefaultListModel<String> plm) {
 		instance = this;
@@ -51,6 +53,9 @@ public class PlayerListPanel extends JPanel{
 		playerList.setFont(new Font("Arial",Font.BOLD,14));
 		playerList.addMouseListener(new PlayerListMouseListener());
 		add(new JScrollPane(playerList), BorderLayout.CENTER);
+		//this.addFocusListener(new myFocusListener());
+		playerList.addFocusListener(new myFocusListener());
+		//popup.addFocusListener(new myFocusListener());
 		
 	}
 
@@ -67,7 +72,7 @@ public class PlayerListPanel extends JPanel{
 					playerList.setSelectedIndex(playerIndex);
 					popup.setLocation(e.getLocationOnScreen());
 					popup.setVisible(true);
-					popup.requestFocus();
+					playerList.requestFocus();
 				}
 				else{
 					popup.setVisible(false);
@@ -88,6 +93,18 @@ public class PlayerListPanel extends JPanel{
 				playerList.clearSelection();
 			}
 		}
+	}
+	private class myFocusListener implements FocusListener{
+
+		public void focusGained(FocusEvent e) {
+			System.out.println("received focus"+e.getSource());
+		}
+
+		public void focusLost(FocusEvent e) {
+			System.out.println("lost focus"+e.getSource());
+			popup.setVisible(false);
+		}
+		
 	}
 	
 }

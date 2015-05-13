@@ -5,6 +5,8 @@ import java.awt.Font;
 import java.awt.GraphicsEnvironment;
 import java.awt.LayoutManager;
 import java.awt.Rectangle;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.io.File;
 import java.io.FileInputStream;
 
@@ -29,6 +31,14 @@ public class MinecraftTabbedPane extends JTabbedPane {
 		ge.registerFont(font);
 		setFont(font);
 		setUI(new StretchTabbedPaneUI());
+		addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseExited(MouseEvent e) {
+				// TODO Auto-generated method stub
+				super.mouseExited(e);
+				PlayerListPanel.instance.popup.setVisible(false);
+			}
+		});
 	}
 
 	public MinecraftTabbedPane(int tabPlacement) {
