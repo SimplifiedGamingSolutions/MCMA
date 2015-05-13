@@ -50,7 +50,7 @@ public class BaseFrame extends JFrame
 	private JTabbedPane createTabs() 
 	{
 		MinecraftTabbedPane tabs = new MinecraftTabbedPane();
-		Tab1 tab1 = new Tab1(console);
+		SummaryTab tab1 = new SummaryTab(console);
 		ServerSettingsTab tab2 = new ServerSettingsTab();
 		
 		tabs.addTab("Summary", tab1.createTab1());

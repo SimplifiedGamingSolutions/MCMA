@@ -15,18 +15,18 @@ import javax.swing.JPanel;
 import com.sgs.mcma.gui.view.console.ConsolePane;
 
 @SuppressWarnings("serial")
-public class Tab1 extends JPanel {
+public class SummaryTab extends JPanel {
 	
 	ConsolePane console;
-	private static Tab1 instance;
+	private static SummaryTab instance;
 	public static DefaultListModel<String> playerListModel = new DefaultListModel<String>();
 
-	public Tab1(ConsolePane c){
+	public SummaryTab(ConsolePane c){
 		console = c;
 		instance = this;
 		
 	}
-	public static Tab1 Instance(){
+	public static SummaryTab Instance(){
 		return instance;
 	}
 	
