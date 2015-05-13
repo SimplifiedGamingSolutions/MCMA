@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.util.List;
 
 import javax.swing.JTabbedPane;
 import javax.swing.event.ChangeEvent;
@@ -44,7 +45,7 @@ public class ServerLogTab extends JTabbedPane {
 	
 	public void updateAllMessages(){
 		try {
-			allMessagesTextArea.getTextArea().setText(new String(Files.readAllBytes(Paths.get("Server\\logs\\latest.log")), Charset.defaultCharset()));
+			allMessagesTextArea.getTextArea().setText(new String(Files.readAllBytes(Paths.get("Server\\logs\\latest.log")), Charset.defaultCharset()).trim());
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -53,7 +54,14 @@ public class ServerLogTab extends JTabbedPane {
 	
 	public void updateErrorMessages(){
 		try {
-			errorMessagesTextArea.getTextArea().setText(new String(Files.readAllBytes(Paths.get("Server\\logs\\latest.log")), Charset.defaultCharset()));
+			List<String> AllMessages = Files.readAllLines(Paths.get("Server\\logs\\latest.log"));
+			String errorMessages = "";
+			for(String line : AllMessages){
+				if(line.contains("ERROR")){
+					errorMessages += line+'\n';
+				}
+			}
+			chatMessagesTextArea.getTextArea().setText(errorMessages.trim());
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -62,7 +70,14 @@ public class ServerLogTab extends JTabbedPane {
 	
 	public void updateChatMessages(){
 		try {
-			chatMessagesTextArea.getTextArea().setText(new String(Files.readAllBytes(Paths.get("Server\\logs\\latest.log")), Charset.defaultCharset()));
+			List<String> AllMessages = Files.readAllLines(Paths.get("Server\\logs\\latest.log"));
+			String chatMessages = "";
+			for(String line : AllMessages){
+				if(line.contains("]: <")){
+					chatMessages += line+'\n';
+				}
+			}
+			chatMessagesTextArea.getTextArea().setText(chatMessages.trim());
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
