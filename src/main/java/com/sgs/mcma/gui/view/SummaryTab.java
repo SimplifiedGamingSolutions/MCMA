@@ -1,9 +1,12 @@
 package com.sgs.mcma.gui.view;
 
 import java.awt.BorderLayout;
+import java.awt.Component;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.FocusEvent;
+import java.awt.event.FocusListener;
 
 import javax.swing.Box;
 import javax.swing.BoxLayout;
@@ -25,6 +28,7 @@ public class SummaryTab extends JPanel {
 		console = c;
 		instance = this;
 		setLayout(new BorderLayout());
+		playerListModel.addElement("TestPlayer");
 		add(new PlayerListPanel(console,playerListModel), BorderLayout.WEST);
 		JPanel panel = new JPanel(new BorderLayout());
 		panel.add(console, BorderLayout.CENTER);

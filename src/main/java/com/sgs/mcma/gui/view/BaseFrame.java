@@ -1,8 +1,11 @@
 package com.sgs.mcma.gui.view;
 
 import java.awt.BorderLayout;
+import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.EventQueue;
+import java.awt.event.FocusEvent;
+import java.awt.event.FocusListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 
@@ -19,16 +22,17 @@ import com.sgs.mcma.webservice.Server;
 @SuppressWarnings("serial")
 public class BaseFrame extends JFrame 
 {
+	public static BaseFrame instance;
 	private static ConsolePane console;
 
 	public BaseFrame(String title, int width, int height)
 	{
+		instance = this;
 		console = new ConsolePane();
 		Initialize(title, width, height);
 		this.pack();
 		
 	}
-
 	private void Initialize(String title, int width, int height) 
 	{
 		this.setTitle(title);
