@@ -1,4 +1,4 @@
-package com.sgs.mcma.gui.view;
+package com.sgs.mcma.gui.view.summary;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -12,6 +12,7 @@ import javax.swing.JPopupMenu;
 import javax.swing.JWindow;
 import javax.swing.UIManager;
 
+import com.sgs.mcma.gui.view.BaseFrame;
 import com.sgs.mcma.gui.view.console.ConsolePane;
 
 public class PlayerCommandMenu extends JPopupMenu{

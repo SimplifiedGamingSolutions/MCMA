@@ -17,6 +17,9 @@ import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
 import com.sgs.mcma.gui.view.console.ConsolePane;
+import com.sgs.mcma.gui.view.logs.ServerLogTab;
+import com.sgs.mcma.gui.view.settings.ServerSettingsTab;
+import com.sgs.mcma.gui.view.summary.SummaryTab;
 import com.sgs.mcma.webservice.Server;
 
 @SuppressWarnings("serial")

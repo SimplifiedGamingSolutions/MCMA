@@ -17,7 +17,7 @@ import javax.swing.text.SimpleAttributeSet;
 import javax.swing.text.StyleConstants;
 import javax.swing.text.StyledDocument;
 
-import com.sgs.mcma.gui.view.TestFrame;
+import com.sgs.mcma.gui.view.test.TestFrame;
 
 @SuppressWarnings("serial")
 public class ConsolePane extends JPanel{

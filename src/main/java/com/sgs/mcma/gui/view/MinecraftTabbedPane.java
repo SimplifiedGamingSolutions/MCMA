@@ -15,6 +15,8 @@ import javax.swing.JTabbedPane;
 import javax.swing.plaf.ComponentUI;
 import javax.swing.plaf.metal.MetalTabbedPaneUI;
 
+import com.sgs.mcma.gui.view.summary.PlayerListPanel;
+
 @SuppressWarnings("serial")
 public class MinecraftTabbedPane extends JTabbedPane {
 

@@ -1,4 +1,4 @@
-package com.sgs.mcma.gui.view;
+package com.sgs.mcma.gui.view.summary;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;

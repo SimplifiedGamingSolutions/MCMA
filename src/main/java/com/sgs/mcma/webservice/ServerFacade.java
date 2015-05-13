@@ -2,7 +2,7 @@ package com.sgs.mcma.webservice;
 
 import com.sgs.mcma.client.PlayerJoined_Params;
 import com.sgs.mcma.client.PlayerLeft_Params;
-import com.sgs.mcma.gui.view.SummaryTab;
+import com.sgs.mcma.gui.view.summary.SummaryTab;
 
 public class ServerFacade {
 
