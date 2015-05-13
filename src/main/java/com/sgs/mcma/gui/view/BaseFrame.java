@@ -10,6 +10,8 @@ import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 
 import com.sgs.mcma.gui.view.console.ConsolePane;
 import com.sgs.mcma.webservice.Server;
@@ -49,14 +51,21 @@ public class BaseFrame extends JFrame
 //
 	private JTabbedPane createTabs() 
 	{
-		MinecraftTabbedPane tabs = new MinecraftTabbedPane();
-		SummaryTab tab1 = new SummaryTab(console);
-		ServerSettingsTab tab2 = new ServerSettingsTab();
+		final MinecraftTabbedPane tabs = new MinecraftTabbedPane();
 		
-		tabs.addTab("Summary", tab1.createTab1());
-		tabs.addTab("Configuration", tab2.createTab2());
-		tabs.addTab("Logs", new JPanel());
+		tabs.addTab("Summary", new SummaryTab(console));
+		tabs.addTab("Configuration", new ServerSettingsTab());
+		tabs.addTab("Logs", (JTabbedPane) new ServerLogTab());
 		
+		tabs.addChangeListener(new ChangeListener() {
+			
+			public void stateChanged(ChangeEvent e) {
+				if(tabs.getSelectedIndex() == 2){
+					ServerLogTab.instance.setSelectedIndex(0);
+					ServerLogTab.instance.updateAllMessages();
+				}
+			}
+		});
 		return tabs;
 	}
 

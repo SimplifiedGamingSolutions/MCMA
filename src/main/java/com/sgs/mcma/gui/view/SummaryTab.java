@@ -24,22 +24,15 @@ public class SummaryTab extends JPanel {
 	public SummaryTab(ConsolePane c){
 		console = c;
 		instance = this;
-		
-	}
-	public static SummaryTab Instance(){
-		return instance;
-	}
-	
-	public JPanel createTab1() 
-	{
-		JPanel tab1 = new JPanel();
-		tab1.setLayout(new BorderLayout());
-		tab1.add(new PlayerListPanel(console,playerListModel), BorderLayout.WEST);
+		setLayout(new BorderLayout());
+		add(new PlayerListPanel(console,playerListModel), BorderLayout.WEST);
 		JPanel panel = new JPanel(new BorderLayout());
 		panel.add(console, BorderLayout.CENTER);
 		panel.add(createButtonPanel(), BorderLayout.SOUTH);
-		tab1.add(panel, BorderLayout.CENTER);
-		return tab1;
+		add(panel, BorderLayout.CENTER);
+	}
+	public static SummaryTab Instance(){
+		return instance;
 	}
 	
 	private JPanel createButtonPanel() 

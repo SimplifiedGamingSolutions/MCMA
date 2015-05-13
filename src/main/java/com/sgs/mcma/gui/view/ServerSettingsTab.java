@@ -24,10 +24,9 @@ import org.fife.ui.rtextarea.RTextScrollPane;
 public class ServerSettingsTab extends JTabbedPane {
 	private static RSyntaxTextArea textArea;
 	
-	public JTabbedPane createTab2() 
+	public ServerSettingsTab() 
 	{
-		JTabbedPane config = new JTabbedPane();
-		config.setTabPlacement(SwingConstants.LEFT);
+		setTabPlacement(SwingConstants.LEFT);
 		JPanel tab1 = new JPanel();
 		tab1.setLayout(new BorderLayout());
 		JSplitPane splitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT);
@@ -40,9 +39,8 @@ public class ServerSettingsTab extends JTabbedPane {
 		
 		tab1.add(splitPane, BorderLayout.CENTER);
 
-		config.addTab("Server Config", tab1);
-		config.addTab("Mod Config", new JPanel());
-		return config;
+		addTab("Server Config", tab1);
+		addTab("Mod Config", new JPanel());
 	}
 	
 	private Component CreateSyntaxTextArea() 
