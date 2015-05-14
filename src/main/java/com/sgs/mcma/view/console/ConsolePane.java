@@ -21,109 +21,153 @@ import com.sgs.mcma.controller.summary.ConsolePaneController;
 import com.sgs.mcma.view.test.TestFrame;
 
 @SuppressWarnings("serial")
-public class ConsolePane extends JPanel{
-	
-	private JTextPane consoleTextPane;
-    private StyledDocument doc;
-    private SimpleAttributeSet consoleTextAttributeSet;
-    private SimpleAttributeSet errorTextAttributeSet;
-    private ControllableProcess p;
-    private ConsolePane instance;
+public class ConsolePane extends JPanel
+{
 
-    public ConsolePane(){
-    	instance = this;
-    	populateTextPane();
+	private JTextPane consoleTextPane;
+	private StyledDocument doc;
+	private SimpleAttributeSet consoleTextAttributeSet;
+	private SimpleAttributeSet errorTextAttributeSet;
+	private ControllableProcess p;
+	private ConsolePane instance;
+
+	public ConsolePane()
+	{
+		instance = this;
+		populateTextPane();
 		populateConsolePane();
-    }
-    public ConsolePane Instance(){
-    	return instance;
-    }
-    private void populateTextPane() {
-    	consoleTextPane = new JTextPane();
-    	DefaultCaret caret = (DefaultCaret)consoleTextPane.getCaret();
-    	caret.setUpdatePolicy(DefaultCaret.ALWAYS_UPDATE);
-    	consoleTextPane.setBackground(Color.BLACK);
-    	consoleTextPane.setEditable(false);
-    	doc = consoleTextPane.getStyledDocument();
-    	consoleTextAttributeSet = new SimpleAttributeSet();
-    	StyleConstants.setForeground(consoleTextAttributeSet, Color.LIGHT_GRAY);
-    	errorTextAttributeSet = new SimpleAttributeSet();
-    	StyleConstants.setForeground(errorTextAttributeSet, Color.RED);
 	}
-    public ConsoleCommandTextField field;
-	private void populateConsolePane() {
-		setLayout (new BorderLayout ());
-		JScrollPane pane = new JScrollPane (consoleTextPane, ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS, ScrollPaneConstants.HORIZONTAL_SCROLLBAR_AS_NEEDED);
-        add(pane, BorderLayout.CENTER);
-        field = new ConsoleCommandTextField();
-        add(field,BorderLayout.SOUTH);
+
+	public ConsolePane Instance()
+	{
+		return instance;
 	}
-	
-	public void clearConsole(){
+
+	private void populateTextPane()
+	{
+		consoleTextPane = new JTextPane();
+		DefaultCaret caret = (DefaultCaret) consoleTextPane.getCaret();
+		caret.setUpdatePolicy(DefaultCaret.ALWAYS_UPDATE);
+		consoleTextPane.setBackground(Color.BLACK);
+		consoleTextPane.setEditable(false);
+		doc = consoleTextPane.getStyledDocument();
+		consoleTextAttributeSet = new SimpleAttributeSet();
+		StyleConstants.setForeground(consoleTextAttributeSet, Color.LIGHT_GRAY);
+		errorTextAttributeSet = new SimpleAttributeSet();
+		StyleConstants.setForeground(errorTextAttributeSet, Color.RED);
+	}
+
+	public ConsoleCommandTextField field;
+
+	private void populateConsolePane()
+	{
+		setLayout(new BorderLayout());
+		JScrollPane pane = new JScrollPane(consoleTextPane,
+				ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS,
+				ScrollPaneConstants.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+		this.add(pane, BorderLayout.CENTER);
+		field = new ConsoleCommandTextField();
+		this.add(field, BorderLayout.SOUTH);
+	}
+
+	public void clearConsole()
+	{
 		consoleTextPane.setText("");
 	}
-	class ConsoleCommandTextField extends JTextField {
-		
-		public ConsoleCommandTextField(){
-    		this.addActionListener(new ActionListener() {
-    			
-    			public void actionPerformed(ActionEvent e) {
-		        	ConsolePaneController.commandTextFieldActionTriggered(getText(), instance);
-    			}
-    		});
-    	}
-    	private void clearCommand(){
-    		setText("");
-    	}
-    }
-	public JTextPane getTextPane(){
+
+	class ConsoleCommandTextField extends JTextField
+	{
+
+		public ConsoleCommandTextField()
+		{
+			addActionListener(new ActionListener()
+			{
+
+				public void actionPerformed(ActionEvent e)
+				{
+					ConsolePaneController.commandTextFieldActionTriggered(
+							ConsoleCommandTextField.this.getText(), instance);
+				}
+			});
+		}
+
+		private void clearCommand()
+		{
+			setText("");
+		}
+	}
+
+	public JTextPane getTextPane()
+	{
 		return consoleTextPane;
 	}
-	public SimpleAttributeSet getErrorTextStyle(){
+
+	public SimpleAttributeSet getErrorTextStyle()
+	{
 		return errorTextAttributeSet;
 	}
-	public SimpleAttributeSet getConsoleTextStyle(){
+
+	public SimpleAttributeSet getConsoleTextStyle()
+	{
 		return consoleTextAttributeSet;
 	}
-	public void appendToJTextPane(String text, SimpleAttributeSet att){
-		try {
+
+	public void appendToJTextPane(String text, SimpleAttributeSet att)
+	{
+		try
+		{
 			doc.insertString(doc.getLength(), text, att);
-		} catch (BadLocationException e) {
+		} catch (BadLocationException e)
+		{
 			e.printStackTrace();
 		}
 	}
-	
-	public static void main(String[] args) throws Exception {
+
+	public static void main(String[] args) throws Exception
+	{
 		ConsolePane test = new ConsolePane();
 		new TestFrame(test);
-    	test.startServer();
-    }
-	
-	public void startServer(){
-		if(p==null){
+		test.startServer();
+	}
+
+	public void startServer()
+	{
+		if (p == null)
+		{
 			File file = new File("Server");
-			//JOptionPane.showMessageDialog(this, file.getAbsolutePath());
-			p = new ControllableProcess(file.getAbsolutePath()+"\\","forge-1.8-11.14.1.1334-universal.jar", this);
+			// JOptionPane.showMessageDialog(this, file.getAbsolutePath());
+			p = new ControllableProcess(file.getAbsolutePath() + "\\",
+					"forge-1.8-11.14.1.1334-universal.jar", this);
 		}
 		p.start();
 	}
-	public void stopServer(){
+
+	public void stopServer()
+	{
 		p.sendCommand("stop");
 		p.stop();
-		p=null;
+		p = null;
 		appendToJTextPane("Server Stopped\n", getErrorTextStyle());
 	}
-	public void sendCommand(String command){
+
+	public void sendCommand(String command)
+	{
 		p.sendCommand(command);
 	}
-	public boolean isRunning(){
-		if(p != null)
+
+	public boolean isRunning()
+	{
+		if (p != null)
+		{
 			return p.isAlive();
-		else
+		} else
+		{
 			return false;
+		}
 	}
-	public void clearTextField(){
+
+	public void clearTextField()
+	{
 		field.clearCommand();
 	}
 }
-

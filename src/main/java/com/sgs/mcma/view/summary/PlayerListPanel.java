@@ -1,6 +1,7 @@
 package com.sgs.mcma.view.summary;
 
 import java.awt.BorderLayout;
+import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.event.FocusEvent;
@@ -18,59 +19,63 @@ import com.sgs.mcma.controller.summary.PlayerListController;
 import com.sgs.mcma.view.console.ConsolePane;
 
 @SuppressWarnings("serial")
-public class PlayerListPanel extends JPanel{
+public class PlayerListPanel extends JPanel
+{
 	public JList<String> playerList = new JList<String>();
 	public ConsolePane console;
 	DefaultListModel<String> playerListModel;
 	public static PlayerListPanel instance;
 	public PlayerCommandMenu popup;
 
-	public PlayerListPanel(ConsolePane console, DefaultListModel<String> playerListModel) 
+	public PlayerListPanel(ConsolePane console,
+			DefaultListModel<String> playerListModel)
 	{
-		instance = this;
+		PlayerListPanel.instance = this;
 		this.console = console;
 		popup = new PlayerCommandMenu();
 		this.playerListModel = playerListModel;
 		setLayout(new BorderLayout());
-		setPreferredSize(new Dimension(200,0));
+		setPreferredSize(new Dimension(200, 0));
 		JLabel label = new JLabel("Players Online");
-		label.setAlignmentX(CENTER_ALIGNMENT);
-		add(label, BorderLayout.NORTH);
+		label.setAlignmentX(Component.CENTER_ALIGNMENT);
+		this.add(label, BorderLayout.NORTH);
 		playerList.setModel(playerListModel);
-		playerList.setFont(new Font("Arial",Font.BOLD,14));
+		playerList.setFont(new Font("Arial", Font.BOLD, 14));
 		playerList.addMouseListener(new PlayerListMouseListener());
-		add(new JScrollPane(playerList), BorderLayout.CENTER);
+		this.add(new JScrollPane(playerList), BorderLayout.CENTER);
 		playerList.addFocusListener(new myFocusListener());
-		
+
 	}
 
 	private class PlayerListMouseListener extends MouseAdapter
 	{
 		@Override
-		public void mouseReleased(MouseEvent e) 
+		public void mouseReleased(MouseEvent e)
 		{
 			super.mouseReleased(e);
-			if(e.getButton() == MouseEvent.BUTTON3)
+			if (e.getButton() == MouseEvent.BUTTON3)
 			{
 				PlayerListController.rightClick(playerList, popup, e);
-			}
-			else if(e.getButton() == MouseEvent.BUTTON1){
+			} else if (e.getButton() == MouseEvent.BUTTON1)
+			{
 				PlayerListController.leftClick(playerList, popup, e);
 			}
 		}
 	}
-	private class myFocusListener implements FocusListener{
 
-		public void focusGained(FocusEvent e) 
+	private class myFocusListener implements FocusListener
+	{
+
+		public void focusGained(FocusEvent e)
 		{
-			
+
 		}
 
-		public void focusLost(FocusEvent e) 
+		public void focusLost(FocusEvent e)
 		{
 			PlayerListController.playerListLostFocus(popup);
 		}
-		
+
 	}
-	
+
 }

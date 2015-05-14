@@ -16,28 +16,33 @@ import com.sgs.mcma.controller.summary.SummaryTabController;
 import com.sgs.mcma.view.console.ConsolePane;
 
 @SuppressWarnings("serial")
-public class SummaryTab extends JPanel {
-	
+public class SummaryTab extends JPanel
+{
+
 	ConsolePane console;
 	private static SummaryTab instance;
 	public static DefaultListModel<String> playerListModel = new DefaultListModel<String>();
 
-	public SummaryTab(ConsolePane c){
+	public SummaryTab(ConsolePane c)
+	{
 		console = c;
-		instance = this;
+		SummaryTab.instance = this;
 		setLayout(new BorderLayout());
-		playerListModel.addElement("TestPlayer");
-		add(new PlayerListPanel(console,playerListModel), BorderLayout.WEST);
+		SummaryTab.playerListModel.addElement("TestPlayer");
+		this.add(new PlayerListPanel(console, SummaryTab.playerListModel),
+				BorderLayout.WEST);
 		JPanel panel = new JPanel(new BorderLayout());
 		panel.add(console, BorderLayout.CENTER);
 		panel.add(createButtonPanel(), BorderLayout.SOUTH);
-		add(panel, BorderLayout.CENTER);
+		this.add(panel, BorderLayout.CENTER);
 	}
-	public static SummaryTab Instance(){
-		return instance;
+
+	public static SummaryTab Instance()
+	{
+		return SummaryTab.instance;
 	}
-	
-	private JPanel createButtonPanel() 
+
+	private JPanel createButtonPanel()
 	{
 		JPanel buttonPanel = new JPanel();
 		buttonPanel.setLayout(new BoxLayout(buttonPanel, BoxLayout.PAGE_AXIS));
@@ -45,8 +50,8 @@ public class SummaryTab extends JPanel {
 		buttonPanel.add(createButtonBox());
 		return buttonPanel;
 	}
-	
-	private Box createButtonBox() 
+
+	private Box createButtonBox()
 	{
 		Box buttonBox = Box.createHorizontalBox();
 		buttonBox.add(Box.createHorizontalGlue());
@@ -56,7 +61,7 @@ public class SummaryTab extends JPanel {
 		buttonBox.add(Box.createHorizontalGlue());
 		return buttonBox;
 	}
-	
+
 	private JButton createStartServerButton()
 	{
 		ImageIcon startBtn = new ImageIcon("Resources\\StartBtn.png");
@@ -65,16 +70,16 @@ public class SummaryTab extends JPanel {
 		startButton.setMargin(new Insets(-2, -2, -2, -2));
 		startButton.setFocusPainted(false);
 		startButton.setOpaque(false);
-		startButton.addActionListener(new ActionListener() 
+		startButton.addActionListener(new ActionListener()
 		{
-			public void actionPerformed(ActionEvent e) 
+			public void actionPerformed(ActionEvent e)
 			{
-				SummaryTabController.startButtonPressed(instance);
+				SummaryTabController.startButtonPressed(SummaryTab.instance);
 			}
 		});
 		return startButton;
 	}
-	
+
 	private JButton createStopServerButton()
 	{
 		ImageIcon stopBtn = new ImageIcon("Resources\\StopBtn.png");
@@ -83,29 +88,35 @@ public class SummaryTab extends JPanel {
 		stopButton.setMargin(new Insets(-2, -2, -2, -2));
 		stopButton.setFocusPainted(false);
 		stopButton.setOpaque(false);
-		stopButton.addActionListener(new ActionListener() 
+		stopButton.addActionListener(new ActionListener()
 		{
-			public void actionPerformed(ActionEvent e) 
+			public void actionPerformed(ActionEvent e)
 			{
-				SummaryTabController.stopButtonPressed(instance);
+				SummaryTabController.stopButtonPressed(SummaryTab.instance);
 			}
 		});
 		return stopButton;
 	}
-	
-	public void clearPlayerList(){
-		playerListModel.clear();
+
+	public void clearPlayerList()
+	{
+		SummaryTab.playerListModel.clear();
 	}
-	
-	public void startServer(){
-		if(!console.isRunning())
+
+	public void startServer()
+	{
+		if (!console.isRunning())
+		{
 			console.startServer();
+		}
 	}
-	
+
 	public void stopServer()
 	{
-		if(console.isRunning())
+		if (console.isRunning())
+		{
 			console.stopServer();
+		}
 	}
 
 }

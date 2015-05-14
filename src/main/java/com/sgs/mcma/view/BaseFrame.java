@@ -19,51 +19,55 @@ import com.sgs.mcma.view.summary.SummaryTab;
 import com.sgs.mcma.webservice.Server;
 
 @SuppressWarnings("serial")
-public class BaseFrame extends JFrame 
+public class BaseFrame extends JFrame
 {
 	public static BaseFrame instance;
 	private static ConsolePane console;
 
 	public BaseFrame(String title, int width, int height)
 	{
-		instance = this;
-		console = new ConsolePane();
+		BaseFrame.instance = this;
+		BaseFrame.console = new ConsolePane();
 		Initialize(title, width, height);
-		this.pack();
-		
+		pack();
+
 	}
-	private void Initialize(String title, int width, int height) 
+
+	private void Initialize(String title, int width, int height)
 	{
-		this.setTitle(title);
+		setTitle(title);
 		ImageIcon img = new ImageIcon("Resources\\SGSLogo.png");
-		this.setIconImage(img.getImage());
+		setIconImage(img.getImage());
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		addWindowListener(new BaseFrameWindowListener());
-		setSize(new Dimension(width,height));
+		this.setSize(new Dimension(width, height));
 		populateContentPane();
 	}
 
-	private void populateContentPane() 
+	private void populateContentPane()
 	{
 		getContentPane().setLayout(new BorderLayout());
 		getContentPane().add(createTabs(), BorderLayout.CENTER);
 	}
 
-//
-//			TabbedPane Contents
-//
-	private JTabbedPane createTabs() 
+	//
+	// TabbedPane Contents
+	//
+	private JTabbedPane createTabs()
 	{
 		final MinecraftTabbedPane tabs = new MinecraftTabbedPane();
-		
-		tabs.addTab("Summary", new SummaryTab(console));
+
+		tabs.addTab("Summary", new SummaryTab(BaseFrame.console));
 		tabs.addTab("Configuration", new ServerSettingsTab());
-		tabs.addTab("Logs", (JTabbedPane) new ServerLogTab());
-		
-		tabs.addChangeListener(new ChangeListener() {
-			
-			public void stateChanged(ChangeEvent e) {
-				if(tabs.getSelectedIndex() == 2){
+		tabs.addTab("Logs", new ServerLogTab());
+
+		tabs.addChangeListener(new ChangeListener()
+		{
+
+			public void stateChanged(ChangeEvent e)
+			{
+				if (tabs.getSelectedIndex() == 2)
+				{
 					ServerLogTab.instance.setSelectedIndex(0);
 					ServerLogTab.instance.updateAllMessages();
 				}
@@ -72,41 +76,49 @@ public class BaseFrame extends JFrame
 		return tabs;
 	}
 
-	
-
-	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {	
-			public void run() {
-				BaseFrame frame = new BaseFrame("Minecraft Mod Admin", 1024, 700);
+	public static void main(String[] args)
+	{
+		EventQueue.invokeLater(new Runnable()
+		{
+			public void run()
+			{
+				BaseFrame frame = new BaseFrame("Minecraft Mod Admin", 1024,
+						700);
 				frame.setVisible(true);
 			}
 		});
-		Thread server = new Thread(new Runnable(){
-			public void run() {
+		Thread server = new Thread(new Runnable()
+		{
+			public void run()
+			{
 				new Server("localhost", 39640).run();
 			}
 		});
 		server.start();
 	}
+
 	//
-	//Window Listener for BaseFrame
+	// Window Listener for BaseFrame
 	//
-	public class BaseFrameWindowListener extends WindowAdapter 
-	{			
-		public void windowClosing(WindowEvent e) 
+	public class BaseFrameWindowListener extends WindowAdapter
+	{
+		@Override
+		public void windowClosing(WindowEvent e)
 		{
-			if(console.isRunning())
-				console.stopServer();
+			if (BaseFrame.console.isRunning())
+			{
+				BaseFrame.console.stopServer();
+			}
 		}
-		
-		public void windowClosed(WindowEvent e) 
+
+		@Override
+		public void windowClosed(WindowEvent e)
 		{
-			if(console.isRunning())
-				console.stopServer();
+			if (BaseFrame.console.isRunning())
+			{
+				BaseFrame.console.stopServer();
+			}
 		}
 	}
-
-	
-	
 
 }

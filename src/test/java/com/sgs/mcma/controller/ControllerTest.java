@@ -1,14 +1,15 @@
 package com.sgs.mcma.controller;
 
-import static org.junit.Assert.fail;
-
+import org.junit.Assert;
 import org.junit.Test;
 
-public class ControllerTest {
+public class ControllerTest
+{
 
 	@Test
-	public void test() {
-		fail("Not yet implemented");
+	public void test()
+	{
+		Assert.fail("Not yet implemented");
 	}
 
 }

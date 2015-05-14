@@ -14,9 +14,10 @@ import com.sgs.mcma.controller.summary.PlayerCommandMenuController;
 public class PlayerCommandMenu extends JPopupMenu
 {
 	static PlayerCommandMenu instance;
+
 	public PlayerCommandMenu()
 	{
-		instance = this;
+		PlayerCommandMenu.instance = this;
 		addCommand("achievement", "achievement");
 		addCommand("ban", "ban player");
 		addCommand("ban-ip", "ban-ip player");
@@ -49,21 +50,22 @@ public class PlayerCommandMenu extends JPopupMenu
 		addCommand("xp", "todo");
 
 	}
+
 	public void mouseEntered(MouseEvent event)
 	{
 		JMenuItem jmi = (JMenuItem) event.getSource();
-		jmi.setBackground(UIManager.getColor    ("MenuItem.selectionBackground"));
-	    jmi.setForeground(UIManager.getColor("MenuItem.selectionForeground"));
+		jmi.setBackground(UIManager.getColor("MenuItem.selectionBackground"));
+		jmi.setForeground(UIManager.getColor("MenuItem.selectionForeground"));
 	}
-	
+
 	public void addCommand(String title, String command)
 	{
 		JMenuItem temp = new JMenuItem(title);
 		this.add(temp);
 		temp.addActionListener(new commandActionListener(command, title));
-	
+
 	}
-	
+
 	private class commandActionListener implements ActionListener
 	{
 		private String command;
@@ -72,12 +74,15 @@ public class PlayerCommandMenu extends JPopupMenu
 		public commandActionListener(String command, String title)
 		{
 			this.command = command;
-			this.title = title;			
+			this.title = title;
 		}
-		@SuppressWarnings("static-access")
-		public void actionPerformed(ActionEvent e) 
+
+		public void actionPerformed(ActionEvent e)
 		{
-			PlayerCommandMenuController.commandPressed(PlayerListPanel.instance.playerList, PlayerListPanel.instance.console, command, title, instance);
+			PlayerCommandMenuController.commandPressed(
+					PlayerListPanel.instance.playerList,
+					PlayerListPanel.instance.console, command, title,
+					PlayerCommandMenu.instance);
 		}
 	}
 }

@@ -8,7 +8,8 @@ import java.io.OutputStreamWriter;
 
 import javax.swing.text.SimpleAttributeSet;
 
-public class ControllableProcess {
+public class ControllableProcess
+{
 	private ProcessBuilder pb;
 	private Process p;
 	private JTextPaneInputStreamPrinter inputStreamPrinter;
@@ -18,38 +19,48 @@ public class ControllableProcess {
 	private BufferedWriter output;
 	private ConsolePane console;
 
-	public ControllableProcess(String jarPath, String jarName, ConsolePane console) {
+	public ControllableProcess(String jarPath, String jarName,
+			ConsolePane console)
+	{
 		this.console = console;
-		pb = new ProcessBuilder("java", "-jar", jarPath+jarName, "nogui");
+		pb = new ProcessBuilder("java", "-jar", jarPath + jarName, "nogui");
 		pb.directory(new File(jarPath));
 	}
-	
-	public boolean start(){
-		try{
-			if(p == null){
+
+	public boolean start()
+	{
+		try
+		{
+			if (p == null)
+			{
 				p = pb.start();
 				initializeIO();
 				return true;
 			}
-		}
-		catch(IOException e){
+		} catch (IOException e)
+		{
 			e.printStackTrace();
 		}
 		return false;
 	}
-	
-	private void initializeIO() {
-        output = new BufferedWriter(new OutputStreamWriter(p.getOutputStream()));
-        inputStreamPrinter = new JTextPaneInputStreamPrinter(p.getInputStream(), false);
-        inputListener = new Thread(inputStreamPrinter);
-        errorStreamPrinter = new JTextPaneInputStreamPrinter(p.getErrorStream(),true);
-        errorListener = new Thread(errorStreamPrinter);
-        inputListener.start();
-        errorListener.start();
+
+	private void initializeIO()
+	{
+		output = new BufferedWriter(new OutputStreamWriter(p.getOutputStream()));
+		inputStreamPrinter = new JTextPaneInputStreamPrinter(
+				p.getInputStream(), false);
+		inputListener = new Thread(inputStreamPrinter);
+		errorStreamPrinter = new JTextPaneInputStreamPrinter(
+				p.getErrorStream(), true);
+		errorListener = new Thread(errorStreamPrinter);
+		inputListener.start();
+		errorListener.start();
 	}
 
-	public boolean stop(){
-		try{
+	public boolean stop()
+	{
+		try
+		{
 			p.waitFor();
 			p.destroy();
 			p = null;
@@ -62,58 +73,77 @@ public class ControllableProcess {
 			inputListener = null;
 			errorListener = null;
 			return true;
-		}
-		catch(Exception e){
+		} catch (Exception e)
+		{
 			e.printStackTrace();
 		}
 		return false;
 	}
-	
-	public void sendCommand(String text){
-		try {
-			output.write(text+'\n');
-	    	output.flush();
-		} catch (IOException e) {
+
+	public void sendCommand(String text)
+	{
+		try
+		{
+			output.write(text + '\n');
+			output.flush();
+		} catch (IOException e)
+		{
 			e.printStackTrace();
 		}
 	}
-	public boolean isAlive(){
+
+	public boolean isAlive()
+	{
 		return p.isAlive();
 	}
-	private class JTextPaneInputStreamPrinter implements Runnable{
+
+	private class JTextPaneInputStreamPrinter implements Runnable
+	{
 		private boolean running = true;
 		private boolean isErrorStream;
 		private InputStream stream;
-    	byte[] inBuffer = new byte[1024];
-    	
-    	public JTextPaneInputStreamPrinter(InputStream stream, boolean isErrorStream){
-    		this.stream = stream;
-    		this.isErrorStream = isErrorStream;
-    	}
-    	
-    	public void run(){
-    		if(isErrorStream){
-    			runStreamPrinter(console.getErrorTextStyle());
-    		}
-    		else{
-    			runStreamPrinter(console.getConsoleTextStyle());
-    		}
-    	}
-		public void runStreamPrinter(SimpleAttributeSet textStyle) {
-			while(running){
-		        try {
-			    	int length = stream.read(inBuffer);
-		        	if(length > -1) {
-	                    console.appendToJTextPane(new String(inBuffer, 0, length), textStyle);
-		        	}
-				} 
-		        catch (Exception e) {
+		byte[] inBuffer = new byte[1024];
+
+		public JTextPaneInputStreamPrinter(InputStream stream,
+				boolean isErrorStream)
+		{
+			this.stream = stream;
+			this.isErrorStream = isErrorStream;
+		}
+
+		public void run()
+		{
+			if (isErrorStream)
+			{
+				runStreamPrinter(console.getErrorTextStyle());
+			} else
+			{
+				runStreamPrinter(console.getConsoleTextStyle());
+			}
+		}
+
+		public void runStreamPrinter(SimpleAttributeSet textStyle)
+		{
+			while (running)
+			{
+				try
+				{
+					int length = stream.read(inBuffer);
+					if (length > -1)
+					{
+						console.appendToJTextPane(new String(inBuffer, 0,
+								length), textStyle);
+					}
+				} catch (Exception e)
+				{
 					e.printStackTrace();
 				}
 			}
 		}
-		public void pause(){
+
+		public void pause()
+		{
 			running = false;
 		}
-    }
+	}
 }

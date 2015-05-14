@@ -17,13 +17,16 @@ import com.sgs.mcma.webservice.ServerFacade;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
 
-public class PlayerLeftHandler implements HttpHandler {
+public class PlayerLeftHandler implements HttpHandler
+{
 
 	private Logger logger = Logger.getLogger("MCMA");
 
-	public void handle(HttpExchange exchange) throws IOException {
+	public void handle(HttpExchange exchange) throws IOException
+	{
 		logger.entering("PlayerLeftHandler", "handle");
-		try {
+		try
+		{
 			Server.setAddress(exchange.getLocalAddress().getHostString());
 			InputStream requestBody = exchange.getRequestBody();
 			ObjectInput in = new ObjectInputStream(requestBody);
@@ -38,23 +41,27 @@ public class PlayerLeftHandler implements HttpHandler {
 			out.close();
 			responseBody.close();
 
-		} catch (ClassNotFoundException e) {
+		} catch (ClassNotFoundException e)
+		{
 			exchange.sendResponseHeaders(HttpURLConnection.HTTP_BAD_REQUEST, 0);
 			logger.severe("Error in PlayerLeftHandler.handle(): "
 					+ e.getMessage());
 			e.printStackTrace();
-		} catch (ServerException e) {
+		} catch (ServerException e)
+		{
 			exchange.sendResponseHeaders(HttpURLConnection.HTTP_INTERNAL_ERROR,
 					0);
 			logger.severe("Error in PlayerLeftHandler.handle(): "
 					+ e.getMessage());
 			e.printStackTrace();
-		} finally {
+		} finally
+		{
 			if (exchange != null)
+			{
 				exchange.close();
+			}
 			logger.exiting("PlayerLeftHandler", "handle");
 		}
 	}
 
 }
-
