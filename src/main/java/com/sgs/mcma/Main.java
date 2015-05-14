@@ -1,3 +1,4 @@
+package com.sgs.mcma;
 import java.awt.EventQueue;
 
 import com.sgs.mcma.gui.view.BaseFrame;
