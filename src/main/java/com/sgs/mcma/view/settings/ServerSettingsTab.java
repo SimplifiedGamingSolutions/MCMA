@@ -8,6 +8,10 @@ import java.awt.event.ActionListener;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
+import java.io.IOException;
+import java.nio.charset.Charset;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 
 import javax.swing.JButton;
 import javax.swing.JPanel;
@@ -20,12 +24,17 @@ import org.fife.ui.rsyntaxtextarea.RSyntaxTextArea;
 import org.fife.ui.rsyntaxtextarea.SyntaxConstants;
 import org.fife.ui.rtextarea.RTextScrollPane;
 
+import com.sgs.mcma.controller.settings.ServerSettingsController;
+
 @SuppressWarnings("serial")
-public class ServerSettingsTab extends JTabbedPane {
+public class ServerSettingsTab extends JTabbedPane 
+{
+	private static ServerSettingsTab instance;
 	private static RSyntaxTextArea textArea;
 	
 	public ServerSettingsTab() 
 	{
+		instance = this;
 		setTabPlacement(SwingConstants.LEFT);
 		JPanel tab1 = new JPanel();
 		tab1.setLayout(new BorderLayout());
@@ -42,7 +51,9 @@ public class ServerSettingsTab extends JTabbedPane {
 		addTab("Server Config", tab1);
 		addTab("Mod Config", new JPanel());
 	}
-	
+	public static ServerSettingsTab Instance(){
+		return instance;
+	}
 	private Component CreateSyntaxTextArea() 
 	{
 	      JPanel cp = new JPanel(new BorderLayout());
@@ -54,26 +65,43 @@ public class ServerSettingsTab extends JTabbedPane {
 	      sp.setFoldIndicatorEnabled(true);
 	      cp.add(sp, BorderLayout.CENTER);
 	      JButton saveButton = new JButton("Save");
-	      saveButton.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				try{
-					String text = textArea.getText();
-					File selectedFile = DirectoryTreeView.instance.getFileForSelectedNode();
-					FileWriter fw = new FileWriter(selectedFile);
-					BufferedWriter bw = new BufferedWriter(fw);
-					bw.write(text);
-					bw.close();
-				}
-				catch(Exception ex){
-					ex.printStackTrace();
-				}
+	      saveButton.addActionListener(new ActionListener() 
+	      {
+			public void actionPerformed(ActionEvent e) 
+			{
+				ServerSettingsController.saveButtonPressed(instance);
 			}
-		});
+	      });
 	      cp.add(saveButton, BorderLayout.SOUTH);
 	      return cp;
 	}
-	
+	public void writeTextAreaToFile()
+	{
+		try{
+			String text = textArea.getText();
+			File selectedFile = DirectoryTreeView.instance.getFileForSelectedNode();
+			FileWriter fw = new FileWriter(selectedFile);
+			BufferedWriter bw = new BufferedWriter(fw);
+			bw.write(text);
+			bw.close();
+		}
+		catch(Exception ex){
+			ex.printStackTrace();
+		}
+	}
 	public static RSyntaxTextArea getTextArea(){
 		return textArea;
 	}
+
+	  public void writeFileToTextArea(File file){
+		    String text = "";
+			try 
+			{
+				text = new String(Files.readAllBytes(Paths.get(file.getPath())), Charset.defaultCharset());
+			} 
+			catch (IOException e1) {
+				e1.printStackTrace();
+			}
+			textArea.setText(text);
+	  }
 }

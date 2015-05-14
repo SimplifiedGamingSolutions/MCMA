@@ -17,6 +17,7 @@ import javax.swing.text.SimpleAttributeSet;
 import javax.swing.text.StyleConstants;
 import javax.swing.text.StyledDocument;
 
+import com.sgs.mcma.controller.summary.ConsolePaneController;
 import com.sgs.mcma.view.test.TestFrame;
 
 @SuppressWarnings("serial")
@@ -27,12 +28,16 @@ public class ConsolePane extends JPanel{
     private SimpleAttributeSet consoleTextAttributeSet;
     private SimpleAttributeSet errorTextAttributeSet;
     private ControllableProcess p;
+    private ConsolePane instance;
 
     public ConsolePane(){
+    	instance = this;
     	populateTextPane();
 		populateConsolePane();
     }
-    
+    public ConsolePane Instance(){
+    	return instance;
+    }
     private void populateTextPane() {
     	consoleTextPane = new JTextPane();
     	DefaultCaret caret = (DefaultCaret)consoleTextPane.getCaret();
@@ -45,16 +50,16 @@ public class ConsolePane extends JPanel{
     	errorTextAttributeSet = new SimpleAttributeSet();
     	StyleConstants.setForeground(errorTextAttributeSet, Color.RED);
 	}
-
+    public ConsoleCommandTextField field;
 	private void populateConsolePane() {
 		setLayout (new BorderLayout ());
 		JScrollPane pane = new JScrollPane (consoleTextPane, ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS, ScrollPaneConstants.HORIZONTAL_SCROLLBAR_AS_NEEDED);
         add(pane, BorderLayout.CENTER);
-        ConsoleCommandTextField field = new ConsoleCommandTextField();
+        field = new ConsoleCommandTextField();
         add(field,BorderLayout.SOUTH);
 	}
 	
-	private void clearConsole(){
+	public void clearConsole(){
 		consoleTextPane.setText("");
 	}
 	class ConsoleCommandTextField extends JTextField {
@@ -63,23 +68,7 @@ public class ConsolePane extends JPanel{
     		this.addActionListener(new ActionListener() {
     			
     			public void actionPerformed(ActionEvent e) {
-		        	if(getText().equals("clear")){
-		        		clearConsole();
-		        	}
-		        	else if(p != null && p.isAlive()){
-    		        	if(getText().equals("stop")){
-    		        		stopServer();
-    		        	}
-    		        	else{
-	    		        	p.sendCommand(getText());
-    		        	}
-    		        	clearCommand();
-    				}
-    				else{
-    					clearConsole();
-						appendToJTextPane("No running server", getErrorTextStyle());
-    		        	clearCommand();
-    				}
+		        	ConsolePaneController.commandTextFieldActionTriggered(getText(), instance);
     			}
     		});
     	}
@@ -132,6 +121,9 @@ public class ConsolePane extends JPanel{
 			return p.isAlive();
 		else
 			return false;
+	}
+	public void clearTextField(){
+		field.clearCommand();
 	}
 }
 

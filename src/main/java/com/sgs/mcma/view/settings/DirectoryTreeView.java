@@ -9,10 +9,6 @@ import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.FilenameFilter;
-import java.io.IOException;
-import java.nio.charset.Charset;
-import java.nio.file.Files;
-import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -32,7 +28,7 @@ import javax.swing.tree.DefaultTreeCellRenderer;
 
 import org.fife.ui.rsyntaxtextarea.RSyntaxTextArea;
 
-import com.sgs.mcma.controller.settings.DirectoryTreeViewController;
+import com.sgs.mcma.controller.settings.ServerSettingsController;
 
 @SuppressWarnings("serial")
 public class DirectoryTreeView extends JPanel 
@@ -207,9 +203,9 @@ public Dimension getPreferredSize()
   {
 	    public void valueChanged(TreeSelectionEvent e) 
 	    {
-	        RSyntaxTextArea textArea = ServerSettingsTab.getTextArea();
 	        String path = getNodeLocalPath((DefaultMutableTreeNode) e.getPath().getLastPathComponent());
-	        DirectoryTreeViewController.selectedNodeChanged(path, textArea);
+	        File file = new File(path);
+	        ServerSettingsController.selectedNodeChanged(file, file.isDirectory());
 	    }
   }
 }

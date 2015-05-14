@@ -4,16 +4,11 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 
-import javax.swing.ImageIcon;
-import javax.swing.JList;
 import javax.swing.JMenuItem;
-import javax.swing.JOptionPane;
 import javax.swing.JPopupMenu;
 import javax.swing.UIManager;
 
 import com.sgs.mcma.controller.summary.PlayerCommandMenuController;
-import com.sgs.mcma.view.BaseFrame;
-import com.sgs.mcma.view.console.ConsolePane;
 
 @SuppressWarnings("serial")
 public class PlayerCommandMenu extends JPopupMenu
