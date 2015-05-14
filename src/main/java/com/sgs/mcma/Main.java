@@ -1,7 +1,7 @@
 package com.sgs.mcma;
 import java.awt.EventQueue;
 
-import com.sgs.mcma.gui.view.BaseFrame;
+import com.sgs.mcma.view.BaseFrame;
 import com.sgs.mcma.webservice.Server;
 
 

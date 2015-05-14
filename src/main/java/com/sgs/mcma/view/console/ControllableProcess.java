@@ -1,4 +1,4 @@
-package com.sgs.mcma.gui.view.console;
+package com.sgs.mcma.view.console;
 
 import java.io.BufferedWriter;
 import java.io.File;

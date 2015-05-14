@@ -1,4 +1,4 @@
-package com.sgs.mcma.gui.view.logs;
+package com.sgs.mcma.view.logs;
 
 import java.io.IOException;
 import java.nio.charset.Charset;

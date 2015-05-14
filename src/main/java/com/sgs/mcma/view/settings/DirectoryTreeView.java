@@ -1,4 +1,4 @@
-package com.sgs.mcma.gui.view.settings;
+package com.sgs.mcma.view.settings;
 
 import java.awt.BorderLayout;
 import java.awt.Color;

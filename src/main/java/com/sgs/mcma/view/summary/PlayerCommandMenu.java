@@ -1,4 +1,4 @@
-package com.sgs.mcma.gui.view.summary;
+package com.sgs.mcma.view.summary;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -9,12 +9,12 @@ import javax.swing.JList;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JPopupMenu;
-import javax.swing.JWindow;
 import javax.swing.UIManager;
 
-import com.sgs.mcma.gui.view.BaseFrame;
-import com.sgs.mcma.gui.view.console.ConsolePane;
+import com.sgs.mcma.view.BaseFrame;
+import com.sgs.mcma.view.console.ConsolePane;
 
+@SuppressWarnings("serial")
 public class PlayerCommandMenu extends JPopupMenu{
 	PlayerCommandMenu menu = this;
 	

@@ -1,25 +1,21 @@
-package com.sgs.mcma.gui.view;
+package com.sgs.mcma.view;
 
 import java.awt.BorderLayout;
-import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.EventQueue;
-import java.awt.event.FocusEvent;
-import java.awt.event.FocusListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
-import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
-import com.sgs.mcma.gui.view.console.ConsolePane;
-import com.sgs.mcma.gui.view.logs.ServerLogTab;
-import com.sgs.mcma.gui.view.settings.ServerSettingsTab;
-import com.sgs.mcma.gui.view.summary.SummaryTab;
+import com.sgs.mcma.view.console.ConsolePane;
+import com.sgs.mcma.view.logs.ServerLogTab;
+import com.sgs.mcma.view.settings.ServerSettingsTab;
+import com.sgs.mcma.view.summary.SummaryTab;
 import com.sgs.mcma.webservice.Server;
 
 @SuppressWarnings("serial")
