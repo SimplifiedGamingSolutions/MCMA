@@ -86,7 +86,7 @@ public class MinecraftTabbedPane extends JTabbedPane
 		}
 
 		protected class StretchTabbedPaneLayout extends
-		MetalTabbedPaneUI.TabbedPaneLayout
+				MetalTabbedPaneUI.TabbedPaneLayout
 		{
 
 			protected Container tabContainer;

@@ -65,7 +65,7 @@ public class ServerSettingsTab extends JTabbedPane
 		JPanel cp = new JPanel(new BorderLayout());
 		ServerSettingsTab.textArea = new RSyntaxTextArea(20, 60);
 		ServerSettingsTab.textArea
-		.setSyntaxEditingStyle(SyntaxConstants.SYNTAX_STYLE_XML);
+				.setSyntaxEditingStyle(SyntaxConstants.SYNTAX_STYLE_XML);
 		ServerSettingsTab.textArea.setCodeFoldingEnabled(true);
 		ServerSettingsTab.textArea.setAntiAliasingEnabled(true);
 		RTextScrollPane sp = new RTextScrollPane(ServerSettingsTab.textArea);
@@ -77,7 +77,7 @@ public class ServerSettingsTab extends JTabbedPane
 			public void actionPerformed(ActionEvent e)
 			{
 				ServerSettingsController
-				.saveButtonPressed(ServerSettingsTab.instance);
+						.saveButtonPressed(ServerSettingsTab.instance);
 			}
 		});
 		cp.add(saveButton, BorderLayout.SOUTH);

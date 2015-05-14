@@ -5,8 +5,7 @@ import com.sgs.mcma.view.console.ConsolePane;
 public class ConsolePaneController
 {
 
-	public static void commandTextFieldActionTriggered(String text,
-			ConsolePane console)
+	public static void commandTextFieldActionTriggered(String text, ConsolePane console)
 	{
 		if (text.equals("clear"))
 		{

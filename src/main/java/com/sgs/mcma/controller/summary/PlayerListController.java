@@ -1,10 +1,12 @@
 package com.sgs.mcma.controller.summary;
 
+import java.awt.Point;
 import java.awt.event.MouseEvent;
 
 import javax.swing.JList;
 
 import com.sgs.mcma.view.summary.PlayerCommandMenu;
+import com.sgs.mcma.view.summary.PlayerListPanel;
 
 public class PlayerListController
 {
@@ -24,27 +26,14 @@ public class PlayerListController
 		popup.setVisible(false);
 	}
 
-	public static void rightClick(JList<String> playerList,
-			PlayerCommandMenu popup, MouseEvent e)
+	public static void rightClick(PlayerListPanel panel, MouseEvent e)
 	{
-		int playerIndex = playerList.locationToIndex(e.getPoint());
-		if (playerIndex != -1
-				&& playerList.getCellBounds(playerIndex, playerIndex).contains(
-						e.getPoint()))
-		{
-			playerList.setSelectedIndex(playerIndex);
-			popup.setLocation(e.getLocationOnScreen());
-			popup.setVisible(true);
-			playerList.requestFocus();
-		} else
-		{
-			popup.setVisible(false);
-			playerList.clearSelection();
-		}
+		panel.showCommandMenu(e);
 	}
+	
 
-	public static void playerListLostFocus(PlayerCommandMenu popup)
+	public static void playerListLostFocus(PlayerListPanel panel)
 	{
-		popup.setVisible(false);
+		panel.hideCommandMenu();
 	}
 }

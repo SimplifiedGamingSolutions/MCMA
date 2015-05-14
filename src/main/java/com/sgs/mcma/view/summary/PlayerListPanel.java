@@ -55,7 +55,7 @@ public class PlayerListPanel extends JPanel
 			super.mouseReleased(e);
 			if (e.getButton() == MouseEvent.BUTTON3)
 			{
-				PlayerListController.rightClick(playerList, popup, e);
+				PlayerListController.rightClick(instance, e);
 			} else if (e.getButton() == MouseEvent.BUTTON1)
 			{
 				PlayerListController.leftClick(playerList, popup, e);
@@ -73,9 +73,31 @@ public class PlayerListPanel extends JPanel
 
 		public void focusLost(FocusEvent e)
 		{
-			PlayerListController.playerListLostFocus(popup);
+			PlayerListController.playerListLostFocus(instance);
 		}
 
+	}
+
+	public void hideCommandMenu()
+	{
+		popup.setVisible(false);
+	}
+
+	public void showCommandMenu(MouseEvent e){
+		int playerIndex = playerList.locationToIndex(e.getPoint());
+		if (playerIndex != -1
+				&& playerList.getCellBounds(playerIndex, playerIndex).contains(
+						e.getPoint()))
+		{
+			playerList.setSelectedIndex(playerIndex);
+			popup.setLocation(e.getLocationOnScreen());
+			popup.setVisible(true);
+			playerList.requestFocus();
+		} else
+		{
+			popup.setVisible(false);
+			playerList.clearSelection();
+		}
 	}
 
 }
