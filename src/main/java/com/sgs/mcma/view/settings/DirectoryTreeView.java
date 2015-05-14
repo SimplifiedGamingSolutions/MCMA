@@ -32,9 +32,7 @@ import com.sgs.mcma.controller.settings.ServerSettingsController;
 public class DirectoryTreeView extends JPanel
 {
 	public static DirectoryTreeView instance;
-	public static ArrayList<String> exclusions = new ArrayList<String>(
-			Arrays.asList("crash-reports,logs,world,libraries,eula.txt,.*\\.json,.*\\.jar,.*\\.log.,.*\\..gz,.*\\.dat.*,.*\\.lock,.*\\.mca"
-					.split(",")));
+	public static ArrayList<String> exclusions = new ArrayList<String>(Arrays.asList("crash-reports,logs,world,libraries,eula.txt,.*\\.json,.*\\.jar,.*\\.log.,.*\\..gz,.*\\.dat.*,.*\\.lock,.*\\.mca".split(",")));
 	private JTree tree;
 
 	public DirectoryTreeView(File dir)
@@ -73,8 +71,7 @@ public class DirectoryTreeView extends JPanel
 	DefaultMutableTreeNode addNodes(DefaultMutableTreeNode curTop, File dir)
 	{
 		String curPath = dir.getPath();
-		DefaultMutableTreeNode curDir = new DefaultMutableTreeNode(
-				dir.getName());
+		DefaultMutableTreeNode curDir = new DefaultMutableTreeNode(dir.getName());
 		if (curTop != null)
 		{ // should only be null at root
 			curTop.add(curDir);
@@ -133,8 +130,7 @@ public class DirectoryTreeView extends JPanel
 
 	public File getFileForSelectedNode()
 	{
-		return new File(getNodeLocalPath((DefaultMutableTreeNode) tree
-				.getSelectionPath().getLastPathComponent()));
+		return new File(getNodeLocalPath((DefaultMutableTreeNode) tree.getSelectionPath().getLastPathComponent()));
 	}
 
 	@Override
@@ -176,23 +172,16 @@ public class DirectoryTreeView extends JPanel
 
 	private static class MyTreeCellRenderer extends DefaultTreeCellRenderer
 	{
-		private static ImageIcon closed = MyTreeCellRenderer.scale(
-				new ImageIcon("Resources\\Chest-Closed.png"), 1 / 2,
-				DirectoryTreeView.instance.tree);
-		private static ImageIcon open = MyTreeCellRenderer.scale(new ImageIcon(
-				"Resources\\Chest-Open.png"), 1 / 2,
-				DirectoryTreeView.instance.tree);
+		private static ImageIcon closed = MyTreeCellRenderer.scale(new ImageIcon("Resources\\Chest-Closed.png"), 1 / 2, DirectoryTreeView.instance.tree);
+		private static ImageIcon open = MyTreeCellRenderer.scale(new ImageIcon("Resources\\Chest-Open.png"), 1 / 2, DirectoryTreeView.instance.tree);
 
 		static ImageIcon scale(ImageIcon icon, double scaleFactor, JTree tree)
 		{
 			double width = icon.getIconWidth();
 			double height = icon.getIconHeight();
-			int iconwidth = UIManager.getIcon("FileView.fileIcon")
-					.getIconWidth();
-			int iconheight = UIManager.getIcon("FileView.fileIcon")
-					.getIconHeight();
-			BufferedImage image = new BufferedImage(iconwidth, iconheight,
-					BufferedImage.TYPE_INT_ARGB);
+			int iconwidth = UIManager.getIcon("FileView.fileIcon").getIconWidth();
+			int iconheight = UIManager.getIcon("FileView.fileIcon").getIconHeight();
+			BufferedImage image = new BufferedImage(iconwidth, iconheight, BufferedImage.TYPE_INT_ARGB);
 
 			Graphics2D g = image.createGraphics();
 			g.scale(iconwidth / width, iconheight / height);
@@ -203,12 +192,9 @@ public class DirectoryTreeView extends JPanel
 		}
 
 		@Override
-		public Component getTreeCellRendererComponent(JTree tree, Object value,
-				boolean sel, boolean expanded, boolean leaf, int row,
-				boolean hasFocus)
+		public Component getTreeCellRendererComponent(JTree tree, Object value, boolean sel, boolean expanded, boolean leaf, int row, boolean hasFocus)
 		{
-			super.getTreeCellRendererComponent(tree, value, sel, expanded,
-					leaf, row, hasFocus);
+			super.getTreeCellRendererComponent(tree, value, sel, expanded, leaf, row, hasFocus);
 
 			// decide what icons you want by examining the node
 			if (value instanceof DefaultMutableTreeNode)
@@ -239,11 +225,9 @@ public class DirectoryTreeView extends JPanel
 	{
 		public void valueChanged(TreeSelectionEvent e)
 		{
-			String path = getNodeLocalPath((DefaultMutableTreeNode) e.getPath()
-					.getLastPathComponent());
+			String path = getNodeLocalPath((DefaultMutableTreeNode) e.getPath().getLastPathComponent());
 			File file = new File(path);
-			ServerSettingsController.selectedNodeChanged(file,
-					file.isDirectory());
+			ServerSettingsController.selectedNodeChanged(file, file.isDirectory());
 		}
 	}
 }

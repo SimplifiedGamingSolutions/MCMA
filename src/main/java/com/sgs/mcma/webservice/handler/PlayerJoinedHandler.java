@@ -44,15 +44,12 @@ public class PlayerJoinedHandler implements HttpHandler
 		} catch (ClassNotFoundException e)
 		{
 			exchange.sendResponseHeaders(HttpURLConnection.HTTP_BAD_REQUEST, 0);
-			logger.severe("Error in PlayerJoinedHandler.handle(): "
-					+ e.getMessage());
+			logger.severe("Error in PlayerJoinedHandler.handle(): " + e.getMessage());
 			e.printStackTrace();
 		} catch (ServerException e)
 		{
-			exchange.sendResponseHeaders(HttpURLConnection.HTTP_INTERNAL_ERROR,
-					0);
-			logger.severe("Error in PlayerJoinedHandler.handle(): "
-					+ e.getMessage());
+			exchange.sendResponseHeaders(HttpURLConnection.HTTP_INTERNAL_ERROR, 0);
+			logger.severe("Error in PlayerJoinedHandler.handle(): " + e.getMessage());
 			e.printStackTrace();
 		} finally
 		{

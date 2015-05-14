@@ -19,8 +19,7 @@ public class ControllableProcess
 	private BufferedWriter output;
 	private ConsolePane console;
 
-	public ControllableProcess(String jarPath, String jarName,
-			ConsolePane console)
+	public ControllableProcess(String jarPath, String jarName, ConsolePane console)
 	{
 		this.console = console;
 		pb = new ProcessBuilder("java", "-jar", jarPath + jarName, "nogui");
@@ -47,11 +46,9 @@ public class ControllableProcess
 	private void initializeIO()
 	{
 		output = new BufferedWriter(new OutputStreamWriter(p.getOutputStream()));
-		inputStreamPrinter = new JTextPaneInputStreamPrinter(
-				p.getInputStream(), false);
+		inputStreamPrinter = new JTextPaneInputStreamPrinter(p.getInputStream(), false);
 		inputListener = new Thread(inputStreamPrinter);
-		errorStreamPrinter = new JTextPaneInputStreamPrinter(
-				p.getErrorStream(), true);
+		errorStreamPrinter = new JTextPaneInputStreamPrinter(p.getErrorStream(), true);
 		errorListener = new Thread(errorStreamPrinter);
 		inputListener.start();
 		errorListener.start();
@@ -104,8 +101,7 @@ public class ControllableProcess
 		private InputStream stream;
 		byte[] inBuffer = new byte[1024];
 
-		public JTextPaneInputStreamPrinter(InputStream stream,
-				boolean isErrorStream)
+		public JTextPaneInputStreamPrinter(InputStream stream, boolean isErrorStream)
 		{
 			this.stream = stream;
 			this.isErrorStream = isErrorStream;
@@ -131,8 +127,7 @@ public class ControllableProcess
 					int length = stream.read(inBuffer);
 					if (length > -1)
 					{
-						console.appendToJTextPane(new String(inBuffer, 0,
-								length), textStyle);
+						console.appendToJTextPane(new String(inBuffer, 0, length), textStyle);
 					}
 				} catch (Exception e)
 				{

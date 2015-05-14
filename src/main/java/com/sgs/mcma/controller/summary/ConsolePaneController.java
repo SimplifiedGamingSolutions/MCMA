@@ -23,8 +23,7 @@ public class ConsolePaneController
 		} else
 		{
 			console.clearConsole();
-			console.appendToJTextPane("No running server",
-					console.getErrorTextStyle());
+			console.appendToJTextPane("No running server", console.getErrorTextStyle());
 			console.clearTextField();
 		}
 	}

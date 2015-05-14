@@ -17,14 +17,11 @@ public class PlayerCommandMenuController
 		if (command.equals("achievement"))
 		{
 			String[] options =
-			{ "Give Player", "Take Player" };
+				{
+			"Give Player", "Take Player"
+			};
 			ImageIcon img = new ImageIcon("Resources\\give.png");
-			JOptionPane.showOptionDialog(
-					BaseFrame.instance,
-					"Give or Take Achievement from "
-							+ playerList.getSelectedValue(),
-					title.toUpperCase(), JOptionPane.YES_NO_CANCEL_OPTION,
-					JOptionPane.QUESTION_MESSAGE, img, options, options[0]);
+			JOptionPane.showOptionDialog(BaseFrame.instance, "Give or Take Achievement from " + playerList.getSelectedValue(), title.toUpperCase(), JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE, img, options, options[0]);
 		} else
 		{
 			String player = playerList.getSelectedValue();

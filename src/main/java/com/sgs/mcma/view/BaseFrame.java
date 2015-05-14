@@ -82,8 +82,7 @@ public class BaseFrame extends JFrame
 		{
 			public void run()
 			{
-				BaseFrame frame = new BaseFrame("Minecraft Mod Admin", 1024,
-						700);
+				BaseFrame frame = new BaseFrame("Minecraft Mod Admin", 1024, 700);
 				frame.setVisible(true);
 			}
 		});

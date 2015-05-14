@@ -49,10 +49,7 @@ public class ServerLogTab extends JTabbedPane
 	{
 		try
 		{
-			ServerLogTab.allMessagesTextArea.getTextArea().setText(
-					new String(Files.readAllBytes(Paths
-							.get("Server\\logs\\latest.log")), Charset
-							.defaultCharset()).trim());
+			ServerLogTab.allMessagesTextArea.getTextArea().setText(new String(Files.readAllBytes(Paths.get("Server\\logs\\latest.log")), Charset.defaultCharset()).trim());
 		} catch (IOException e)
 		{
 			// TODO Auto-generated catch block
@@ -64,8 +61,7 @@ public class ServerLogTab extends JTabbedPane
 	{
 		try
 		{
-			List<String> AllMessages = Files.readAllLines(Paths
-					.get("Server\\logs\\latest.log"));
+			List<String> AllMessages = Files.readAllLines(Paths.get("Server\\logs\\latest.log"));
 			String errorMessages = "";
 			for (String line : AllMessages)
 			{
@@ -74,8 +70,7 @@ public class ServerLogTab extends JTabbedPane
 					errorMessages += line + '\n';
 				}
 			}
-			ServerLogTab.chatMessagesTextArea.getTextArea().setText(
-					errorMessages.trim());
+			ServerLogTab.chatMessagesTextArea.getTextArea().setText(errorMessages.trim());
 		} catch (IOException e)
 		{
 			// TODO Auto-generated catch block
@@ -87,8 +82,7 @@ public class ServerLogTab extends JTabbedPane
 	{
 		try
 		{
-			List<String> AllMessages = Files.readAllLines(Paths
-					.get("Server\\logs\\latest.log"));
+			List<String> AllMessages = Files.readAllLines(Paths.get("Server\\logs\\latest.log"));
 			String chatMessages = "";
 			for (String line : AllMessages)
 			{
@@ -97,8 +91,7 @@ public class ServerLogTab extends JTabbedPane
 					chatMessages += line + '\n';
 				}
 			}
-			ServerLogTab.chatMessagesTextArea.getTextArea().setText(
-					chatMessages.trim());
+			ServerLogTab.chatMessagesTextArea.getTextArea().setText(chatMessages.trim());
 		} catch (IOException e)
 		{
 			// TODO Auto-generated catch block

@@ -26,15 +26,13 @@ public class MinecraftTabbedPane extends JTabbedPane
 		Font font = null;
 		try
 		{
-			font = Font.createFont(Font.TRUETYPE_FONT, new FileInputStream(
-					new File("Resources\\Minecrafter.Alt.ttf")));
+			font = Font.createFont(Font.TRUETYPE_FONT, new FileInputStream(new File("Resources\\Minecrafter.Alt.ttf")));
 		} catch (Exception e)
 		{
 			e.printStackTrace();
 		}
 		font = font.deriveFont(Font.PLAIN, 20);
-		GraphicsEnvironment ge = GraphicsEnvironment
-				.getLocalGraphicsEnvironment();
+		GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
 		ge.registerFont(font);
 		setFont(font);
 		this.setUI(new StretchTabbedPaneUI());
@@ -68,8 +66,7 @@ public class MinecraftTabbedPane extends JTabbedPane
 		}
 
 		@Override
-		protected int calculateTabHeight(int tabPlacement, int tabIndex,
-				int fontHeight)
+		protected int calculateTabHeight(int tabPlacement, int tabIndex, int fontHeight)
 		{
 			return fontHeight + 10;
 		}
@@ -86,7 +83,7 @@ public class MinecraftTabbedPane extends JTabbedPane
 		}
 
 		protected class StretchTabbedPaneLayout extends
-				MetalTabbedPaneUI.TabbedPaneLayout
+		MetalTabbedPaneUI.TabbedPaneLayout
 		{
 
 			protected Container tabContainer;

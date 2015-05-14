@@ -27,8 +27,7 @@ public class PlayerListPanel extends JPanel
 	public static PlayerListPanel instance;
 	public PlayerCommandMenu popup;
 
-	public PlayerListPanel(ConsolePane console,
-			DefaultListModel<String> playerListModel)
+	public PlayerListPanel(ConsolePane console, DefaultListModel<String> playerListModel)
 	{
 		PlayerListPanel.instance = this;
 		this.console = console;
@@ -83,11 +82,10 @@ public class PlayerListPanel extends JPanel
 		popup.setVisible(false);
 	}
 
-	public void showCommandMenu(MouseEvent e){
+	public void showCommandMenu(MouseEvent e)
+	{
 		int playerIndex = playerList.locationToIndex(e.getPoint());
-		if (playerIndex != -1
-				&& playerList.getCellBounds(playerIndex, playerIndex).contains(
-						e.getPoint()))
+		if (playerIndex != -1 && playerList.getCellBounds(playerIndex, playerIndex).contains(e.getPoint()))
 		{
 			playerList.setSelectedIndex(playerIndex);
 			popup.setLocation(e.getLocationOnScreen());

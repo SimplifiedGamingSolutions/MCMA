@@ -35,8 +35,7 @@ public class Server
 
 	public static void setAddress(String address)
 	{
-		Server.serveraddress = "http://" + address + ":"
-				+ Server.SERVER_PORT_NUMBER + "/GetFile/Records/";
+		Server.serveraddress = "http://" + address + ":" + Server.SERVER_PORT_NUMBER + "/GetFile/Records/";
 	}
 
 	private static Logger logger;
@@ -77,13 +76,11 @@ public class Server
 	public void run()
 	{
 
-		Server.logger.info("Initializing HTTP Server on port:"
-				+ Server.SERVER_PORT_NUMBER);
+		Server.logger.info("Initializing HTTP Server on port:" + Server.SERVER_PORT_NUMBER);
 
 		try
 		{
-			server = HttpServer.create(new InetSocketAddress(
-					Server.SERVER_PORT_NUMBER), Server.MAX_WAITING_CONNECTIONS);
+			server = HttpServer.create(new InetSocketAddress(Server.SERVER_PORT_NUMBER), Server.MAX_WAITING_CONNECTIONS);
 		} catch (IOException e)
 		{
 			Server.logger.log(Level.SEVERE, e.getMessage(), e);

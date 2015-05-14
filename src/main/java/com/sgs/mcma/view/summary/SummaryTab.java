@@ -29,8 +29,7 @@ public class SummaryTab extends JPanel
 		SummaryTab.instance = this;
 		setLayout(new BorderLayout());
 		SummaryTab.playerListModel.addElement("TestPlayer");
-		this.add(new PlayerListPanel(console, SummaryTab.playerListModel),
-				BorderLayout.WEST);
+		this.add(new PlayerListPanel(console, SummaryTab.playerListModel), BorderLayout.WEST);
 		JPanel panel = new JPanel(new BorderLayout());
 		panel.add(console, BorderLayout.CENTER);
 		panel.add(createButtonPanel(), BorderLayout.SOUTH);

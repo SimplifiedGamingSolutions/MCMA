@@ -62,9 +62,7 @@ public class ConsolePane extends JPanel
 	private void populateConsolePane()
 	{
 		setLayout(new BorderLayout());
-		JScrollPane pane = new JScrollPane(consoleTextPane,
-				ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS,
-				ScrollPaneConstants.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+		JScrollPane pane = new JScrollPane(consoleTextPane, ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS, ScrollPaneConstants.HORIZONTAL_SCROLLBAR_AS_NEEDED);
 		this.add(pane, BorderLayout.CENTER);
 		field = new ConsoleCommandTextField();
 		this.add(field, BorderLayout.SOUTH);
@@ -85,8 +83,7 @@ public class ConsolePane extends JPanel
 
 				public void actionPerformed(ActionEvent e)
 				{
-					ConsolePaneController.commandTextFieldActionTriggered(
-							ConsoleCommandTextField.this.getText(), instance);
+					ConsolePaneController.commandTextFieldActionTriggered(ConsoleCommandTextField.this.getText(), instance);
 				}
 			});
 		}
@@ -136,8 +133,7 @@ public class ConsolePane extends JPanel
 		{
 			File file = new File("Server");
 			// JOptionPane.showMessageDialog(this, file.getAbsolutePath());
-			p = new ControllableProcess(file.getAbsolutePath() + "\\",
-					"forge-1.8-11.14.1.1334-universal.jar", this);
+			p = new ControllableProcess(file.getAbsolutePath() + "\\", "forge-1.8-11.14.1.1334-universal.jar", this);
 		}
 		p.start();
 	}

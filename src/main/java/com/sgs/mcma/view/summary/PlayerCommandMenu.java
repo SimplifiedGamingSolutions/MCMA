@@ -79,10 +79,7 @@ public class PlayerCommandMenu extends JPopupMenu
 
 		public void actionPerformed(ActionEvent e)
 		{
-			PlayerCommandMenuController.commandPressed(
-					PlayerListPanel.instance.playerList,
-					PlayerListPanel.instance.console, command, title,
-					PlayerCommandMenu.instance);
+			PlayerCommandMenuController.commandPressed(PlayerListPanel.instance.playerList, PlayerListPanel.instance.console, command, title, PlayerCommandMenu.instance);
 		}
 	}
 }

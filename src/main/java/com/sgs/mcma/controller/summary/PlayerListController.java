@@ -1,6 +1,5 @@
 package com.sgs.mcma.controller.summary;
 
-import java.awt.Point;
 import java.awt.event.MouseEvent;
 
 import javax.swing.JList;
@@ -10,13 +9,10 @@ import com.sgs.mcma.view.summary.PlayerListPanel;
 
 public class PlayerListController
 {
-	public static void leftClick(JList<String> playerList,
-			PlayerCommandMenu popup, MouseEvent e)
+	public static void leftClick(JList<String> playerList, PlayerCommandMenu popup, MouseEvent e)
 	{
 		int playerIndex = playerList.locationToIndex(e.getPoint());
-		if (playerIndex != -1
-				&& playerList.getCellBounds(playerIndex, playerIndex).contains(
-						e.getPoint()))
+		if (playerIndex != -1 && playerList.getCellBounds(playerIndex, playerIndex).contains(e.getPoint()))
 		{
 			playerList.setSelectedIndex(playerIndex);
 		} else
@@ -30,7 +26,6 @@ public class PlayerListController
 	{
 		panel.showCommandMenu(e);
 	}
-	
 
 	public static void playerListLostFocus(PlayerListPanel panel)
 	{

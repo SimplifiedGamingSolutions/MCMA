@@ -64,8 +64,7 @@ public class ServerSettingsTab extends JTabbedPane
 	{
 		JPanel cp = new JPanel(new BorderLayout());
 		ServerSettingsTab.textArea = new RSyntaxTextArea(20, 60);
-		ServerSettingsTab.textArea
-				.setSyntaxEditingStyle(SyntaxConstants.SYNTAX_STYLE_XML);
+		ServerSettingsTab.textArea.setSyntaxEditingStyle(SyntaxConstants.SYNTAX_STYLE_XML);
 		ServerSettingsTab.textArea.setCodeFoldingEnabled(true);
 		ServerSettingsTab.textArea.setAntiAliasingEnabled(true);
 		RTextScrollPane sp = new RTextScrollPane(ServerSettingsTab.textArea);
@@ -76,8 +75,7 @@ public class ServerSettingsTab extends JTabbedPane
 		{
 			public void actionPerformed(ActionEvent e)
 			{
-				ServerSettingsController
-						.saveButtonPressed(ServerSettingsTab.instance);
+				ServerSettingsController.saveButtonPressed(ServerSettingsTab.instance);
 			}
 		});
 		cp.add(saveButton, BorderLayout.SOUTH);
@@ -89,8 +87,7 @@ public class ServerSettingsTab extends JTabbedPane
 		try
 		{
 			String text = ServerSettingsTab.textArea.getText();
-			File selectedFile = DirectoryTreeView.instance
-					.getFileForSelectedNode();
+			File selectedFile = DirectoryTreeView.instance.getFileForSelectedNode();
 			FileWriter fw = new FileWriter(selectedFile);
 			BufferedWriter bw = new BufferedWriter(fw);
 			bw.write(text);
@@ -111,8 +108,7 @@ public class ServerSettingsTab extends JTabbedPane
 		String text = "";
 		try
 		{
-			text = new String(Files.readAllBytes(Paths.get(file.getPath())),
-					Charset.defaultCharset());
+			text = new String(Files.readAllBytes(Paths.get(file.getPath())), Charset.defaultCharset());
 		} catch (IOException e1)
 		{
 			e1.printStackTrace();
