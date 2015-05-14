@@ -11,15 +11,17 @@ import javax.swing.JOptionPane;
 import javax.swing.JPopupMenu;
 import javax.swing.UIManager;
 
+import com.sgs.mcma.controller.summary.PlayerCommandMenuController;
 import com.sgs.mcma.view.BaseFrame;
 import com.sgs.mcma.view.console.ConsolePane;
 
 @SuppressWarnings("serial")
-public class PlayerCommandMenu extends JPopupMenu{
-	PlayerCommandMenu menu = this;
-	
+public class PlayerCommandMenu extends JPopupMenu
+{
+	static PlayerCommandMenu instance;
 	public PlayerCommandMenu()
 	{
+		instance = this;
 		addCommand("achievement", "achievement");
 		addCommand("ban", "ban player");
 		addCommand("ban-ip", "ban-ip player");
@@ -52,51 +54,35 @@ public class PlayerCommandMenu extends JPopupMenu{
 		addCommand("xp", "todo");
 
 	}
-	public void mouseEntered(MouseEvent event){
+	public void mouseEntered(MouseEvent event)
+	{
 		JMenuItem jmi = (JMenuItem) event.getSource();
 		jmi.setBackground(UIManager.getColor    ("MenuItem.selectionBackground"));
 	    jmi.setForeground(UIManager.getColor("MenuItem.selectionForeground"));
 	}
 	
-	public void addCommand(String title, String command){
+	public void addCommand(String title, String command)
+	{
 		JMenuItem temp = new JMenuItem(title);
 		this.add(temp);
 		temp.addActionListener(new commandActionListener(command, title));
 	
 	}
 	
-	private class commandActionListener implements ActionListener{
+	private class commandActionListener implements ActionListener
+	{
 		private String command;
 		private String title;
-		
-		ImageIcon img = new ImageIcon("Resources\\give.png");
 
-		public commandActionListener(String command, String title){
+		public commandActionListener(String command, String title)
+		{
 			this.command = command;
-			this.title = title;
-			menu.setVisible(false);
-			
+			this.title = title;			
 		}
 		@SuppressWarnings("static-access")
-		public void actionPerformed(ActionEvent e) {
-			JList<String> playerList = PlayerListPanel.instance.playerList;
-			ConsolePane console = PlayerListPanel.instance.console;
-			if(command.equals("achievement")){
-				String [] options = {"Give Player","Take Player"};
-				JOptionPane optionPane = new JOptionPane();
-				//optionPane.setLocation(x,y);
-				//BaseFrame.instance.getLocation().getX() + BaseFrame.instance.getWidth()/2;
-				
-				menu.setVisible(false);
-				optionPane.showOptionDialog(BaseFrame.instance, "Give or Take Achievement from "+playerList.getSelectedValue(), title.toUpperCase(), JOptionPane.YES_NO_CANCEL_OPTION,JOptionPane.QUESTION_MESSAGE,img, options,options[0]);
-				
-				
-			}else{			
-				String player = playerList.getSelectedValue();
-				console.sendCommand(command.replace("player", player));
-				menu.setVisible(false);
-			}
-			
+		public void actionPerformed(ActionEvent e) 
+		{
+			PlayerCommandMenuController.commandPressed(PlayerListPanel.instance.playerList, PlayerListPanel.instance.console, command, title, instance);
 		}
 	}
 }

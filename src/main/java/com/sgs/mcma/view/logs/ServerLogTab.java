@@ -14,6 +14,8 @@ import org.fife.ui.rsyntaxtextarea.RSyntaxTextArea;
 import org.fife.ui.rsyntaxtextarea.SyntaxConstants;
 import org.fife.ui.rtextarea.RTextScrollPane;
 
+import com.sgs.mcma.controller.logs.LogTabController;
+
 @SuppressWarnings("serial")
 public class ServerLogTab extends JTabbedPane {
 	public static ServerLogTab instance;
@@ -33,12 +35,7 @@ public class ServerLogTab extends JTabbedPane {
 	      this.addChangeListener(new ChangeListener() {
 			
 			public void stateChanged(ChangeEvent e) {
-				if(instance.getSelectedIndex()==0)
-					updateAllMessages();
-				else if(instance.getSelectedIndex()==1)
-					updateErrorMessages();
-				else
-					updateChatMessages();
+				LogTabController.logTabChanged(instance);
 			}
 		});
 	}

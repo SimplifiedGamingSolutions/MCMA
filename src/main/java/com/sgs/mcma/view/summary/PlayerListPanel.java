@@ -14,6 +14,7 @@ import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 
+import com.sgs.mcma.controller.summary.PlayerListController;
 import com.sgs.mcma.view.console.ConsolePane;
 
 @SuppressWarnings("serial")
@@ -24,25 +25,22 @@ public class PlayerListPanel extends JPanel{
 	public static PlayerListPanel instance;
 	public PlayerCommandMenu popup;
 
-	public PlayerListPanel(ConsolePane c, DefaultListModel<String> plm) {
+	public PlayerListPanel(ConsolePane console, DefaultListModel<String> playerListModel) 
+	{
 		instance = this;
-		console = c;
+		this.console = console;
 		popup = new PlayerCommandMenu();
-		playerListModel = plm;
+		this.playerListModel = playerListModel;
 		setLayout(new BorderLayout());
 		setPreferredSize(new Dimension(200,0));
-		
 		JLabel label = new JLabel("Players Online");
 		label.setAlignmentX(CENTER_ALIGNMENT);
 		add(label, BorderLayout.NORTH);
-		
 		playerList.setModel(playerListModel);
 		playerList.setFont(new Font("Arial",Font.BOLD,14));
 		playerList.addMouseListener(new PlayerListMouseListener());
 		add(new JScrollPane(playerList), BorderLayout.CENTER);
-		//this.addFocusListener(new myFocusListener());
 		playerList.addFocusListener(new myFocusListener());
-		//popup.addFocusListener(new myFocusListener());
 		
 	}
 
@@ -54,42 +52,23 @@ public class PlayerListPanel extends JPanel{
 			super.mouseReleased(e);
 			if(e.getButton() == MouseEvent.BUTTON3)
 			{
-				int playerIndex = playerList.locationToIndex(e.getPoint());
-				if(playerIndex != -1 && playerList.getCellBounds(playerIndex, playerIndex).contains(e.getPoint())){
-					playerList.setSelectedIndex(playerIndex);
-					popup.setLocation(e.getLocationOnScreen());
-					popup.setVisible(true);
-					playerList.requestFocus();
-				}
-				else{
-					popup.setVisible(false);
-					playerList.clearSelection();
-				}
-			}else if(e.getButton() == MouseEvent.BUTTON1){
-				int playerIndex = playerList.locationToIndex(e.getPoint());
-				if(playerIndex != -1 && playerList.getCellBounds(playerIndex,  playerIndex).contains(e.getPoint())){
-					playerList.setSelectedIndex(playerIndex);
-				}
-				else{
-					playerList.clearSelection();
-				}
-				popup.setVisible(false);
+				PlayerListController.rightClick(playerList, popup, e);
 			}
-			else{
-				popup.setVisible(false);
-				playerList.clearSelection();
+			else if(e.getButton() == MouseEvent.BUTTON1){
+				PlayerListController.leftClick(playerList, popup, e);
 			}
 		}
 	}
 	private class myFocusListener implements FocusListener{
 
-		public void focusGained(FocusEvent e) {
-			System.out.println("received focus"+e.getSource());
+		public void focusGained(FocusEvent e) 
+		{
+			
 		}
 
-		public void focusLost(FocusEvent e) {
-			System.out.println("lost focus"+e.getSource());
-			popup.setVisible(false);
+		public void focusLost(FocusEvent e) 
+		{
+			PlayerListController.playerListLostFocus(popup);
 		}
 		
 	}

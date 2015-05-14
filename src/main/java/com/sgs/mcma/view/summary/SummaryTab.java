@@ -4,6 +4,7 @@ import java.awt.BorderLayout;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+
 import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.DefaultListModel;
@@ -11,6 +12,7 @@ import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JPanel;
 
+import com.sgs.mcma.controller.summary.SummaryTabController;
 import com.sgs.mcma.view.console.ConsolePane;
 
 @SuppressWarnings("serial")
@@ -67,12 +69,7 @@ public class SummaryTab extends JPanel {
 		{
 			public void actionPerformed(ActionEvent e) 
 			{
-				startServer();
-			}
-
-			private void startServer() 
-			{
-				console.startServer();
+				SummaryTabController.startButtonPressed(instance);
 			}
 		});
 		return startButton;
@@ -90,17 +87,25 @@ public class SummaryTab extends JPanel {
 		{
 			public void actionPerformed(ActionEvent e) 
 			{
-				if(console.isRunning())
-					stopServer();
-			}
-
-			private void stopServer() 
-			{
-				console.stopServer();
-				playerListModel.clear();
+				SummaryTabController.stopButtonPressed(instance);
 			}
 		});
 		return stopButton;
+	}
+	
+	public void clearPlayerList(){
+		playerListModel.clear();
+	}
+	
+	public void startServer(){
+		if(!console.isRunning())
+			console.startServer();
+	}
+	
+	public void stopServer()
+	{
+		if(console.isRunning())
+			console.stopServer();
 	}
 
 }
