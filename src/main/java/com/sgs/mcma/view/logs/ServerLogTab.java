@@ -86,7 +86,7 @@ public class ServerLogTab extends JTabbedPane
 			String chatMessages = "";
 			for (String line : AllMessages)
 			{
-				if (line.contains("]: <"))
+				if (line.contains("[CHAT]"))
 				{
 					chatMessages += line + '\n';
 				}
