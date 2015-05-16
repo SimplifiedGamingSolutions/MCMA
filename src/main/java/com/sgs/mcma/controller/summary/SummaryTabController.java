@@ -4,14 +4,17 @@ import com.sgs.mcma.view.summary.SummaryTab;
 
 public class SummaryTabController
 {
-	public static void startButtonPressed(SummaryTab tab)
+	public static boolean startButtonPressed(SummaryTab tab)
 	{
-		tab.startServer();
+		return tab.startServer();
 	}
 
-	public static void stopButtonPressed(SummaryTab tab)
+	public static boolean stopButtonPressed(SummaryTab tab)
 	{
-		tab.stopServer();
-		tab.clearPlayerList();
+		if(tab.stopServer()){
+			tab.clearPlayerList();
+			return true;
+		}
+		return false;
 	}
 }

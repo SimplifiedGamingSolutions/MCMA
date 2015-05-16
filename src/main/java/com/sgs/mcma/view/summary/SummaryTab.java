@@ -60,11 +60,12 @@ public class SummaryTab extends JPanel
 		buttonBox.add(Box.createHorizontalGlue());
 		return buttonBox;
 	}
-
+	private JButton startButton;
+	private JButton stopButton;
 	private JButton createStartServerButton()
 	{
 		ImageIcon startBtn = new ImageIcon("Resources\\StartBtn.png");
-		JButton startButton = new JButton(startBtn);
+		startButton = new JButton(startBtn);
 		startButton.setContentAreaFilled(false);
 		startButton.setMargin(new Insets(-2, -2, -2, -2));
 		startButton.setFocusPainted(false);
@@ -73,7 +74,10 @@ public class SummaryTab extends JPanel
 		{
 			public void actionPerformed(ActionEvent e)
 			{
-				SummaryTabController.startButtonPressed(SummaryTab.instance);
+				if(SummaryTabController.startButtonPressed(SummaryTab.instance)){
+					startButton.setVisible(false);
+					stopButton.setVisible(true);
+				}
 			}
 		});
 		return startButton;
@@ -82,7 +86,7 @@ public class SummaryTab extends JPanel
 	private JButton createStopServerButton()
 	{
 		ImageIcon stopBtn = new ImageIcon("Resources\\StopBtn.png");
-		JButton stopButton = new JButton(stopBtn);
+		stopButton = new JButton(stopBtn);
 		stopButton.setContentAreaFilled(false);
 		stopButton.setMargin(new Insets(-2, -2, -2, -2));
 		stopButton.setFocusPainted(false);
@@ -91,9 +95,13 @@ public class SummaryTab extends JPanel
 		{
 			public void actionPerformed(ActionEvent e)
 			{
-				SummaryTabController.stopButtonPressed(SummaryTab.instance);
+				if(SummaryTabController.stopButtonPressed(SummaryTab.instance)){
+					stopButton.setVisible(false);
+					startButton.setVisible(true);
+				}
 			}
 		});
+		stopButton.setVisible(false);
 		return stopButton;
 	}
 
@@ -102,20 +110,24 @@ public class SummaryTab extends JPanel
 		SummaryTab.playerListModel.clear();
 	}
 
-	public void startServer()
+	public boolean startServer()
 	{
 		if (!console.isRunning())
 		{
 			console.startServer();
+			return true;
 		}
+		return false;
 	}
 
-	public void stopServer()
+	public boolean stopServer()
 	{
 		if (console.isRunning())
 		{
 			console.stopServer();
+			return true;
 		}
+		return false;
 	}
 
 }

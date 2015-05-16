@@ -15,7 +15,6 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 
 import com.sgs.mcma.model.Achievements;
-import com.sgs.mcma.view.BaseFrame;
 
 @SuppressWarnings("serial")
 public class ItemSelectionDialog extends JDialog {
@@ -38,15 +37,8 @@ public class ItemSelectionDialog extends JDialog {
 		panel.add(new Item(command, image, description));
 	}
 	
-	private class Item extends JPanel{
-		String command;
-		ImageIcon image;
-		String description;
-		
+	private class Item extends JPanel{		
 		public Item(final String command, ImageIcon image, String description) {
-			this.command = command;
-			this.image = image;
-			this.description = description;
 			setLayout(new BorderLayout());
 			JButton button = new JButton(image);
 			button.setSize(new Dimension(32,32));
@@ -58,12 +50,12 @@ public class ItemSelectionDialog extends JDialog {
 				}
 			});
 			add(button, BorderLayout.CENTER);
-			add(new JLabel(this.description), BorderLayout.SOUTH);
+			add(new JLabel(description), BorderLayout.SOUTH);
 		}
 	}
 
-	void setResult(String command) {
-		this.result = command;
+	void setResult(String result) {
+		this.result = result;
 	}
 	
 	public String getResult(){

@@ -1,10 +1,21 @@
 package com.sgs.mcma.view;
 
+import java.awt.AWTException;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.EventQueue;
+import java.awt.Image;
+import java.awt.MenuItem;
+import java.awt.PopupMenu;
+import java.awt.SystemTray;
+import java.awt.Toolkit;
+import java.awt.TrayIcon;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.awt.event.WindowStateListener;
 
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
@@ -19,21 +30,22 @@ import com.sgs.mcma.view.summary.SummaryTab;
 import com.sgs.mcma.webservice.Server;
 
 @SuppressWarnings("serial")
-public class BaseFrame extends JFrame
-{
+public class BaseFrame extends JFrame{
+
 	public static BaseFrame instance;
 	private static ConsolePane console;
-
-	public BaseFrame(String title, int width, int height)
-	{
-		BaseFrame.instance = this;
+	TrayIcon trayIcon;
+    SystemTray tray;
+    
+    public BaseFrame(String title, int width, int height)
+    {
+	    systemTrayInitialization();
+	    BaseFrame.instance = this;
 		BaseFrame.console = new ConsolePane();
 		Initialize(title, width, height);
 		pack();
-
-	}
-
-	private void Initialize(String title, int width, int height)
+    }
+    private void Initialize(String title, int width, int height)
 	{
 		setTitle(title);
 		ImageIcon img = new ImageIcon("Resources\\SGSLogo.png");
@@ -119,5 +131,74 @@ public class BaseFrame extends JFrame
 			}
 		}
 	}
-
+    private void systemTrayInitialization() {
+	    if(SystemTray.isSupported()){
+	        tray=SystemTray.getSystemTray();
+	        Image image=Toolkit.getDefaultToolkit().getImage("Resources\\SGSLogo.png");
+	        ActionListener exitListener=new ActionListener() {
+	            public void actionPerformed(ActionEvent e) {
+	                System.out.println("Exiting....");
+	                System.exit(0);
+	            }
+	        };
+	        PopupMenu popup=new PopupMenu();
+	        MenuItem defaultItem=new MenuItem("Exit");
+	        defaultItem.addActionListener(exitListener);
+	        popup.add(defaultItem);
+	        defaultItem=new MenuItem("Open");
+	        defaultItem.addActionListener(new ActionListener() {
+	            public void actionPerformed(ActionEvent e) {
+	                setVisible(true);
+	                setExtendedState(JFrame.NORMAL);
+	            }
+	        });
+	        popup.add(defaultItem);
+	        trayIcon=new TrayIcon(image, "SystemTray Demo", popup);
+	        trayIcon.setImageAutoSize(true);
+	        trayIcon.addMouseListener(new MouseAdapter() {
+	        	public void mousePressed(java.awt.event.MouseEvent e) 
+	        	{
+	        		if(e.getClickCount() >= 2){
+	        			setVisible(true);
+		                setExtendedState(JFrame.NORMAL);
+	                }
+	        	};
+			});
+	    }else{
+	        System.out.println("system tray not supported");
+	    }
+	    addWindowStateListener(new WindowStateListener() {
+	        public void windowStateChanged(WindowEvent e) {
+	            if(e.getNewState()==ICONIFIED){
+	                try {
+	                    tray.add(trayIcon);
+	                    setVisible(false);
+	                } catch (AWTException ex) {
+	                    System.out.println("unable to add to tray");
+	                }
+	            }
+	    if(e.getNewState()==7){
+	                try{
+	        tray.add(trayIcon);
+	        setVisible(false);
+	        System.out.println("added to SystemTray");
+	        }catch(AWTException ex){
+	        System.out.println("unable to add to system tray");
+	    }
+	        }
+	    if(e.getNewState()==MAXIMIZED_BOTH){
+	                tray.remove(trayIcon);
+	                setVisible(true);
+	            }
+	            if(e.getNewState()==NORMAL){
+	                tray.remove(trayIcon);
+	                setVisible(true);
+	            }
+	        }
+	    });
+	
+	    setVisible(true);
+	    setSize(300, 200);
+	    setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+	}
 }

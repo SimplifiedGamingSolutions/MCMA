@@ -1,7 +1,6 @@
 package com.sgs.mcma.controller.summary;
 
 import javax.swing.ImageIcon;
-import javax.swing.JDialog;
 import javax.swing.JList;
 import javax.swing.JOptionPane;
 
