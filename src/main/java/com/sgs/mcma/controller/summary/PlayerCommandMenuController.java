@@ -1,5 +1,7 @@
 package com.sgs.mcma.controller.summary;
 
+import java.awt.Dialog;
+
 import javax.swing.ImageIcon;
 import javax.swing.JList;
 import javax.swing.JOptionPane;
@@ -19,23 +21,31 @@ public class PlayerCommandMenuController
 		menu.setVisible(false);
 		if (command.equals("achievement"))
 		{
+			//give or take
 			String[] options ={	"Give Player", "Take Player"};
 			ImageIcon img = new ImageIcon("Resources\\give.png");
-
-
 			int n = JOptionPane.showOptionDialog(BaseFrame.instance, "Give or Take Achievement from " + playerList.getSelectedValue(), title.toUpperCase(), JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE, img, options, options[0]);
 			
+			//if they say give
 			if(n==JOptionPane.YES_NO_OPTION)
-			{
-				ItemSelectionDialog dialog = new ItemSelectionDialog("Achievements");
+			{	
+				String instructions = "Choose an Achievement below to give to "+playerList.getSelectedValue();
+				ItemSelectionDialog dialog = new ItemSelectionDialog("Achievements",instructions);
 				dialog.addAchievements();
+				//dialog.setModal(true);
 				dialog.setLocationRelativeTo(BaseFrame.instance);
-				dialog.setModal(true);
+				dialog.setModalExclusionType(Dialog.ModalExclusionType.APPLICATION_EXCLUDE);
+				
+				
 				String result = dialog.getResult();
 				System.out.println(result);
 			}
+			//if they say take
+			else{
+				
+			}
 			
-		} else
+		} else//another player command
 		{
 			String player = playerList.getSelectedValue();
 			console.sendCommand(command.replace("player", player));
