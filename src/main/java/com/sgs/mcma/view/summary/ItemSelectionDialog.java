@@ -2,7 +2,6 @@ package com.sgs.mcma.view.summary;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
-import java.awt.FlowLayout;
 import java.awt.GridLayout;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
@@ -26,12 +25,12 @@ public class ItemSelectionDialog extends JDialog {
 	public ItemSelectionDialog(String title) {
 		instance = this;
 		setTitle(title);
-		this.setPreferredSize(new Dimension(BaseFrame.instance.getWidth()/4, BaseFrame.instance.getHeight()/4));
+		this.setSize(new Dimension(512, 512));
 		JScrollPane pane = new JScrollPane(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
 		panel = new JPanel(new GridLayout(0, 4));
 		pane.setViewportView(panel);
 		add(pane);
-		this.pack();
+		//this.pack();
 		this.setVisible(true);
 	}
 

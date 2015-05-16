@@ -30,6 +30,7 @@ public class PlayerCommandMenuController
 			{
 				ItemSelectionDialog dialog = new ItemSelectionDialog("Achievements");
 				dialog.addAchievements();
+				dialog.setLocationRelativeTo(BaseFrame.instance);
 				dialog.setModal(true);
 				String result = dialog.getResult();
 				System.out.println(result);
