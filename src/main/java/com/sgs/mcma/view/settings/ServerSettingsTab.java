@@ -39,7 +39,12 @@ public class ServerSettingsTab extends JTabbedPane
 		JPanel tab1 = new JPanel();
 		tab1.setLayout(new BorderLayout());
 		JSplitPane splitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT);
-		DirectoryTreeView dt = new DirectoryTreeView(new File("Server"));
+		File serverDir = new File("Server");
+		if(!serverDir.exists())
+		{
+			serverDir.mkdirs();
+		}
+		DirectoryTreeView dt = new DirectoryTreeView(serverDir);
 		JScrollPane treeView = new JScrollPane(dt);
 		splitPane.setLeftComponent(treeView);
 		splitPane.setRightComponent(CreateSyntaxTextArea());

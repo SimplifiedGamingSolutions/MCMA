@@ -5,6 +5,7 @@ import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
+import java.util.ArrayList;
 
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
@@ -17,7 +18,14 @@ import javax.swing.text.SimpleAttributeSet;
 import javax.swing.text.StyleConstants;
 import javax.swing.text.StyledDocument;
 
+import org.apache.commons.io.FileUtils;
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
+import org.jsoup.select.Elements;
+
 import com.sgs.mcma.controller.summary.ConsolePaneController;
+import com.sgs.mcma.utils.Utils;
 import com.sgs.mcma.view.test.TestFrame;
 
 @SuppressWarnings("serial")
@@ -132,10 +140,53 @@ public class ConsolePane extends JPanel
 		if (p == null)
 		{
 			File file = new File("Server");
-			// JOptionPane.showMessageDialog(this, file.getAbsolutePath());
-			p = new ControllableProcess(file.getAbsolutePath() + "\\", "forge-1.8-11.14.1.1334-universal.jar", this);
+			File forgeJar = new File("Server\\forge.jar");
+			if(!forgeJar.exists())
+			{
+				downloadForge();
+			}
+			p = new ControllableProcess(file.getAbsolutePath() + "\\", "forge.jar", this);
 		}
 		p.start();
+	}
+
+	private void downloadForge() {
+		try
+		{
+			Document doc = Jsoup.connect("http://files.minecraftforge.net/maven/net/minecraftforge/forge/")
+					  .userAgent("Chrome/33.0.1750.152")
+					  .get();
+			Elements forgeInstaller = doc.select("a[href]").select("a[title$=Installer]"); // a with href
+			ArrayList<String> installers = new ArrayList<String>();
+			for(Element el : forgeInstaller){
+				String line = el.toString();
+				installers.add(el.toString().substring(line.indexOf("url=")+4, line.indexOf(".jar")+4));
+			}
+			String url = installers.get(1);
+			String filename = url.substring(url.indexOf("forge-"), url.length());
+			Utils.saveUrl("Server\\"+filename, installers.get(1));
+			ProcessBuilder installer = new ProcessBuilder("java", "-jar", filename, "--installServer");
+			installer.directory(new File("Server"));
+			installer.inheritIO();
+			Process p = installer.start();
+			while(p.isAlive()){}
+			
+			Elements forgeUniversal = doc.select("a[href]").select("a[title$=Universal]"); // a with href
+			ArrayList<String> universals = new ArrayList<String>();
+			for(Element el : forgeUniversal){
+				String line = el.toString();
+				universals.add(el.toString().substring(line.indexOf("url=")+4, line.indexOf(".jar")+4));
+			}
+			url = universals.get(1);
+			filename = "Server\\" + url.substring(url.indexOf("forge-"), url.length());
+			Utils.saveUrl("Server\\forge.jar", universals.get(1));
+			
+			FileUtils.copyFileToDirectory(new File("Resources\\eula.txt"), new File("Server\\"));
+		}
+		catch(Exception e)
+		{
+			e.printStackTrace();
+		}
 	}
 
 	public void stopServer()

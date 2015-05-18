@@ -64,7 +64,7 @@ public class SummaryTab extends JPanel
 	private JButton stopButton;
 	private JButton createStartServerButton()
 	{
-		ImageIcon startBtn = new ImageIcon("Resources\\StartBtn.png");
+		ImageIcon startBtn = new ImageIcon("Resources\\Images\\StartBtn.png");
 		startButton = new JButton(startBtn);
 		startButton.setContentAreaFilled(false);
 		startButton.setMargin(new Insets(-2, -2, -2, -2));
@@ -85,7 +85,7 @@ public class SummaryTab extends JPanel
 
 	private JButton createStopServerButton()
 	{
-		ImageIcon stopBtn = new ImageIcon("Resources\\StopBtn.png");
+		ImageIcon stopBtn = new ImageIcon("Resources\\Images\\StopBtn.png");
 		stopButton = new JButton(stopBtn);
 		stopButton.setContentAreaFilled(false);
 		stopButton.setMargin(new Insets(-2, -2, -2, -2));
