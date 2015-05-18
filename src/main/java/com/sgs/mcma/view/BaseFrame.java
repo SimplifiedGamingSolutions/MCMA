@@ -48,7 +48,7 @@ public class BaseFrame extends JFrame{
     private void Initialize(String title, int width, int height)
 	{
 		setTitle(title);
-		ImageIcon img = new ImageIcon("Resources\\SGSLogo.png");
+		ImageIcon img = new ImageIcon("Resources\\Images\\SGSLogo.png");
 		setIconImage(img.getImage());
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		addWindowListener(new BaseFrameWindowListener());
