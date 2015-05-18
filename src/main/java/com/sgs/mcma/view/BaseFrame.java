@@ -134,7 +134,7 @@ public class BaseFrame extends JFrame{
     private void systemTrayInitialization() {
 	    if(SystemTray.isSupported()){
 	        tray=SystemTray.getSystemTray();
-	        Image image=Toolkit.getDefaultToolkit().getImage("Resources\\SGSLogo.png");
+	        Image image=Toolkit.getDefaultToolkit().getImage("Resources\\Images\\SGSLogo.png");
 	        ActionListener exitListener=new ActionListener() {
 	            public void actionPerformed(ActionEvent e) {
 	                System.out.println("Exiting....");
