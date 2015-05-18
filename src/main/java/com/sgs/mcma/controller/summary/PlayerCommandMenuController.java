@@ -30,12 +30,12 @@ public class PlayerCommandMenuController
 			if(n==JOptionPane.YES_NO_OPTION)
 			{	
 				String instructions = "Choose an Achievement below to give to "+playerList.getSelectedValue();
+				
 				ItemSelectionDialog dialog = new ItemSelectionDialog("Achievements",instructions);
 				dialog.addAchievements();
-				//dialog.setModal(true);
 				dialog.setLocationRelativeTo(BaseFrame.instance);
-				dialog.setModalExclusionType(Dialog.ModalExclusionType.APPLICATION_EXCLUDE);
-				
+				dialog.setModal(true);
+				dialog.setVisible(true);
 				
 				String result = dialog.getResult();
 				System.out.println(result);

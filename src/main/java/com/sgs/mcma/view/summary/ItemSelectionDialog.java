@@ -31,11 +31,10 @@ public class ItemSelectionDialog extends JDialog {
 		instance = this;		
 		this.instructions=instructions;
 		setTitle(title);
+		this.setPreferredSize(new Dimension(512, 512));//this is a hardcoded number we can change this to be dynamic.
 		this.setSize(new Dimension(512, 512));//this is a hardcoded number we can change this to be dynamic.
 		
 		run();
-
-		this.setVisible(true);
 		this.pack();
 	}
 
