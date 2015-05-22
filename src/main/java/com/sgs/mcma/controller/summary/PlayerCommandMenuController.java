@@ -1,11 +1,8 @@
 package com.sgs.mcma.controller.summary;
 
-import java.awt.Dialog;
-
 import javax.swing.ImageIcon;
 import javax.swing.JList;
 import javax.swing.JOptionPane;
-
 import com.sgs.mcma.model.Achievements;
 import com.sgs.mcma.view.BaseFrame;
 import com.sgs.mcma.view.console.ConsolePane;
@@ -18,6 +15,8 @@ public class PlayerCommandMenuController
 
 	public static void commandPressed(JList<String> playerList, ConsolePane console, String command, String title, PlayerCommandMenu menu)
 	{
+		String result;
+		String player = playerList.getSelectedValue();
 		menu.setVisible(false);
 		if (command.equals("achievement"))
 		{
@@ -37,20 +36,34 @@ public class PlayerCommandMenuController
 				dialog.setModal(true);
 				dialog.setVisible(true);
 				
-				String result = dialog.getResult();
-				System.out.println(result);
+				result = dialog.getResult();
+				console.sendCommand("achievement give achievement."+result+" "+player);
 			}
 			//if they say take
 			else{
+				String instructions = "Choose an Achievement below to take from "+playerList.getSelectedValue();
 				
+				ItemSelectionDialog dialog = new ItemSelectionDialog("Achievements",instructions);
+				dialog.addAchievements();
+				dialog.setLocationRelativeTo(BaseFrame.instance);
+				dialog.setModal(true);
+				dialog.setVisible(true);
+				
+				result = dialog.getResult();
+				console.sendCommand("achievement take achievement."+result+" "+player);
 			}
 			
 		} else//another player command
 		{
-			String player = playerList.getSelectedValue();
+			
 			console.sendCommand(command.replace("player", player));
 			menu.setVisible(false);
 		}
+		//after all the commands
+		
+		
+		
+		
 	}
 
 }
