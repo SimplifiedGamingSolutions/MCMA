@@ -5,6 +5,9 @@ import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
+import java.io.FileOutputStream;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.util.ArrayList;
 
 import javax.swing.JPanel;
@@ -19,6 +22,7 @@ import javax.swing.text.StyleConstants;
 import javax.swing.text.StyledDocument;
 
 import org.apache.commons.io.FileUtils;
+import org.apache.commons.io.IOUtils;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -128,12 +132,6 @@ public class ConsolePane extends JPanel
 		}
 	}
 
-	public static void main(String[] args) throws Exception
-	{
-		ConsolePane test = new ConsolePane();
-		new TestFrame(test);
-		test.startServer();
-	}
 
 	public void startServer()
 	{
@@ -180,12 +178,16 @@ public class ConsolePane extends JPanel
 			url = universals.get(1);
 			filename = "Server\\" + url.substring(url.indexOf("forge-"), url.length());
 			Utils.saveUrl("Server\\forge.jar", universals.get(1));
-			
-			FileUtils.copyFileToDirectory(new File(ClassLoader.getSystemResource("Resources/eula.txt").getFile()), new File("Server\\"));
-			FileUtils.copyFileToDirectory(new File(ClassLoader.getSystemResource("Resources/Mods/MCMA-Mod-1.0.jar").getFile()), new File("Server\\mods\\"));
-			FileUtils.copyFileToDirectory(new File(ClassLoader.getSystemResource("Resources/Mods/worldedit-forge-mc1.8-6.0.2-SNAPSHOT-dist.jar").getFile()), new File("Server\\mods\\"));
-			FileUtils.copyFileToDirectory(new File(ClassLoader.getSystemResource("Resources/Mods/MCMA-Mod-1.0.jar").getFile()), new File(System.getenv("APPDATA")+"\\.minecraft\\mods\\"));
-			FileUtils.copyFileToDirectory(new File(ClassLoader.getSystemResource("Resources/Mods/worldedit-forge-mc1.8-6.0.2-SNAPSHOT-dist.jar").getFile()), new File(System.getenv("APPDATA")+"\\.minecraft\\mods\\"));
+			ExportResource("Resources/eula.txt", "Server\\eula.txt");
+			ExportResource("Resources/Mods/MCMA-Mod-1.0.jar", "Server\\mods\\MCMA-Mod-1.0.jar");
+			ExportResource("Resources/Mods/worldedit-forge-mc1.8-6.0.2-SNAPSHOT-dist.jar", "Server\\mods\\worldedit-forge-mc1.8-6.0.2-SNAPSHOT-dist.jar");
+			ExportResource("Resources/Mods/MCMA-Mod-1.0.jar", System.getenv("APPDATA")+"\\.minecraft\\mods\\MCMA-Mod-1.0.jar");
+			ExportResource("Resources/Mods/worldedit-forge-mc1.8-6.0.2-SNAPSHOT-dist.jar", System.getenv("APPDATA")+"\\.minecraft\\mods\\worldedit-forge-mc1.8-6.0.2-SNAPSHOT-dist.jar");
+			//FileUtils.copyFileToDirectory(new File(ClassLoader.getSystemResource("Resources/eula.txt").getFile()), new File("Server\\"));
+			//FileUtils.copyFileToDirectory(new File(ClassLoader.getSystemResource("Resources/Mods/MCMA-Mod-1.0.jar").getFile()), new File("Server\\mods\\"));
+			//FileUtils.copyFileToDirectory(new File(ClassLoader.getSystemResource("Resources/Mods/worldedit-forge-mc1.8-6.0.2-SNAPSHOT-dist.jar").getFile()), new File("Server\\mods\\"));
+			//FileUtils.copyFileToDirectory(new File(ClassLoader.getSystemResource("Resources/Mods/MCMA-Mod-1.0.jar").getFile()), new File(System.getenv("APPDATA")+"\\.minecraft\\mods\\"));
+			//FileUtils.copyFileToDirectory(new File(ClassLoader.getSystemResource("Resources/Mods/worldedit-forge-mc1.8-6.0.2-SNAPSHOT-dist.jar").getFile()), new File(System.getenv("APPDATA")+"\\.minecraft\\mods\\"));
 		}
 		catch(Exception e)
 		{
@@ -220,5 +222,24 @@ public class ConsolePane extends JPanel
 	public void clearTextField()
 	{
 		field.clearCommand();
+	}
+	static public void ExportResource(String resourceName, String destination){
+		try{
+	        InputStream input = ClassLoader.getSystemResourceAsStream(resourceName);
+	        File file = new File(destination);
+	        new File(file.getParent()).mkdirs();
+	        OutputStream output = new FileOutputStream(file);
+	        IOUtils.copy(input, output);
+		}
+		catch(Exception e){
+			e.printStackTrace();
+		}
+    }
+	public static void main(String[] args) throws Exception
+	{
+		//ConsolePane test = new ConsolePane();
+		//new TestFrame(test);
+		//test.startServer();
+		ExportResource("Resources/eula.txt","Server/eula.txt");
 	}
 }
