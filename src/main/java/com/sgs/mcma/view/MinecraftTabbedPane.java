@@ -9,6 +9,8 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.File;
 import java.io.FileInputStream;
+import java.net.URL;
+import java.util.Enumeration;
 
 import javax.swing.JComponent;
 import javax.swing.JTabbedPane;
@@ -26,7 +28,7 @@ public class MinecraftTabbedPane extends JTabbedPane
 		Font font = null;
 		try
 		{
-			font = Font.createFont(Font.TRUETYPE_FONT, new FileInputStream(new File("Resources\\Minecrafter.Alt.ttf")));
+			font = Font.createFont(Font.TRUETYPE_FONT, ClassLoader.getSystemResourceAsStream("Resources/Minecrafter.Alt.ttf"));
 		} catch (Exception e)
 		{
 			e.printStackTrace();

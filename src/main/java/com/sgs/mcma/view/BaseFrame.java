@@ -48,7 +48,7 @@ public class BaseFrame extends JFrame{
     private void Initialize(String title, int width, int height)
 	{
 		setTitle(title);
-		ImageIcon img = new ImageIcon("Resources\\Images\\SGSLogo.png");
+		ImageIcon img = new ImageIcon(ClassLoader.getSystemResource("Resources/Images/SGSLogo.png"));
 		setIconImage(img.getImage());
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		addWindowListener(new BaseFrameWindowListener());
@@ -134,7 +134,7 @@ public class BaseFrame extends JFrame{
     private void systemTrayInitialization() {
 	    if(SystemTray.isSupported()){
 	        tray=SystemTray.getSystemTray();
-	        Image image=Toolkit.getDefaultToolkit().getImage("Resources\\Images\\SGSLogo.png");
+	        Image image=Toolkit.getDefaultToolkit().getImage(ClassLoader.getSystemResource("Resources/Images/SGSLogo.png"));
 	        ActionListener exitListener=new ActionListener() {
 	            public void actionPerformed(ActionEvent e) {
 	                System.out.println("Exiting....");

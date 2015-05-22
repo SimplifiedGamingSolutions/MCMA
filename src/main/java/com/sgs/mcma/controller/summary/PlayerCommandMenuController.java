@@ -23,7 +23,7 @@ public class PlayerCommandMenuController
 		{
 			//give or take
 			String[] options ={	"Give Player", "Take Player"};
-			ImageIcon img = new ImageIcon("Resources\\Images\\Achievements\\give.png");
+			ImageIcon img = new ImageIcon(ClassLoader.getSystemResource("Resources/Images/Achievements/give.png"));
 			int n = JOptionPane.showOptionDialog(BaseFrame.instance, "Give or Take Achievement from " + playerList.getSelectedValue(), title.toUpperCase(), JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE, img, options, options[0]);
 			
 			//if they say give

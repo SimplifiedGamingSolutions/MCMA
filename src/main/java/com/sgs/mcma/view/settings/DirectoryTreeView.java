@@ -172,8 +172,8 @@ public class DirectoryTreeView extends JPanel
 
 	private static class MyTreeCellRenderer extends DefaultTreeCellRenderer
 	{
-		private static ImageIcon closed = MyTreeCellRenderer.scale(new ImageIcon("Resources\\Images\\FileEditor\\Chest-Closed.png"), 1 / 2, DirectoryTreeView.instance.tree);
-		private static ImageIcon open = MyTreeCellRenderer.scale(new ImageIcon("Resources\\Images\\FileEditor\\Chest-Open.png"), 1 / 2, DirectoryTreeView.instance.tree);
+		private static ImageIcon closed = MyTreeCellRenderer.scale(new ImageIcon(ClassLoader.getSystemResource("Resources/Images/FileEditor/Chest-Closed.png")), 1 / 2, DirectoryTreeView.instance.tree);
+		private static ImageIcon open = MyTreeCellRenderer.scale(new ImageIcon(ClassLoader.getSystemResource("Resources/Images/FileEditor/Chest-Open.png")), 1 / 2, DirectoryTreeView.instance.tree);
 
 		static ImageIcon scale(ImageIcon icon, double scaleFactor, JTree tree)
 		{

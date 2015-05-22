@@ -181,11 +181,11 @@ public class ConsolePane extends JPanel
 			filename = "Server\\" + url.substring(url.indexOf("forge-"), url.length());
 			Utils.saveUrl("Server\\forge.jar", universals.get(1));
 			
-			FileUtils.copyFileToDirectory(new File("Resources\\eula.txt"), new File("Server\\"));
-			FileUtils.copyFileToDirectory(new File("Resources\\Mods\\MCMA-Mod-1.0.jar"), new File("Server\\mods\\"));
-			FileUtils.copyFileToDirectory(new File("Resources\\Mods\\worldedit-forge-mc1.8-6.0.2-SNAPSHOT-dist.jar"), new File("Server\\mods\\"));
-			FileUtils.copyFileToDirectory(new File("Resources\\Mods\\MCMA-Mod-1.0.jar"), new File(System.getenv("APPDATA")+"\\.minecraft\\mods\\"));
-			FileUtils.copyFileToDirectory(new File("Resources\\Mods\\worldedit-forge-mc1.8-6.0.2-SNAPSHOT-dist.jar"), new File(System.getenv("APPDATA")+"\\.minecraft\\mods\\"));
+			FileUtils.copyFileToDirectory(new File(ClassLoader.getSystemResource("Resources/eula.txt").getFile()), new File("Server\\"));
+			FileUtils.copyFileToDirectory(new File(ClassLoader.getSystemResource("Resources/Mods/MCMA-Mod-1.0.jar").getFile()), new File("Server\\mods\\"));
+			FileUtils.copyFileToDirectory(new File(ClassLoader.getSystemResource("Resources/Mods/worldedit-forge-mc1.8-6.0.2-SNAPSHOT-dist.jar").getFile()), new File("Server\\mods\\"));
+			FileUtils.copyFileToDirectory(new File(ClassLoader.getSystemResource("Resources/Mods/MCMA-Mod-1.0.jar").getFile()), new File(System.getenv("APPDATA")+"\\.minecraft\\mods\\"));
+			FileUtils.copyFileToDirectory(new File(ClassLoader.getSystemResource("Resources/Mods/worldedit-forge-mc1.8-6.0.2-SNAPSHOT-dist.jar").getFile()), new File(System.getenv("APPDATA")+"\\.minecraft\\mods\\"));
 		}
 		catch(Exception e)
 		{
