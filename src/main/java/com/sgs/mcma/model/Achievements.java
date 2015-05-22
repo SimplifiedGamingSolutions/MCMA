@@ -1,5 +1,6 @@
 package com.sgs.mcma.model;
 
+import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -46,6 +47,9 @@ public class Achievements {
 	}
 
 	public ImageIcon getIcon(String achievement){
-		return new ImageIcon(ClassLoader.getSystemResource(achievements.get(achievement)));
+		URL url = ClassLoader.getSystemResource(achievements.get(achievement));
+		if(url != null)
+			return new ImageIcon(url);
+		return new ImageIcon();
 	}
 }
