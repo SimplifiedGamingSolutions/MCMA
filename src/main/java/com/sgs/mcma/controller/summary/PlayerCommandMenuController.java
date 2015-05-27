@@ -56,7 +56,7 @@ public class PlayerCommandMenuController
 		} else//another player command
 		{
 			
-			console.sendCommand(command.replace("player", player));
+			console.sendCommand(command.replace("[player]", player));
 			menu.setVisible(false);
 		}
 		//after all the commands

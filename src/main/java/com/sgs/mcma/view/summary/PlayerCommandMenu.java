@@ -19,14 +19,14 @@ public class PlayerCommandMenu extends JPopupMenu
 	{
 		PlayerCommandMenu.instance = this;
 		addCommand("achievement", "achievement");
-		addCommand("ban", "ban player");
-		addCommand("ban-ip", "ban-ip player");
-		addCommand("kill", "kill player");
-		addCommand("clear", "todo");
-		addCommand("deop", "todo");
+		addCommand("ban", "ban [player]");
+		addCommand("ban-ip", "ban-ip [player]");
+		addCommand("kill", "kill [player]");
+		addCommand("clear", "clear [player]");
+		addCommand("deop", "deop [player]");
 		addCommand("difficulty", "todo");
 		addCommand("effect", "todo");
-		addCommand("enchant", "todo");
+		addCommand("enchant", "enchant");
 		addCommand("gamemode", "todo");
 		addCommand("give", "todo");
 		addCommand("kick", "todo");
