@@ -13,7 +13,12 @@ import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 
+import javax.swing.Box;
+import javax.swing.BoxLayout;
+import javax.swing.DefaultListModel;
 import javax.swing.JButton;
+import javax.swing.JLabel;
+import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JSplitPane;
@@ -57,7 +62,77 @@ public class ServerSettingsTab extends JTabbedPane
 		tab1.add(splitPane, BorderLayout.CENTER);
 
 		this.addTab("Server Config", tab1);
-		this.addTab("Mod Config", new JPanel());
+		this.addTab("Mod Config", createModConfig());
+	}
+
+	private JPanel createModConfig()
+	{
+		JPanel jp = new JPanel();
+		jp.setLayout(new BoxLayout(jp, BoxLayout.LINE_AXIS));
+		
+		Box inactiveMods = Box.createVerticalBox();
+		inactiveMods.add(Box.createVerticalStrut(10));
+		inactiveMods.add(new JLabel("Inactive Mods"));
+		final JList<String> inactiveModsList = new JList<String>(new DefaultListModel<String>());
+		final JList<String> activeModsList = new JList<String>(new DefaultListModel<String>());
+		ServerSettingsController.populateInactiveModsList((DefaultListModel<String>)inactiveModsList.getModel());
+		
+		inactiveMods.add(new JScrollPane(inactiveModsList));
+		inactiveMods.add(Box.createVerticalStrut(10));
+		
+		Box buttons = Box.createVerticalBox();
+		buttons.add(Box.createVerticalGlue());
+		JButton activateModButton = new JButton("   Activate -->  ");
+		activateModButton.addActionListener(new ActionListener()
+		{
+			public void actionPerformed(ActionEvent e)
+			{
+				ServerSettingsController.activateMod(inactiveModsList.getSelectedValue(), (DefaultListModel<String>)inactiveModsList.getModel(), (DefaultListModel<String>)activeModsList.getModel());
+			}
+		});
+		buttons.add(activateModButton);
+		buttons.add(Box.createVerticalStrut(20));
+		
+		JButton addExternalMod = new JButton(" Add External ");
+		addExternalMod.addActionListener(new ActionListener()
+		{
+			public void actionPerformed(ActionEvent e)
+			{
+				ServerSettingsController.addExternalMod((DefaultListModel<String>)inactiveModsList.getModel(), (DefaultListModel<String>)activeModsList.getModel());
+			}
+		});
+		buttons.add(addExternalMod);
+		buttons.add(Box.createVerticalStrut(20));
+
+		Box activeMods = Box.createVerticalBox();
+		activeMods.add(Box.createVerticalStrut(10));
+		activeMods.add(new JLabel("Active Mods"));
+		ServerSettingsController.populateActiveModsList((DefaultListModel<String>)activeModsList.getModel());
+		activeMods.add(new JScrollPane(activeModsList));
+		activeMods.add(Box.createVerticalStrut(10));
+		
+		JButton deactivateModButton = new JButton("<-- Deactivate");
+		deactivateModButton.addActionListener(new ActionListener()
+		{
+			public void actionPerformed(ActionEvent e)
+			{
+				ServerSettingsController.deactivateMod(activeModsList.getSelectedValue(), (DefaultListModel<String>)inactiveModsList.getModel(), (DefaultListModel<String>)activeModsList.getModel());
+			}
+		});
+		buttons.add(deactivateModButton);
+		buttons.add(Box.createVerticalGlue());
+		
+
+		jp.add(Box.createHorizontalStrut(20));
+		jp.add(inactiveMods);
+		jp.add(Box.createHorizontalGlue());
+		jp.add(buttons);
+		jp.add(Box.createHorizontalGlue());
+		jp.add(activeMods);
+		jp.add(Box.createHorizontalStrut(20));
+		
+		
+		return jp;
 	}
 
 	public static ServerSettingsTab Instance()

@@ -55,7 +55,9 @@ public class BaseFrame extends JFrame{
 		this.setSize(new Dimension(width, height));
 		populateContentPane();
 	}
-
+    public static ConsolePane getConsole(){
+    	return console;
+    }
 	private void populateContentPane()
 	{
 		getContentPane().setLayout(new BorderLayout());
