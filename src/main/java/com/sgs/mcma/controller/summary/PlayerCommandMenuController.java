@@ -41,7 +41,8 @@ public class PlayerCommandMenuController
 					dialog.setVisible(true);
 					
 					result = dialog.getResult();
-					console.sendCommand("achievement give achievement."+result+" "+player);
+					if(result != "null")
+						console.sendCommand("achievement give achievement."+result+" "+player);
 				}
 				//if they say take
 				else{
@@ -54,7 +55,8 @@ public class PlayerCommandMenuController
 					dialog.setVisible(true);
 					
 					result = dialog.getResult();
-					console.sendCommand("achievement take achievement."+result+" "+player);
+					if(result != "null")
+						console.sendCommand("achievement take achievement."+result+" "+player);
 				}
 			}
 			
