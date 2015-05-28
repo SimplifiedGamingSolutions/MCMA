@@ -15,8 +15,6 @@ public class PlayerCommandMenuController
 
 	public static void commandPressed(JList<String> playerList, ConsolePane console, String command, String title, PlayerCommandMenu menu)
 	{
-		if(!console.isRunning())
-			return;
 		String result;
 		String player = playerList.getSelectedValue();
 		menu.setVisible(false);
