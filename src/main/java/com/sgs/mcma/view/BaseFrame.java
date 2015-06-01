@@ -155,7 +155,7 @@ public class BaseFrame extends JFrame{
 	            }
 	        });
 	        popup.add(defaultItem);
-	        trayIcon=new TrayIcon(image, "SystemTray Demo", popup);
+	        trayIcon=new TrayIcon(image, "MCMA", popup);
 	        trayIcon.setImageAutoSize(true);
 	        trayIcon.addMouseListener(new MouseAdapter() {
 	        	public void mousePressed(java.awt.event.MouseEvent e) 
