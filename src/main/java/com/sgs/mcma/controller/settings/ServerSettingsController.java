@@ -5,8 +5,10 @@ import java.io.FilenameFilter;
 import java.io.IOException;
 
 import javax.swing.DefaultListModel;
+import javax.swing.JDialog;
 import javax.swing.JFileChooser;
 import javax.swing.JList;
+import javax.swing.JOptionPane;
 
 import com.google.common.io.Files;
 import com.sgs.mcma.view.BaseFrame;
@@ -30,8 +32,11 @@ public class ServerSettingsController
 
 	public static void activateMod(String selectedValue, DefaultListModel<String> inactive, DefaultListModel<String> active)
 	{
-		if(!BaseFrame.getConsole().isRunning())
+		if(BaseFrame.getConsole().isRunning())
+		{
+			JOptionPane.showMessageDialog(null, "SERVER STILL RUNNING: Mods cannot be changed while server is running.", "Error", JOptionPane.ERROR_MESSAGE);
 			return;
+		}
 		try
 		{
 			Files.move(new File("Server\\mods\\"+selectedValue+".disabled"), new File("Server\\mods\\"+selectedValue));
@@ -46,8 +51,11 @@ public class ServerSettingsController
 
 	public static void deactivateMod(String selectedValue, DefaultListModel<String> inactive, DefaultListModel<String> active)
 	{
-		if(!BaseFrame.getConsole().isRunning())
+		if(BaseFrame.getConsole().isRunning())
+		{
+			JOptionPane.showMessageDialog(null, "SERVER STILL RUNNING: Mods cannot be changed while server is running.", "Error", JOptionPane.ERROR_MESSAGE);
 			return;
+		}
 		try
 		{
 			Files.move(new File("Server\\mods\\"+selectedValue), new File("Server\\mods\\"+selectedValue+".disabled"));

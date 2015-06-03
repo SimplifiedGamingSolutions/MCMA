@@ -18,6 +18,7 @@ import javax.swing.plaf.ComponentUI;
 import javax.swing.plaf.metal.MetalTabbedPaneUI;
 
 import com.sgs.mcma.view.summary.PlayerListPanel;
+import com.sun.java.swing.plaf.windows.WindowsTabbedPaneUI;
 
 @SuppressWarnings("serial")
 public class MinecraftTabbedPane extends JTabbedPane
@@ -37,7 +38,7 @@ public class MinecraftTabbedPane extends JTabbedPane
 		GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
 		ge.registerFont(font);
 		setFont(font);
-		this.setUI(new StretchTabbedPaneUI());
+		//this.setUI(new StretchTabbedPaneUI());
 		addMouseListener(new MouseAdapter()
 		{
 			@Override
@@ -60,7 +61,7 @@ public class MinecraftTabbedPane extends JTabbedPane
 		super(tabPlacement, tabLayoutPolicy);
 	}
 
-	public static class StretchTabbedPaneUI extends MetalTabbedPaneUI
+	public static class StretchTabbedPaneUI extends WindowsTabbedPaneUI
 	{
 
 		public StretchTabbedPaneUI()
@@ -85,7 +86,7 @@ public class MinecraftTabbedPane extends JTabbedPane
 		}
 
 		protected class StretchTabbedPaneLayout extends
-		MetalTabbedPaneUI.TabbedPaneLayout
+		WindowsTabbedPaneUI.TabbedPaneLayout
 		{
 
 			protected Container tabContainer;

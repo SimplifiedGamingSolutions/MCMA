@@ -16,9 +16,12 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowStateListener;
+import java.io.IOException;
 
+import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JTabbedPane;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
@@ -71,7 +74,7 @@ public class BaseFrame extends JFrame{
 	{
 		final MinecraftTabbedPane tabs = new MinecraftTabbedPane();
 
-		tabs.addTab("Summary", new SummaryTab(BaseFrame.console));
+		tabs.addTab("Summary"/*,new ImageIcon(ImageIO.read(ClassLoader.getSystemResource("Resources/Images/StartBtn.png")))*/, new SummaryTab(BaseFrame.console));
 		tabs.addTab("Configuration", new ServerSettingsTab());
 		tabs.addTab("Logs", new ServerLogTab());
 

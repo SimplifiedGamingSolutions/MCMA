@@ -24,12 +24,17 @@ import javax.swing.JScrollPane;
 import javax.swing.JSplitPane;
 import javax.swing.JTabbedPane;
 import javax.swing.SwingConstants;
+import javax.swing.plaf.metal.MetalTabbedPaneUI;
+import javax.swing.plaf.synth.SynthTabbedPaneUI;
 
 import org.fife.ui.rsyntaxtextarea.RSyntaxTextArea;
 import org.fife.ui.rsyntaxtextarea.SyntaxConstants;
 import org.fife.ui.rtextarea.RTextScrollPane;
 
 import com.sgs.mcma.controller.settings.ServerSettingsController;
+import com.sgs.mcma.view.MinecraftTabbedPane.StretchTabbedPaneUI;
+import com.sun.java.swing.plaf.motif.MotifTabbedPaneUI;
+import com.sun.java.swing.plaf.windows.WindowsTabbedPaneUI;
 
 @SuppressWarnings("serial")
 public class ServerSettingsTab extends JTabbedPane
@@ -40,6 +45,7 @@ public class ServerSettingsTab extends JTabbedPane
 	public ServerSettingsTab()
 	{
 		ServerSettingsTab.instance = this;
+		//this.setUI(new WindowsTabbedPaneUI());
 		setTabPlacement(SwingConstants.LEFT);
 		JPanel tab1 = new JPanel();
 		tab1.setLayout(new BorderLayout());
