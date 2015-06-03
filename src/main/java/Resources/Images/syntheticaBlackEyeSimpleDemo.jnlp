@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<jnlp spec="1.0+" codebase="http://www.jyloo.com/downloads/public/synthetica" href="syntheticaBlackEyeSimpleDemo.jnlp">
+
+  <information>
+    <title>Synthetica Simple Demo</title>
+    <vendor>Jyloo Software</vendor>
+    <homepage href="http://www.jyloo.com/" />
+
+    <description>Synthetica Look and Feel Demo</description>
+    <description kind="short">The demo presents the Synthetica BlackEye Look and Feel.</description>
+    <description kind="tooltip">BlackEye Simple Demo</description>
+    <icon href="../../../images/logo_icon_32x32.png" width="32" height="32" />
+    <icon href="../../../images/logo_icon_48x48.png" width="48" height="48" />
+    <icon href="../../../images/logo_icon_64x64.png" width="64" height="64" />
+
+    <offline-allowed />
+  </information>
+
+  <security>
+    <all-permissions />
+  </security>
+
+  <resources>
+    <j2se version="1.5+" />
+    <jar href="syntheticaBlackEyeSimpleDemo.jar" />
+  </resources>
+
+  <application-desc main-class="de.javasoft.synthetica.simpledemo.Demo" />
+
+</jnlp>
+
