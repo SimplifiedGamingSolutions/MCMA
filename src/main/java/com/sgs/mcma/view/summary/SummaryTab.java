@@ -5,11 +5,14 @@ import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+import javafx.scene.control.Label;
+
 import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.DefaultListModel;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 import com.sgs.mcma.controller.summary.SummaryTabController;
@@ -35,6 +38,13 @@ public class SummaryTab extends JPanel
 		panel.add(createButtonPanel(), BorderLayout.SOUTH);
 		this.add(panel, BorderLayout.CENTER);
 	}
+	
+	private JLabel addIPAddress()
+	{
+		JLabel ipAddress = new JLabel(SummaryTabController.displayIP());
+		ipAddress.setFont(this.getFont().deriveFont(24.0f));
+		return ipAddress;
+	}
 
 	public static SummaryTab Instance()
 	{
@@ -47,6 +57,7 @@ public class SummaryTab extends JPanel
 		buttonPanel.setLayout(new BoxLayout(buttonPanel, BoxLayout.PAGE_AXIS));
 		buttonPanel.add(Box.createVerticalGlue());
 		buttonPanel.add(createButtonBox());
+		buttonPanel.add(addIPAddress());
 		return buttonPanel;
 	}
 
@@ -55,7 +66,6 @@ public class SummaryTab extends JPanel
 		Box buttonBox = Box.createHorizontalBox();
 		buttonBox.add(Box.createHorizontalGlue());
 		buttonBox.add(createStartServerButton());
-		buttonBox.add(Box.createHorizontalStrut(5));
 		buttonBox.add(createStopServerButton());
 		buttonBox.add(Box.createHorizontalGlue());
 		return buttonBox;
