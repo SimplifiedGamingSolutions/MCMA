@@ -27,6 +27,7 @@ public class ServerLogTab extends JTabbedPane
 	public ServerLogTab()
 	{
 		ServerLogTab.instance = this;
+		this.setTabPlacement(JTabbedPane.LEFT);
 		ServerLogTab.allMessagesTextArea = CreateSyntaxTextArea("all");
 		ServerLogTab.errorMessagesTextArea = CreateSyntaxTextArea("error");
 		ServerLogTab.chatMessagesTextArea = CreateSyntaxTextArea("chat");
