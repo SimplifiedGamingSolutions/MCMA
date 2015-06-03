@@ -12,17 +12,26 @@ import java.awt.Toolkit;
 import java.awt.TrayIcon;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowStateListener;
-import java.io.IOException;
+import java.io.File;
 
-import javax.imageio.ImageIO;
+import javax.swing.ButtonGroup;
 import javax.swing.ImageIcon;
+import javax.swing.JCheckBoxMenuItem;
+import javax.swing.JFileChooser;
 import javax.swing.JFrame;
-import javax.swing.JLabel;
+import javax.swing.JMenu;
+import javax.swing.JMenuBar;
+import javax.swing.JMenuItem;
+import javax.swing.JRadioButtonMenuItem;
 import javax.swing.JTabbedPane;
+import javax.swing.KeyStroke;
+import javax.swing.SwingUtilities;
+import javax.swing.UIManager;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
@@ -31,6 +40,9 @@ import com.sgs.mcma.view.logs.ServerLogTab;
 import com.sgs.mcma.view.settings.ServerSettingsTab;
 import com.sgs.mcma.view.summary.SummaryTab;
 import com.sgs.mcma.webservice.Server;
+
+import de.muntjak.tinylookandfeel.Theme;
+import de.muntjak.tinylookandfeel.TinyLookAndFeel;
 
 @SuppressWarnings("serial")
 public class BaseFrame extends JFrame{
@@ -42,13 +54,123 @@ public class BaseFrame extends JFrame{
     
     public BaseFrame(String title, int width, int height)
     {
+    	populateJMenuBar();
+		  try {
+		      UIManager.setLookAndFeel(new TinyLookAndFeel());
+		      SwingUtilities.updateComponentTreeUI(this);
+		  } catch(Exception ex) {
+		      ex.printStackTrace();
+		  }
 	    systemTrayInitialization();
 	    BaseFrame.instance = this;
 		BaseFrame.console = new ConsolePane();
 		Initialize(title, width, height);
 		pack();
     }
-    private void Initialize(String title, int width, int height)
+    private void populateJMenuBar()
+	{
+    	//Where the GUI is created:
+    	JMenuBar menuBar;
+    	JMenu menu, submenu;
+    	JMenuItem menuItem;
+    	JRadioButtonMenuItem rbMenuItem;
+    	JCheckBoxMenuItem cbMenuItem;
+
+    	//Create the menu bar.
+    	menuBar = new JMenuBar();
+
+    	//Build the first menu.
+    	menu = new JMenu("UI Manager");
+    	menu.setMnemonic(KeyEvent.VK_A);
+    	menu.getAccessibleContext().setAccessibleDescription(
+    	        "The only menu in this program that has menu items");
+    	menuBar.add(menu);
+
+    	//a group of JMenuItems
+    	menuItem = new JMenuItem("load theme",
+    	                         KeyEvent.VK_T);
+    	menuItem.setAccelerator(KeyStroke.getKeyStroke(
+    	        KeyEvent.VK_1, ActionEvent.ALT_MASK));
+    	menuItem.getAccessibleContext().setAccessibleDescription(
+    	        "This doesn't really do anything");
+    	menuItem.addActionListener(new ActionListener()
+		{
+			
+			public void actionPerformed(ActionEvent e)
+			{
+			    JFileChooser ch = new JFileChooser();
+			    ch.setCurrentDirectory(new File("src\\main\\java\\Resources\\Themes"));
+			    ch.showOpenDialog(BaseFrame.instance);
+				try
+				{
+				    Theme.loadTheme(ch.getSelectedFile());
+				    UIManager.setLookAndFeel(UIManager.getLookAndFeel());
+				    SwingUtilities.updateComponentTreeUI(BaseFrame.instance);
+				} catch (Exception e1)
+				{
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+			}
+		});
+    	menu.add(menuItem);
+
+    	menuItem = new JMenuItem("Both text and icon",
+    	                         new ImageIcon("images/middle.gif"));
+    	menuItem.setMnemonic(KeyEvent.VK_B);
+    	menu.add(menuItem);
+
+    	menuItem = new JMenuItem(new ImageIcon("images/middle.gif"));
+    	menuItem.setMnemonic(KeyEvent.VK_D);
+    	menu.add(menuItem);
+
+    	//a group of radio button menu items
+    	menu.addSeparator();
+    	ButtonGroup group = new ButtonGroup();
+    	rbMenuItem = new JRadioButtonMenuItem("A radio button menu item");
+    	rbMenuItem.setSelected(true);
+    	rbMenuItem.setMnemonic(KeyEvent.VK_R);
+    	group.add(rbMenuItem);
+    	menu.add(rbMenuItem);
+
+    	rbMenuItem = new JRadioButtonMenuItem("Another one");
+    	rbMenuItem.setMnemonic(KeyEvent.VK_O);
+    	group.add(rbMenuItem);
+    	menu.add(rbMenuItem);
+
+    	//a group of check box menu items
+    	menu.addSeparator();
+    	cbMenuItem = new JCheckBoxMenuItem("A check box menu item");
+    	cbMenuItem.setMnemonic(KeyEvent.VK_C);
+    	menu.add(cbMenuItem);
+
+    	cbMenuItem = new JCheckBoxMenuItem("Another one");
+    	cbMenuItem.setMnemonic(KeyEvent.VK_H);
+    	menu.add(cbMenuItem);
+
+    	//a submenu
+    	menu.addSeparator();
+    	submenu = new JMenu("A submenu");
+    	submenu.setMnemonic(KeyEvent.VK_S);
+
+    	menuItem = new JMenuItem("An item in the submenu");
+    	menuItem.setAccelerator(KeyStroke.getKeyStroke(
+    	        KeyEvent.VK_2, ActionEvent.ALT_MASK));
+    	submenu.add(menuItem);
+
+    	menuItem = new JMenuItem("Another item");
+    	submenu.add(menuItem);
+    	menu.add(submenu);
+
+    	//Build second menu in the menu bar.
+    	menu = new JMenu("Another Menu");
+    	menu.setMnemonic(KeyEvent.VK_N);
+    	menu.getAccessibleContext().setAccessibleDescription(
+    	        "This menu does nothing");
+    	menuBar.add(menu);
+    	this.setJMenuBar(menuBar);
+	}
+	private void Initialize(String title, int width, int height)
 	{
 		setTitle(title);
 		ImageIcon img = new ImageIcon(ClassLoader.getSystemResource("Resources/Images/SGSLogo.png"));

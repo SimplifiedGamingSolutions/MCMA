@@ -21,7 +21,6 @@ import javax.swing.text.SimpleAttributeSet;
 import javax.swing.text.StyleConstants;
 import javax.swing.text.StyledDocument;
 
-import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -30,7 +29,6 @@ import org.jsoup.select.Elements;
 
 import com.sgs.mcma.controller.summary.ConsolePaneController;
 import com.sgs.mcma.utils.Utils;
-import com.sgs.mcma.view.test.TestFrame;
 
 @SuppressWarnings("serial")
 public class ConsolePane extends JPanel

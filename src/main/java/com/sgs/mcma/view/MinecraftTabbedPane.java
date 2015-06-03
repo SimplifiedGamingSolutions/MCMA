@@ -7,18 +7,14 @@ import java.awt.LayoutManager;
 import java.awt.Rectangle;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.io.File;
-import java.io.FileInputStream;
-import java.net.URL;
-import java.util.Enumeration;
 
 import javax.swing.JComponent;
 import javax.swing.JTabbedPane;
 import javax.swing.plaf.ComponentUI;
-import javax.swing.plaf.metal.MetalTabbedPaneUI;
 
 import com.sgs.mcma.view.summary.PlayerListPanel;
-import com.sun.java.swing.plaf.windows.WindowsTabbedPaneUI;
+
+import de.muntjak.tinylookandfeel.TinyTabbedPaneUI;
 
 @SuppressWarnings("serial")
 public class MinecraftTabbedPane extends JTabbedPane
@@ -38,7 +34,7 @@ public class MinecraftTabbedPane extends JTabbedPane
 		GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
 		ge.registerFont(font);
 		setFont(font);
-		//this.setUI(new StretchTabbedPaneUI());
+		this.setUI(new StretchTabbedPaneUI());
 		addMouseListener(new MouseAdapter()
 		{
 			@Override
@@ -61,7 +57,7 @@ public class MinecraftTabbedPane extends JTabbedPane
 		super(tabPlacement, tabLayoutPolicy);
 	}
 
-	public static class StretchTabbedPaneUI extends WindowsTabbedPaneUI
+	public static class StretchTabbedPaneUI extends TinyTabbedPaneUI
 	{
 
 		public StretchTabbedPaneUI()
@@ -86,7 +82,7 @@ public class MinecraftTabbedPane extends JTabbedPane
 		}
 
 		protected class StretchTabbedPaneLayout extends
-		WindowsTabbedPaneUI.TabbedPaneLayout
+		TinyTabbedPaneUI.TabbedPaneLayout
 		{
 
 			protected Container tabContainer;

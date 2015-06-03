@@ -5,15 +5,12 @@ import java.io.FilenameFilter;
 import java.io.IOException;
 
 import javax.swing.DefaultListModel;
-import javax.swing.JDialog;
 import javax.swing.JFileChooser;
-import javax.swing.JList;
 import javax.swing.JOptionPane;
 
 import com.google.common.io.Files;
 import com.sgs.mcma.view.BaseFrame;
 import com.sgs.mcma.view.settings.ServerSettingsTab;
-import com.sgs.mcma.view.summary.SummaryTab;
 
 public class ServerSettingsController
 {

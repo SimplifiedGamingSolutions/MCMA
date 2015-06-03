@@ -3,6 +3,7 @@ package com.sgs.mcma.view.settings;
 import java.awt.BorderLayout;
 import java.awt.Component;
 import java.awt.Dimension;
+import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.BufferedWriter;
@@ -17,6 +18,9 @@ import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.DefaultListModel;
 import javax.swing.JButton;
+import javax.swing.JDialog;
+import javax.swing.JFileChooser;
+import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JPanel;
@@ -24,17 +28,22 @@ import javax.swing.JScrollPane;
 import javax.swing.JSplitPane;
 import javax.swing.JTabbedPane;
 import javax.swing.SwingConstants;
-import javax.swing.plaf.metal.MetalTabbedPaneUI;
-import javax.swing.plaf.synth.SynthTabbedPaneUI;
+import javax.swing.SwingUtilities;
+import javax.swing.UIManager;
+import javax.swing.UnsupportedLookAndFeelException;
 
 import org.fife.ui.rsyntaxtextarea.RSyntaxTextArea;
 import org.fife.ui.rsyntaxtextarea.SyntaxConstants;
 import org.fife.ui.rtextarea.RTextScrollPane;
 
+import scala.swing.FileChooser;
+
 import com.sgs.mcma.controller.settings.ServerSettingsController;
-import com.sgs.mcma.view.MinecraftTabbedPane.StretchTabbedPaneUI;
-import com.sun.java.swing.plaf.motif.MotifTabbedPaneUI;
-import com.sun.java.swing.plaf.windows.WindowsTabbedPaneUI;
+import com.sgs.mcma.view.BaseFrame;
+import com.sgs.mcma.view.logs.ServerLogTab;
+
+import de.muntjak.tinylookandfeel.Theme;
+import de.muntjak.tinylookandfeel.TinyLookAndFeel;
 
 @SuppressWarnings("serial")
 public class ServerSettingsTab extends JTabbedPane
@@ -67,8 +76,8 @@ public class ServerSettingsTab extends JTabbedPane
 
 		tab1.add(splitPane, BorderLayout.CENTER);
 
-		this.addTab("Server Config", tab1);
-		this.addTab("Mod Config", createModConfig());
+		this.addTab("Server", tab1);
+		this.addTab("Mod", createModConfig());
 	}
 
 	private JPanel createModConfig()
