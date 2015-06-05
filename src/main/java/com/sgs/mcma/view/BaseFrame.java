@@ -2,6 +2,7 @@ package com.sgs.mcma.view;
 
 import java.awt.AWTException;
 import java.awt.BorderLayout;
+import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.EventQueue;
 import java.awt.Image;
@@ -38,6 +39,7 @@ import javax.swing.event.ChangeListener;
 import com.sgs.mcma.view.console.ConsolePane;
 import com.sgs.mcma.view.logs.ServerLogTab;
 import com.sgs.mcma.view.settings.ServerSettingsTab;
+import com.sgs.mcma.view.summary.PlayerCommandMenu;
 import com.sgs.mcma.view.summary.SummaryTab;
 import com.sgs.mcma.webservice.Server;
 
@@ -58,6 +60,13 @@ public class BaseFrame extends JFrame{
 		  try {
 		      UIManager.setLookAndFeel(new TinyLookAndFeel());
 		      SwingUtilities.updateComponentTreeUI(this);
+		      if(PlayerCommandMenu.instance != null)
+		      {
+			      for(JMenuItem item : PlayerCommandMenu.menuItems)
+			      {
+			    	  item.setForeground(UIManager.getColor("List.foreground"));
+			      }
+		      }
 		  } catch(Exception ex) {
 		      ex.printStackTrace();
 		  }
@@ -106,6 +115,14 @@ public class BaseFrame extends JFrame{
 				    Theme.loadTheme(ch.getSelectedFile());
 				    UIManager.setLookAndFeel(UIManager.getLookAndFeel());
 				    SwingUtilities.updateComponentTreeUI(BaseFrame.instance);
+
+				      if(PlayerCommandMenu.instance != null)
+				      {
+					      for(JMenuItem item : PlayerCommandMenu.menuItems)
+					      {
+					    	  item.setForeground(UIManager.getColor("List.foreground"));
+					      }
+				      }
 				} catch (Exception e1)
 				{
 					// TODO Auto-generated catch block

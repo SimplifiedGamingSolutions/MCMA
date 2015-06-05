@@ -1,8 +1,10 @@
 package com.sgs.mcma.view.summary;
 
+import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
+import java.util.ArrayList;
 
 import javax.swing.JMenuItem;
 import javax.swing.JPopupMenu;
@@ -13,7 +15,8 @@ import com.sgs.mcma.controller.summary.PlayerCommandMenuController;
 @SuppressWarnings("serial")
 public class PlayerCommandMenu extends JPopupMenu
 {
-	static PlayerCommandMenu instance;
+	public static PlayerCommandMenu instance;
+	public static ArrayList<JMenuItem> menuItems = new ArrayList<JMenuItem>();
 
 	public PlayerCommandMenu()
 	{
@@ -53,14 +56,13 @@ public class PlayerCommandMenu extends JPopupMenu
 	public void mouseEntered(MouseEvent event)
 	{
 		JMenuItem jmi = (JMenuItem) event.getSource();
-		jmi.setBackground(UIManager.getColor("MenuItem.selectionBackground"));
-		jmi.setForeground(UIManager.getColor("MenuItem.selectionForeground"));
 	}
 
 	public void addCommand(String title, String command)
 	{
 		JMenuItem temp = new JMenuItem(title);
 		this.add(temp);
+		menuItems.add(temp);
 		temp.addActionListener(new commandActionListener(command, title));
 
 	}
