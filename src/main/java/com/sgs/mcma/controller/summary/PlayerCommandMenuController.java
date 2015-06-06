@@ -1,14 +1,30 @@
 package com.sgs.mcma.controller.summary;
 
+import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.FlowLayout;
+import java.awt.Font;
+import java.awt.Frame;
+
+import javax.swing.BorderFactory;
+import javax.swing.Box;
+import javax.swing.BoxLayout;
+import javax.swing.DefaultComboBoxModel;
 import javax.swing.ImageIcon;
+import javax.swing.JComboBox;
+import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JTextField;
+import javax.swing.border.TitledBorder;
 
 import com.sgs.mcma.model.Achievements;
 import com.sgs.mcma.view.BaseFrame;
 import com.sgs.mcma.view.console.ConsolePane;
 import com.sgs.mcma.view.summary.ItemSelectionDialog;
 import com.sgs.mcma.view.summary.PlayerCommandMenu;
+import com.sun.prism.Graphics;
 
 public class PlayerCommandMenuController
 {	
@@ -59,7 +75,62 @@ public class PlayerCommandMenuController
 				}
 			}
 			
-		} else if(command.equals("difficulty"))
+		}else if(command.equals("ban [player]")){
+			ImageIcon img = new ImageIcon(ClassLoader.getSystemResource("Resources/Images/Achievements/banned.jpg"));
+			Object[] options1 = { "Ban Player", "Cancel"};
+
+			  
+			     JPanel panel = new JPanel();
+			     panel.setLocation(BaseFrame.instance.getX(), BaseFrame.instance.getY());
+			     
+			     panel.setBorder(BorderFactory.createTitledBorder("Ban player "+playerList.getSelectedValue()));
+			     panel.setLayout(new BoxLayout(panel,BoxLayout.Y_AXIS));
+			     panel.add(Box.createVerticalStrut(10));
+			     panel.add(new JLabel("Optional: Enter reason for ban"));
+			     panel.add(Box.createVerticalStrut(2));
+			     JTextField textField = new JTextField(10);
+			     panel.add(textField);
+			     panel.add(Box.createVerticalStrut(10));
+			
+			     int response = JOptionPane.showOptionDialog(BaseFrame.instance, panel, "Ban player "+playerList.getSelectedValue(),
+			             JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE,
+			             img, options1, null);
+			     
+			     if (response == JOptionPane.YES_OPTION){
+			         JOptionPane.showMessageDialog(null, "Player "+playerList.getSelectedValue()+ " was banned.");
+			         console.sendCommand("ban "+playerList.getSelectedValue()+ " "+textField.getText());
+			     }
+			 
+
+		}else if(command.equals("clear [player]")){
+			ImageIcon img = new ImageIcon(ClassLoader.getSystemResource("Resources/Images/Achievements/clear.png"));
+			Object[] options1 = { "Clear Items", "Cancel"};
+
+			  
+			     JPanel panel = new JPanel();
+			     panel.setLocation(BaseFrame.instance.getX(), BaseFrame.instance.getY());
+			     
+			     panel.setBorder(BorderFactory.createTitledBorder("Clear player "+playerList.getSelectedValue() +" items."));
+			     panel.setLayout(new BoxLayout(panel,BoxLayout.Y_AXIS));
+			     panel.add(Box.createVerticalStrut(10));
+			     panel.add(new JLabel("Enter item to clear or leave blank to clear ALL items"));
+			     panel.add(Box.createVerticalStrut(2));
+			     panel.add(new JLabel("e.g diamond, stone, gold, etc"));
+			     panel.add(Box.createVerticalStrut(2));
+			     JTextField textField = new JTextField(4);
+			     panel.add(textField);
+			     panel.add(Box.createVerticalStrut(10));
+			
+			     int response = JOptionPane.showOptionDialog(BaseFrame.instance, panel, "Clear player "+playerList.getSelectedValue() +" items.",
+			             JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE,
+			             img, options1, null);
+			     
+			     if (response == JOptionPane.YES_OPTION){
+			         //JOptionPane.showMessageDialog(null, "Player "+playerList.getSelectedValue()+ " items.");
+			         console.sendCommand("clear "+playerList.getSelectedValue()+ " "+textField.getText());
+			     }
+
+		}else if(command.equals("difficulty"))
 		{
 			String[] options ={	"Peaceful", "Easy", "Normal", "Hard"};
 			//ImageIcon img = new ImageIcon(ClassLoader.getSystemResource("Resources/Images/Achievements/give.png")); This is if you wan to add an image					 goes here
@@ -73,6 +144,83 @@ public class PlayerCommandMenuController
 			int n = JOptionPane.showOptionDialog(BaseFrame.instance, "Select Gamemode for " + playerList.getSelectedValue(), title.toUpperCase(), JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE, null, options, options[0]);
 			if(n != -1)
 				console.sendCommand("gamemode " + n + " " + player);			
+		}else if(command.equals("effect")){
+			ImageIcon img = new ImageIcon(ClassLoader.getSystemResource("Resources/Images/Achievements/effect.png"));
+			Object[] options1 = { "Set Effect"," Clear All Effects", "Cancel"};
+
+			  
+			     JPanel panel = new JPanel();
+			     panel.setLocation(BaseFrame.instance.getX(), BaseFrame.instance.getY());
+			     
+			     panel.setBorder(BorderFactory.createTitledBorder("Set Effects for player "+playerList.getSelectedValue()));
+			     panel.setLayout(new BoxLayout(panel,BoxLayout.Y_AXIS));
+			     panel.add(Box.createVerticalStrut(10));
+			     panel.add(new JLabel("Select Effect"));
+			     panel.add(Box.createVerticalStrut(2));
+			     DefaultComboBoxModel<String> model = new DefaultComboBoxModel<String>();
+	                model.addElement("Speed");model.addElement("Slowness");model.addElement("Haste");model.addElement("Mining Fatigue");model.addElement("Strength");model.addElement("Instant Health");model.addElement("Instant Damage");model.addElement("Jump Boost");model.addElement("Nausea");model.addElement("Regeneration");model.addElement("Resistance");model.addElement("Fire Resistance");model.addElement("Water Breathing");model.addElement("Invisibility");model.addElement("Blindness");model.addElement("Night vision");model.addElement("Hunger");model.addElement("Weakness");model.addElement("Poison");model.addElement("Health Boost");model.addElement("Absorption");model.addElement("Saturation");
+	                JComboBox<String> comboBox = new JComboBox<String>(model);
+			     panel.add(comboBox);
+			     panel.add(Box.createVerticalStrut(2));
+			     panel.add(new JLabel("Enter duration in seconds"));
+			     panel.add(Box.createVerticalStrut(2));
+			     JTextField textField = new JTextField(4);
+			     panel.add(textField);
+			     panel.add(Box.createVerticalStrut(2));
+			     panel.add(new JLabel("Enter Amplifier up to 255"));
+			     panel.add(Box.createVerticalStrut(2));
+			     JTextField textField1 = new JTextField(4);
+			     panel.add(textField1);
+			     panel.add(Box.createVerticalStrut(10));
+			
+			     int response = JOptionPane.showOptionDialog(BaseFrame.instance, panel, "Set Effects for player "+playerList.getSelectedValue(),
+			             JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE,
+			             img, options1, null);
+			     
+			     if (response == JOptionPane.YES_OPTION){
+			    	 int selection = comboBox.getSelectedIndex()+1;
+			    	 console.sendCommand("effect "+playerList.getSelectedValue()+ " "+selection+ " "+textField.getText()+ " "+textField1.getText());
+			     }else if(response == JOptionPane.NO_OPTION){
+			    	 console.sendCommand("effect "+playerList.getSelectedValue()+" clear");
+			     }
+	
+		}else if(command.equals("enchant [player]")){
+			
+			ImageIcon img = new ImageIcon(ClassLoader.getSystemResource("Resources/Images/Achievements/effect.png"));
+			Object[] options1 = { "Enchant item held", "Cancel"};
+
+			  
+			     JPanel panel = new JPanel();
+			     panel.setLocation(BaseFrame.instance.getX(), BaseFrame.instance.getY());
+			     
+			     panel.setBorder(BorderFactory.createTitledBorder("Enchant player "+playerList.getSelectedValue()+" current item held"));
+			     panel.setLayout(new BoxLayout(panel,BoxLayout.Y_AXIS));
+			     panel.add(Box.createVerticalStrut(10));
+			     panel.add(new JLabel("Select Enchantment"));
+			     panel.add(Box.createVerticalStrut(2));
+			     DefaultComboBoxModel<String> model = new DefaultComboBoxModel<String>();
+	                model.addElement("Protection");model.addElement("Fire Protection");model.addElement("Feather Falling");model.addElement("Blast Protection");model.addElement("Projectile Protection");model.addElement("Respiration");model.addElement("Aqua Affinity");model.addElement("Thorns");model.addElement("Depth Strider");model.addElement("Sharpness");model.addElement("Smite");model.addElement("Bane of Arthropods");model.addElement("Knockback");model.addElement("Fire Aspect");model.addElement("Looting");model.addElement("Efficiency");model.addElement("Silk Touch");model.addElement("Unbreaking");model.addElement("Fortune");model.addElement("Power");model.addElement("Punch");model.addElement("Flame");model.addElement("Infinity");model.addElement("Luck of the Sea");model.addElement("Lure");
+	                JComboBox<String> comboBox = new JComboBox<String>(model);
+			     panel.add(comboBox);
+			     panel.add(Box.createVerticalStrut(2));
+			     panel.add(new JLabel("Enter Enchantment Level (optional)"));
+			     panel.add(Box.createVerticalStrut(2));
+			     JTextField textField = new JTextField(4);
+			     panel.add(textField);
+			     panel.add(Box.createVerticalStrut(10));
+			
+			     int response = JOptionPane.showOptionDialog(BaseFrame.instance, panel, "Enchant player "+playerList.getSelectedValue()+" current item held",
+			             JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE,
+			             img, options1, null);
+			     
+			     if (response == JOptionPane.YES_OPTION){
+			    	 String selection =comboBox.getSelectedItem().toString().toLowerCase();			    	 
+			    	 console.sendCommand("enchant "+playerList.getSelectedValue()+ " "+selection.replace(' ', '_')+" "+textField.getText());
+			     }
+			
+			
+			
+			
 		}
 		else//another player command
 		{

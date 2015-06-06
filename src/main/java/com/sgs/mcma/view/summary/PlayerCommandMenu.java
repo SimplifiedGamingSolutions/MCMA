@@ -28,7 +28,7 @@ public class PlayerCommandMenu extends JPopupMenu
 		addCommand("clear", "clear [player]");
 		addCommand("deop", "deop [player]");
 		addCommand("difficulty", "difficulty");
-		addCommand("effect", "todo");
+		addCommand("effect", "effect");
 		addCommand("enchant", "enchant [player]");
 		addCommand("gamemode", "gamemode");
 		addCommand("give", "todo");
