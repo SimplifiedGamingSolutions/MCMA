@@ -2,9 +2,12 @@ package com.sgs.mcma.controller.summary;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.Frame;
+import java.awt.GridLayout;
+import java.io.IOException;
 
 import javax.swing.BorderFactory;
 import javax.swing.Box;
@@ -12,10 +15,14 @@ import javax.swing.BoxLayout;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.ImageIcon;
 import javax.swing.JComboBox;
+import javax.swing.JEditorPane;
+import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JSplitPane;
 import javax.swing.JTextField;
 import javax.swing.border.TitledBorder;
 
@@ -115,7 +122,7 @@ public class PlayerCommandMenuController
 			     panel.add(Box.createVerticalStrut(10));
 			     panel.add(new JLabel("Enter item to clear or leave blank to clear ALL items"));
 			     panel.add(Box.createVerticalStrut(2));
-			     panel.add(new JLabel("e.g diamond, stone, gold, etc"));
+			     panel.add(new JLabel("e.g diamond, stone, goldlen_axe, etc"));
 			     panel.add(Box.createVerticalStrut(2));
 			     JTextField textField = new JTextField(4);
 			     panel.add(textField);
@@ -150,7 +157,7 @@ public class PlayerCommandMenuController
 
 			  
 			     JPanel panel = new JPanel();
-			     panel.setLocation(BaseFrame.instance.getX(), BaseFrame.instance.getY());
+			     
 			     
 			     panel.setBorder(BorderFactory.createTitledBorder("Set Effects for player "+playerList.getSelectedValue()));
 			     panel.setLayout(new BoxLayout(panel,BoxLayout.Y_AXIS));
@@ -191,7 +198,7 @@ public class PlayerCommandMenuController
 
 			  
 			     JPanel panel = new JPanel();
-			     panel.setLocation(BaseFrame.instance.getX(), BaseFrame.instance.getY());
+			     
 			     
 			     panel.setBorder(BorderFactory.createTitledBorder("Enchant player "+playerList.getSelectedValue()+" current item held"));
 			     panel.setLayout(new BoxLayout(panel,BoxLayout.Y_AXIS));
@@ -218,6 +225,39 @@ public class PlayerCommandMenuController
 			    	 console.sendCommand("enchant "+playerList.getSelectedValue()+ " "+selection.replace(' ', '_')+" "+textField.getText());
 			     }
 			
+		}else if(command.equals("give")){
+			//left of here, trying to get a html page to load inside a panel using jeditorpane, could help us style easier espeically with so many items and blocks to give
+			
+			
+			
+			
+			
+			
+			
+			 JFrame f = new JFrame();
+			 
+			 
+			 JPanel panel = new JPanel();
+
+			
+			JEditorPane editorPane = new JEditorPane();
+			editorPane.setEditable(false);
+			java.net.URL helpURL = ClassLoader.getSystemResource("Resources/html/temp.html");
+			
+			if (helpURL != null) {
+			    try {
+			        editorPane.setPage("http://hydra-media.cursecdn.com/minecraft.gamepedia.com/d/d1/DataValues.svg");
+			    } catch (IOException e) {
+			        System.out.println("Attempted to read a bad URL: " + helpURL);
+			    }
+			} else {
+			    System.out.println("Couldn't find file: TextSamplerDemoHelp.html");
+			}
+
+			panel.add(editorPane);
+			f.add(panel);
+			f.pack();
+			f.setVisible(true);
 			
 			
 			
