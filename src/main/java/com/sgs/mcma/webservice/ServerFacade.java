@@ -1,23 +1,21 @@
 package com.sgs.mcma.webservice;
 
-import com.sgs.mcma.client.PlayerJoined_Params;
-import com.sgs.mcma.client.PlayerLeft_Params;
 import com.sgs.mcma.view.summary.SummaryTab;
 
 public class ServerFacade
 {
 
-	public static boolean updatePlayerList(PlayerJoined_Params playerContainer)
+	public static boolean addPlayer(String player)
 	{
 		SummaryTab.Instance();
-		SummaryTab.playerListModel.addElement(playerContainer.getName());
+		SummaryTab.playerListModel.addElement(player);
 		return true;
 	}
 
-	public static boolean updatePlayerList(PlayerLeft_Params playerContainer)
+	public static boolean removePlayer(String player)
 	{
 		SummaryTab.Instance();
-		SummaryTab.playerListModel.removeElement(playerContainer.getName());
+		SummaryTab.playerListModel.removeElement(player);
 		return true;
 	}
 }

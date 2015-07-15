@@ -11,7 +11,6 @@ import java.net.HttpURLConnection;
 import java.rmi.ServerException;
 import java.util.logging.Logger;
 
-import com.sgs.mcma.client.PlayerLeft_Params;
 import com.sgs.mcma.webservice.Server;
 import com.sgs.mcma.webservice.ServerFacade;
 import com.sun.net.httpserver.HttpExchange;
@@ -30,11 +29,11 @@ public class PlayerLeftHandler implements HttpHandler
 			Server.setAddress(exchange.getLocalAddress().getHostString());
 			InputStream requestBody = exchange.getRequestBody();
 			ObjectInput in = new ObjectInputStream(requestBody);
-			PlayerLeft_Params request = (PlayerLeft_Params) in.readObject();
+			String request = (String) in.readObject();
 			in.close();
 			requestBody.close();
 			exchange.sendResponseHeaders(HttpURLConnection.HTTP_OK, 0);
-			boolean result = ServerFacade.updatePlayerList(request);
+			boolean result = ServerFacade.removePlayer(request);
 			OutputStream responseBody = exchange.getResponseBody();
 			ObjectOutput out = new ObjectOutputStream(responseBody);
 			out.writeObject(result);
